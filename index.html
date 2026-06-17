@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thai Vowels — 28 Essential Forms</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Thai Vowels">
+<meta name="theme-color" content="#0e0e0e">
+<link rel="apple-touch-icon" href="icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Thai:wght@300;400;500&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Niramit:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0e0e0e;
+    --surface: #1a1a1a;
+    --card-front: #1c1c1c;
+    --card-back: #1a2a1a;
+    --accent: #c8ff00;
+    --text: #f0ede6;
+    --muted: #666;
+    --border: #2a2a2a;
+    --thai-gold: #d4a843;
+    --short-color: #7eb8d4;
+    --long-color: #c8a0e0;
+    --special-color: #ff9966;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Sans Thai', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 16px 48px;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(200,255,0,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(200,255,0,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 700px;
+    position: relative;
+    z-index: 1;
+  }
+
+  header { text-align: center; margin-bottom: 28px; }
+
+  .logo-thai {
+    font-family: 'IBM Plex Sans Thai', sans-serif;
+    font-size: 13px;
+    letter-spacing: 6px;
+    color: var(--thai-gold);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    opacity: 0.8;
+  }
+
+  h1 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: clamp(28px, 5vw, 42px);
+    font-weight: 700;
+    letter-spacing: -1px;
+    line-height: 1.1;
+  }
+
+  h1 span { color: var(--accent); font-style: italic; }
+
+  .subtitle {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 8px;
+    letter-spacing: 1px;
+  }
+
+  .legend {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .legend-dot.short   { background: var(--short-color); }
+  .legend-dot.long    { background: var(--long-color); }
+  .legend-dot.special { background: var(--special-color); }
+
+  .filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 28px;
+  }
+
+  .cat-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 6px 14px;
+    border-radius: 2px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-transform: uppercase;
+  }
+  .cat-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .cat-btn.active { background: var(--accent); border-color: var(--accent); color: #000; font-weight: 500; }
+
+  .progress-bar-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .progress-track {
+    flex: 1;
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    transition: width 0.3s ease;
+  }
+
+  .progress-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+    min-width: 60px;
+    text-align: right;
+  }
+
+  .card-scene {
+    perspective: 1200px;
+    width: 100%;
+    height: 310px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .card-scene:hover .card-inner:not(.flipped) {
+    transform: rotateY(4deg) translateY(-4px);
+  }
+
+  .card-inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .card-inner.flipped { transform: rotateY(180deg); }
+
+  /* Prevent the hidden face from intercepting touches on iOS */
+  .card-inner:not(.flipped) .card-back { pointer-events: none; }
+  .card-inner.flipped .card-front { pointer-events: none; }
+
+  .card-face {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 32px;
+    border: 1px solid var(--border);
+  }
+
+  .card-front { background: var(--card-front); }
+
+  .card-back {
+    background: var(--card-back);
+    transform: rotateY(180deg);
+    border-color: #2a3a2a;
+  }
+
+  .card-face::before, .card-face::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-color: var(--accent);
+    border-style: solid;
+    opacity: 0.3;
+  }
+  .card-face::before { top: 14px; left: 14px; border-width: 1px 0 0 1px; }
+  .card-face::after  { bottom: 14px; right: 14px; border-width: 0 1px 1px 0; }
+
+  .card-type-tag {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .card-type-tag.short   { color: var(--short-color); }
+  .card-type-tag.long    { color: var(--long-color); }
+  .card-type-tag.special { color: var(--special-color); }
+
+  .card-number {
+    position: absolute;
+    top: 14px;
+    left: 16px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    opacity: 0.5;
+  }
+
+  .card-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  /* The big vowel display — uses ก as consonant placeholder */
+  .vowel-display {
+    font-family: 'Niramit', sans-serif;
+    font-size: clamp(52px, 11vw, 82px);
+    font-weight: 300;
+    line-height: 1.4;
+    text-align: center;
+    margin-bottom: 6px;
+    letter-spacing: 0.05em;
+    color: #d4a843;
+  }
+
+  /* dotted circle placeholder inherits gold from .vowel-display */
+
+  .sara-name {
+    font-family: 'IBM Plex Sans Thai', sans-serif;
+    font-size: 15px;
+    color: var(--muted);
+    letter-spacing: 2px;
+    margin-bottom: 4px;
+  }
+
+  .rtgs-text {
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    font-size: clamp(20px, 4vw, 28px);
+    color: var(--text);
+    text-align: center;
+  }
+
+  /* Back face */
+  .back-sound {
+    font-family: 'Libre Baskerville', serif;
+    font-size: clamp(22px, 4vw, 32px);
+    font-weight: 700;
+    color: var(--text);
+    text-align: center;
+    margin-bottom: 8px;
+  }
+
+  .back-row {
+    display: flex;
+    gap: 28px;
+    margin-bottom: 14px;
+  }
+
+  .back-item { text-align: center; }
+
+  .back-item-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+
+  .back-item-value {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    color: var(--text);
+  }
+
+  .position-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    text-align: center;
+    margin-bottom: 12px;
+  }
+
+  .example-row {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+  }
+
+  .example-thai {
+    font-family: 'Niramit', sans-serif;
+    font-size: 26px;
+    font-weight: 300;
+    color: var(--thai-gold);
+  }
+
+  .example-details { text-align: left; }
+
+  .example-rtgs {
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  .example-eng {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    margin-top: 2px;
+  }
+
+  .pronounce-wrap {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 16px;
+  }
+
+  .btn-pronounce {
+    background: transparent;
+    border: 1px solid var(--thai-gold);
+    color: var(--thai-gold);
+    padding: 8px 22px;
+    border-radius: 2px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn-pronounce:hover { background: var(--thai-gold); color: #000; }
+  .btn-pronounce.speaking { background: var(--thai-gold); color: #000; }
+
+  .flip-hint {
+    text-align: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+    opacity: 0.6;
+  }
+
+  .stats {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    padding: 16px;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    margin-bottom: 24px;
+  }
+
+  .stat { text-align: center; }
+
+  .stat-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--accent);
+  }
+
+  .stat-label {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  .knew-it-bar {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 16px;
+  }
+
+  .knew-btn {
+    flex: 1;
+    max-width: 200px;
+    padding: 12px;
+    border-radius: 2px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-transform: uppercase;
+    border: 1px solid;
+  }
+  .knew-btn.yes { border-color: #4caf50; color: #4caf50; background: transparent; }
+  .knew-btn.yes:hover { background: #4caf50; color: #000; }
+  .knew-btn.no  { border-color: #ff4444; color: #ff4444; background: transparent; }
+  .knew-btn.no:hover  { background: #ff4444; color: #000; }
+
+  .controls {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+
+  .btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 10px 24px;
+    border-radius: 2px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-transform: uppercase;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .btn:hover { border-color: var(--text); }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: #000; font-weight: 500; }
+  .btn.primary:hover { background: #d4ff33; }
+  .btn.danger { border-color: #ff4444; color: #ff4444; }
+  .btn.danger:hover { background: #ff4444; color: #000; }
+
+  .btn-icon {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    width: 40px;
+    height: 40px;
+    border-radius: 2px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .btn-icon:hover { border-color: var(--text); color: var(--text); }
+
+  .kbd-hints {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .kbd-hint {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  kbd {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 2px 7px;
+    border-radius: 2px;
+    font-size: 10px;
+    color: var(--text);
+  }
+
+  @media (max-width: 480px) {
+    .card-scene { height: 270px; }
+    .stats { gap: 20px; }
+    .controls { flex-wrap: wrap; }
+    .back-row { gap: 16px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="logo-thai">สระไทย</div>
+    <h1>Thai <span>Vowels</span></h1>
+    <p class="subtitle">28 essential forms — short, long &amp; special</p>
+  </header>
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot short"></div> Short (14)</div>
+    <div class="legend-item"><div class="legend-dot long"></div> Long (10)</div>
+    <div class="legend-item"><div class="legend-dot special"></div> Special (4)</div>
+  </div>
+
+  <div class="filter-bar" id="filter-bar"></div>
+
+  <div class="progress-bar-wrap">
+    <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+    <div class="progress-label" id="progress-label">1 / 28</div>
+  </div>
+
+  <div class="card-scene" id="card-scene" onclick="flipCard()">
+    <div class="card-inner" id="card-inner">
+      <div class="card-face card-front">
+        <div class="card-number" id="card-number">01</div>
+        <div class="card-type-tag short" id="card-type-tag">Short</div>
+        <div class="card-label">Vowel form</div>
+        <div class="vowel-display" id="vowel-display"></div>
+        <div class="sara-name" id="sara-name">สระอะ · sara a</div>
+        <div class="rtgs-text" id="rtgs-text">a</div>
+      </div>
+      <div class="card-face card-back">
+        <div class="card-number" id="card-number-back">01</div>
+        <div class="card-type-tag short" id="card-type-tag-back">Short</div>
+        <div class="card-label">Details</div>
+        <div class="back-sound" id="back-sound">short "a"</div>
+        <div class="position-tag" id="position-tag">position: after consonant</div>
+        <div class="back-row">
+          <div class="back-item">
+            <div class="back-item-label">Type</div>
+            <div class="back-item-value" id="detail-type">Short</div>
+          </div>
+          <div class="back-item">
+            <div class="back-item-label">Sound</div>
+            <div class="back-item-value" id="detail-sound">a</div>
+          </div>
+          <div class="back-item">
+            <div class="back-item-label">IPA</div>
+            <div class="back-item-value" id="detail-ipa">/a/</div>
+          </div>
+        </div>
+        <div class="example-row">
+          <div class="example-thai" id="example-thai">จะ</div>
+          <div class="example-details">
+            <div class="example-rtgs" id="example-rtgs">jà</div>
+            <div class="example-eng" id="example-eng">will / about to</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pronounce-wrap">
+    <button class="btn-pronounce" id="pronounce-btn" onclick="pronounce()">
+      <span>♪</span> Pronunciation
+    </button>
+  </div>
+
+  <div class="flip-hint" id="flip-hint">↑ CLICK CARD TO FLIP ↑</div>
+
+  <div class="knew-it-bar" id="knew-it-bar" style="display:none">
+    <button class="knew-btn no"  onclick="markCard(false)">✕ Still Learning</button>
+    <button class="knew-btn yes" onclick="markCard(true)">✓ Got It!</button>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-num" id="stat-known">0</div><div class="stat-label">Known</div></div>
+    <div class="stat"><div class="stat-num" id="stat-learning">0</div><div class="stat-label">Learning</div></div>
+    <div class="stat"><div class="stat-num" id="stat-remaining">28</div><div class="stat-label">Remaining</div></div>
+  </div>
+
+  <div class="controls">
+    <button class="btn-icon" onclick="prevCard()" title="Previous">←</button>
+    <button class="btn primary" onclick="nextCard()">NEXT →</button>
+    <button class="btn-icon" onclick="shuffle()" title="Shuffle">⇄</button>
+    <button class="btn danger" onclick="resetAll()">RESET</button>
+  </div>
+
+  <div class="kbd-hints">
+    <div class="kbd-hint"><kbd>Space</kbd> Flip</div>
+    <div class="kbd-hint"><kbd>→</kbd> Next</div>
+    <div class="kbd-hint"><kbd>←</kbd> Prev</div>
+    <div class="kbd-hint"><kbd>Y</kbd> Got it</div>
+    <div class="kbd-hint"><kbd>N</kbd> Learning</div>
+    <div class="kbd-hint"><kbd>P</kbd> Pronounce</div>
+  </div>
+</div>
+
+<script>
+// display uses the Unicode dotted circle ◌ (U+25CC) as combining mark placeholder.
+// This is the standard way to show diacritics in isolation — it renders as a distinct glyph
+// that can be coloured independently from the vowel mark.
+const C = 'อ'; // อ is the standard Thai vowel-carrier placeholder used in textbooks
+
+const vowels = [
+  // SHORT MONOPHTHONGS
+  {
+    id: "sara-a",
+    saraName: "สระอะ", saraRom: "sara a",
+    display: "ะ",
+    rtgs: "a", sound: 'short "a"', ipa: "/a/", type: "Short",
+    position: "after consonant",
+    exThai: "จะ", exRtgs: "jà", exEng: "will / about to",
+    pronounceWord: "จะ",
+  },
+  {
+    id: "sara-i",
+    saraName: "สระอิ", saraRom: "sara i",
+    display: C + "ิ",
+    rtgs: "i", sound: 'short "i"', ipa: "/i/", type: "Short",
+    position: "above consonant",
+    exThai: "กิน", exRtgs: "gin", exEng: "to eat",
+    pronounceWord: "กิน",
+  },
+  {
+    id: "sara-ue-short",
+    saraName: "สระอึ", saraRom: "sara ue",
+    display: C + "ึ",
+    rtgs: "ue", sound: 'short "ue"', ipa: "/ɯ/", type: "Short",
+    position: "above consonant",
+    exThai: "ฝึก", exRtgs: "fùek", exEng: "to practise",
+    pronounceWord: "ฝึก",
+  },
+  {
+    id: "sara-u-short",
+    saraName: "สระอุ", saraRom: "sara u",
+    display: C + "ุ",
+    rtgs: "u", sound: 'short "u"', ipa: "/u/", type: "Short",
+    position: "below consonant",
+    exThai: "ดุ", exRtgs: "dù", exEng: "fierce / to scold",
+    pronounceWord: "ดุ",
+  },
+  {
+    id: "sara-e-short",
+    saraName: "สระเอะ", saraRom: "sara e",
+    display: "เ" + C + "ะ",
+    rtgs: "e", sound: 'short "e"', ipa: "/e/", type: "Short",
+    position: "before + after consonant",
+    exThai: "เตะ", exRtgs: "tè", exEng: "to kick",
+    pronounceWord: "เตะ",
+  },
+  {
+    id: "sara-ae-short",
+    saraName: "สระแอะ", saraRom: "sara ae",
+    display: "แ" + C + "ะ",
+    rtgs: "ae", sound: 'short "ae"', ipa: "/ɛ/", type: "Short",
+    position: "before + after consonant",
+    exThai: "แตะ", exRtgs: "tàe", exEng: "to touch",
+    pronounceWord: "แตะ",
+  },
+  {
+    id: "sara-o-short",
+    saraName: "สระโอะ", saraRom: "sara o",
+    display: "โ" + C + "ะ",
+    rtgs: "o", sound: 'short "o"', ipa: "/o/", type: "Short",
+    position: "before + after consonant",
+    exThai: "โต๊ะ", exRtgs: "tó", exEng: "table",
+    pronounceWord: "โต๊ะ",
+  },
+  {
+    id: "sara-aw-short",
+    saraName: "สระเอาะ", saraRom: "sara aw",
+    display: "เ" + C + "าะ",
+    rtgs: "aw", sound: 'short "aw"', ipa: "/ɔ/", type: "Short",
+    position: "before + after consonant",
+    exThai: "เบาะ", exRtgs: "bàw", exEng: "cushion",
+    pronounceWord: "เบาะ",
+  },
+  {
+    id: "sara-oe-short",
+    saraName: "สระเออะ", saraRom: "sara oe",
+    display: "เ" + C + "อะ",
+    rtgs: "oe", sound: 'short "oe"', ipa: "/ɤ/", type: "Short",
+    position: "before + after consonant",
+    exThai: "เลอะ", exRtgs: "lóe", exEng: "messy / dirty",
+    pronounceWord: "เลอะ",
+  },
+  {
+    id: "sara-ia-short",
+    saraName: "สระเอียะ", saraRom: "sara ia",
+    display: "เ" + C + "ียะ",
+    rtgs: "ia", sound: 'short "ia"', ipa: "/ia/", type: "Short",
+    position: "before + after consonant",
+    exThai: "เปียะ", exRtgs: "pìa", exEng: "wet (rare)",
+    pronounceWord: "เปียะ",
+  },
+  {
+    id: "sara-uea-short",
+    saraName: "สระเอือะ", saraRom: "sara uea",
+    display: "เ" + C + "ือะ",
+    rtgs: "uea", sound: 'short "uea"', ipa: "/ɯa/", type: "Short",
+    position: "before + after consonant",
+    exThai: "เกือะ", exRtgs: "gùea", exEng: "(rare form)",
+    pronounceWord: "เกือะ",
+  },
+  {
+    id: "sara-ua-short",
+    saraName: "สระอัวะ", saraRom: "sara ua",
+    display: C + "ัวะ",
+    rtgs: "ua", sound: 'short "ua"', ipa: "/ua/", type: "Short",
+    position: "after consonant",
+    exThai: "วัวะ", exRtgs: "wúa", exEng: "(rare short form)",
+    pronounceWord: "วัวะ",
+  },
+  {
+    id: "sara-ai-mai-muan",
+    saraName: "สระใอ", saraRom: "sara ai (mai muan)",
+    display: "ใ" + C,
+    rtgs: "ai", sound: '"ai" sound', ipa: "/aj/", type: "Short",
+    position: "before consonant",
+    exThai: "ใจ", exRtgs: "jai", exEng: "heart / mind",
+    pronounceWord: "ใจ",
+  },
+  {
+    id: "sara-ai-mai-malai",
+    saraName: "สระไอ", saraRom: "sara ai (mai malai)",
+    display: "ไ" + C,
+    rtgs: "ai", sound: '"ai" sound', ipa: "/aj/", type: "Short",
+    position: "before consonant",
+    exThai: "ไป", exRtgs: "pai", exEng: "to go",
+    pronounceWord: "ไป",
+  },
+  // LONG MONOPHTHONGS
+  {
+    id: "sara-aa",
+    saraName: "สระอา", saraRom: "sara aa",
+    display: C + "า",
+    rtgs: "aa", sound: 'long "aa"', ipa: "/aː/", type: "Long",
+    position: "after consonant",
+    exThai: "มา", exRtgs: "maa", exEng: "to come",
+    pronounceWord: "มา",
+  },
+  {
+    id: "sara-ii",
+    saraName: "สระอี", saraRom: "sara ii",
+    display: C + "ี",
+    rtgs: "ii", sound: 'long "ii"', ipa: "/iː/", type: "Long",
+    position: "above consonant",
+    exThai: "ดี", exRtgs: "dii", exEng: "good",
+    pronounceWord: "ดี",
+  },
+  {
+    id: "sara-uue",
+    saraName: "สระอือ", saraRom: "sara uue",
+    display: C + "ือ",
+    rtgs: "uue", sound: 'long "uue"', ipa: "/ɯː/", type: "Long",
+    position: "above + after consonant",
+    exThai: "มือ", exRtgs: "mue", exEng: "hand",
+    pronounceWord: "มือ",
+  },
+  {
+    id: "sara-uu",
+    saraName: "สระอู", saraRom: "sara uu",
+    display: C + "ู",
+    rtgs: "uu", sound: 'long "uu"', ipa: "/uː/", type: "Long",
+    position: "below consonant",
+    exThai: "ดู", exRtgs: "duu", exEng: "to look / watch",
+    pronounceWord: "ดู",
+  },
+  {
+    id: "sara-ee",
+    saraName: "สระเอ", saraRom: "sara ee",
+    display: "เ" + C,
+    rtgs: "ee", sound: 'long "ee"', ipa: "/eː/", type: "Long",
+    position: "before consonant",
+    exThai: "เห็น", exRtgs: "hěn", exEng: "to see",
+    pronounceWord: "เห็น",
+  },
+  {
+    id: "sara-aae",
+    saraName: "สระแอ", saraRom: "sara aae",
+    display: "แ" + C,
+    rtgs: "aae", sound: 'long "aae"', ipa: "/ɛː/", type: "Long",
+    position: "before consonant",
+    exThai: "แขน", exRtgs: "khǎen", exEng: "arm",
+    pronounceWord: "แขน",
+  },
+  {
+    id: "sara-oo",
+    saraName: "สระโอ", saraRom: "sara oo",
+    display: "โ" + C,
+    rtgs: "oo", sound: 'long "oo"', ipa: "/oː/", type: "Long",
+    position: "before consonant",
+    exThai: "โต", exRtgs: "too", exEng: "big / grown up",
+    pronounceWord: "โต",
+  },
+  {
+    id: "sara-aaw",
+    saraName: "สระออ", saraRom: "sara aaw",
+    display: C + "อ",
+    rtgs: "aaw", sound: 'long "aaw"', ipa: "/ɔː/", type: "Long",
+    position: "after consonant",
+    exThai: "ช้อน", exRtgs: "chón", exEng: "spoon",
+    pronounceWord: "ช้อน",
+  },
+  {
+    id: "sara-ooe",
+    saraName: "สระเออ", saraRom: "sara ooe",
+    display: "เ" + C + "อ",
+    rtgs: "ooe", sound: 'long "ooe"', ipa: "/ɤː/", type: "Long",
+    position: "before + after consonant",
+    exThai: "เจอ", exRtgs: "joe", exEng: "to meet / encounter",
+    pronounceWord: "เจอ",
+  },
+  {
+    id: "sara-iia",
+    saraName: "สระเอีย", saraRom: "sara iia",
+    display: "เ" + C + "ีย",
+    rtgs: "iia", sound: 'long "iia"', ipa: "/ia/", type: "Long",
+    position: "before + above + after consonant",
+    exThai: "เรียน", exRtgs: "rian", exEng: "to study",
+    pronounceWord: "เรียน",
+  },
+  {
+    id: "sara-uuea",
+    saraName: "สระเอือ", saraRom: "sara uuea",
+    display: "เ" + C + "ือ",
+    rtgs: "uuea", sound: 'long "uuea"', ipa: "/ɯa/", type: "Long",
+    position: "before + above + after consonant",
+    exThai: "เรือ", exRtgs: "ruea", exEng: "boat",
+    pronounceWord: "เรือ",
+  },
+  // SPECIAL VOWELS
+  {
+    id: "sara-ao",
+    saraName: "สระเอา", saraRom: "sara ao",
+    display: "เ" + C + "า",
+    rtgs: "ao", sound: '"ao" diphthong', ipa: "/aw/", type: "Special",
+    position: "before + after consonant",
+    exThai: "เขา", exRtgs: "khǎo", exEng: "he / she / they",
+    pronounceWord: "เขา",
+  },
+  {
+    id: "sara-am",
+    saraName: "สระอำ", saraRom: "sara am",
+    display: C + "ำ",
+    rtgs: "am", sound: '"am" nasal', ipa: "/am/", type: "Special",
+    position: "after consonant",
+    exThai: "ทำ", exRtgs: "tham", exEng: "to do / make",
+    pronounceWord: "ทำ",
+  },
+  {
+    id: "rr",
+    saraName: "สระรร", saraRom: "rr (sara rr)",
+    display: C + "รร",
+    rtgs: "an / a", sound: '"an" or "a"', ipa: "/an/ or /a/", type: "Special",
+    position: "after consonant",
+    exThai: "กรรม", exRtgs: "gam", exEng: "karma",
+    pronounceWord: "กรรม",
+  },
+  {
+    id: "sara-uua",
+    saraName: "สระอัว", saraRom: "sara uua",
+    display: C + "ัว",
+    rtgs: "uua", sound: '"uua" diphthong', ipa: "/ua/", type: "Special",
+    position: "after consonant",
+    exThai: "วัว", exRtgs: "wua", exEng: "cow",
+    pronounceWord: "วัว",
+  },
+];
+
+const filters = ['All', 'Short', 'Long', 'Special'];
+let activeFilter = 'All';
+let filteredCards = [...vowels];
+let currentIndex = 0;
+let isFlipped = false;
+let known = new Set();
+let learning = new Set();
+
+function renderFilters() {
+  const el = document.getElementById('filter-bar');
+  el.innerHTML = filters.map(f =>
+    `<button class="cat-btn ${f === activeFilter ? 'active' : ''}" onclick="setFilter('${f}')">${f === 'All' ? 'All vowels' : f}</button>`
+  ).join('');
+}
+
+function setFilter(f) {
+  activeFilter = f;
+  filteredCards = f === 'All' ? [...vowels] : vowels.filter(v => v.type === f);
+  currentIndex = 0;
+  isFlipped = false;
+  renderFilters();
+  renderCard();
+  updateStats();
+}
+
+function renderCard() {
+  const v = filteredCards[currentIndex];
+  if (!v) return;
+
+  const typeLower = v.type.toLowerCase();
+  const num = String(vowels.indexOf(v) + 1).padStart(2, '0');
+
+  document.getElementById('vowel-display').textContent = v.display;
+  document.getElementById('sara-name').textContent = v.saraName + ' · ' + v.saraRom;
+  document.getElementById('rtgs-text').textContent = '"' + v.rtgs + '"';
+  document.getElementById('card-number').textContent = num;
+  document.getElementById('card-number-back').textContent = num;
+
+  const frontTag = document.getElementById('card-type-tag');
+  frontTag.textContent = v.type;
+  frontTag.className = 'card-type-tag ' + typeLower;
+
+  const backTag = document.getElementById('card-type-tag-back');
+  backTag.textContent = v.type;
+  backTag.className = 'card-type-tag ' + typeLower;
+
+  document.getElementById('back-sound').textContent = v.sound;
+  document.getElementById('position-tag').textContent = 'position: ' + v.position;
+  document.getElementById('detail-type').textContent = v.type;
+  document.getElementById('detail-sound').textContent = v.rtgs;
+  document.getElementById('detail-ipa').textContent = v.ipa;
+  document.getElementById('example-thai').textContent = v.exThai;
+  document.getElementById('example-rtgs').textContent = v.exRtgs;
+  document.getElementById('example-eng').textContent = v.exEng;
+
+  document.getElementById('progress-label').textContent = (currentIndex + 1) + ' / ' + filteredCards.length;
+  document.getElementById('progress-fill').style.width = ((currentIndex + 1) / filteredCards.length * 100) + '%';
+
+  const inner = document.getElementById('card-inner');
+  isFlipped ? inner.classList.add('flipped') : inner.classList.remove('flipped');
+  document.getElementById('knew-it-bar').style.display = isFlipped ? 'flex' : 'none';
+  document.getElementById('flip-hint').textContent = isFlipped ? '↑ CLICK TO FLIP BACK ↑' : '↑ CLICK CARD TO FLIP ↑';
+}
+
+function flipCard() { isFlipped = !isFlipped; renderCard(); }
+
+function nextCard() {
+  if (currentIndex < filteredCards.length - 1) { currentIndex++; isFlipped = false; renderCard(); }
+}
+
+function prevCard() {
+  if (currentIndex > 0) { currentIndex--; isFlipped = false; renderCard(); }
+}
+
+function markCard(didKnow) {
+  const v = filteredCards[currentIndex];
+  if (didKnow) { known.add(v.id); learning.delete(v.id); }
+  else { learning.add(v.id); known.delete(v.id); }
+  updateStats();
+  nextCard();
+}
+
+function updateStats() {
+  document.getElementById('stat-known').textContent = known.size;
+  document.getElementById('stat-learning').textContent = learning.size;
+  document.getElementById('stat-remaining').textContent = filteredCards.length - known.size - learning.size;
+}
+
+function shuffle() {
+  for (let i = filteredCards.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [filteredCards[i], filteredCards[j]] = [filteredCards[j], filteredCards[i]];
+  }
+  currentIndex = 0; isFlipped = false; renderCard();
+}
+
+function resetAll() {
+  known.clear(); learning.clear(); currentIndex = 0; isFlipped = false;
+  filteredCards = activeFilter === 'All' ? [...vowels] : vowels.filter(v => v.type === activeFilter);
+  updateStats(); renderCard();
+}
+
+function pronounce() {
+  const v = filteredCards[currentIndex];
+  if (!v || !window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const btn = document.getElementById('pronounce-btn');
+  const utt = new SpeechSynthesisUtterance(v.pronounceWord);
+  utt.lang = 'th-TH';
+  utt.rate = 0.8;
+  const voices = window.speechSynthesis.getVoices();
+  const thaiVoice = voices.find(vx => vx.lang === 'th-TH' || vx.lang.startsWith('th'));
+  if (thaiVoice) utt.voice = thaiVoice;
+  utt.onstart = () => btn.classList.add('speaking');
+  utt.onend   = () => btn.classList.remove('speaking');
+  utt.onerror = () => btn.classList.remove('speaking');
+  window.speechSynthesis.speak(utt);
+}
+
+if (window.speechSynthesis) {
+  window.speechSynthesis.addEventListener('voiceschanged', () => {});
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === ' ') { e.preventDefault(); flipCard(); }
+  if (e.key === 'ArrowRight') nextCard();
+  if (e.key === 'ArrowLeft') prevCard();
+  if ((e.key === 'y' || e.key === 'Y') && isFlipped) markCard(true);
+  if ((e.key === 'n' || e.key === 'N') && isFlipped) markCard(false);
+  if (e.key === 'p' || e.key === 'P') pronounce();
+});
+
+renderFilters();
+renderCard();
+updateStats();
+
+if (document.fonts) {
+  document.fonts.ready.then(() => renderCard());
+}
+</script>
+</body>
+</html>
