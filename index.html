@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Thai Vowels — 28 Essential Forms</title>
+<title>Thai Study</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Thai Vowels">
+<meta name="apple-mobile-web-app-title" content="Thai Study">
 <meta name="theme-color" content="#0e0e0e">
 <link rel="apple-touch-icon" href="icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -27,7 +27,12 @@
     --short-color: #7eb8d4;
     --long-color: #c8a0e0;
     --special-color: #ff9966;
+    --class-high: #ff9966;
+    --class-mid: #7eb8d4;
+    --class-low: #c8a0e0;
   }
+
+  html, body { background: var(--bg); }
 
   body {
     background: var(--bg);
@@ -60,7 +65,7 @@
     z-index: 1;
   }
 
-  header { text-align: center; margin-bottom: 28px; }
+  header { text-align: center; margin-bottom: 28px; position: relative; }
 
   .logo-thai {
     font-family: 'IBM Plex Sans Thai', sans-serif;
@@ -89,7 +94,169 @@
     letter-spacing: 1px;
   }
 
-  .legend {
+  /* ---------- HOME SCREEN ---------- */
+
+  .home-wrap { padding-top: 12px; }
+
+  .home-header { text-align: center; margin-bottom: 40px; }
+
+  .home-header .logo-thai { font-size: 14px; }
+
+  .home-header h1 { font-size: clamp(34px, 7vw, 52px); }
+
+  .home-header .subtitle { font-size: 14px; margin-top: 10px; }
+
+  .deck-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .deck-card {
+    position: relative;
+    background: var(--card-front);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 24px 24px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.15s;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    overflow: hidden;
+  }
+  .deck-card:hover, .deck-card:active { border-color: var(--accent); }
+
+  .deck-card::before, .deck-card::after {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border-color: var(--accent);
+    border-style: solid;
+    opacity: 0.3;
+  }
+  .deck-card::before { top: 10px; left: 10px; border-width: 1px 0 0 1px; }
+  .deck-card::after  { bottom: 10px; right: 10px; border-width: 0 1px 1px 0; }
+
+  .deck-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 14px;
+  }
+
+  .deck-thai-label {
+    font-family: 'IBM Plex Sans Thai', sans-serif;
+    font-size: 12px;
+    letter-spacing: 3px;
+    color: var(--thai-gold);
+    text-transform: uppercase;
+    opacity: 0.85;
+  }
+
+  .deck-count-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-transform: uppercase;
+    border: 1px solid var(--border);
+    padding: 3px 8px;
+    border-radius: 2px;
+  }
+
+  .deck-title {
+    font-family: 'Libre Baskerville', serif;
+    font-size: clamp(22px, 4vw, 28px);
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .deck-title span { color: var(--accent); font-style: italic; }
+
+  .deck-desc {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 18px;
+    letter-spacing: 0.3px;
+  }
+
+  .deck-progress-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .deck-progress-track {
+    flex: 1;
+    height: 6px;
+    background: var(--surface);
+    border-radius: 3px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .deck-progress-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 3px;
+    transition: width 0.3s;
+  }
+
+  .deck-progress-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    white-space: nowrap;
+  }
+  .deck-progress-label b { color: var(--accent); font-weight: 500; }
+
+  .home-footer-note {
+    text-align: center;
+    margin-top: 28px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    opacity: 0.6;
+  }
+
+  /* ---------- DECK HEADER / SWITCH BUTTON ---------- */
+
+  .deck-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+  }
+
+  .btn-back {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 8px 14px;
+    border-radius: 2px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-transform: uppercase;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .btn-back:hover { border-color: var(--text); color: var(--text); }
+
+  .deck-topbar-spacer { width: 76px; }
+
+  /* ---------- SHARED FLASHCARD STYLES ---------- */
+
+  .legend, .class-legend {
     display: flex;
     gap: 20px;
     justify-content: center;
@@ -112,8 +279,11 @@
   .legend-dot.short   { background: var(--short-color); }
   .legend-dot.long    { background: var(--long-color); }
   .legend-dot.special { background: var(--special-color); }
+  .legend-dot.high { background: var(--class-high); }
+  .legend-dot.mid  { background: var(--class-mid); }
+  .legend-dot.low  { background: var(--class-low); }
 
-  .filter-bar {
+  .filter-bar, .categories {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
@@ -125,7 +295,7 @@
     background: transparent;
     border: 1px solid var(--border);
     color: var(--muted);
-    padding: 6px 14px;
+    padding: 7px 16px;
     border-radius: 2px;
     font-family: 'IBM Plex Mono', monospace;
     font-size: 11px;
@@ -133,8 +303,10 @@
     cursor: pointer;
     transition: all 0.15s;
     text-transform: uppercase;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
   }
-  .cat-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .cat-btn:hover { border-color: var(--text); color: var(--text); }
   .cat-btn.active { background: var(--accent); border-color: var(--accent); color: #000; font-weight: 500; }
 
   .progress-bar-wrap {
@@ -146,8 +318,8 @@
 
   .progress-track {
     flex: 1;
-    height: 3px;
-    background: var(--border);
+    height: 4px;
+    background: var(--surface);
     border-radius: 2px;
     overflow: hidden;
   }
@@ -155,43 +327,37 @@
   .progress-fill {
     height: 100%;
     background: var(--accent);
-    transition: width 0.3s ease;
+    border-radius: 2px;
+    transition: width 0.2s;
   }
 
   .progress-label {
     font-family: 'IBM Plex Mono', monospace;
-    font-size: 12px;
+    font-size: 11px;
     color: var(--muted);
+    letter-spacing: 1px;
     white-space: nowrap;
-    min-width: 60px;
-    text-align: right;
   }
 
   .card-scene {
-    perspective: 1200px;
-    width: 100%;
-    height: 310px;
+    height: 300px;
+    perspective: 1400px;
     margin-bottom: 20px;
     cursor: pointer;
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
   }
 
-  .card-scene:hover .card-inner:not(.flipped) {
-    transform: rotateY(4deg) translateY(-4px);
-  }
-
   .card-inner {
+    position: relative;
     width: 100%;
     height: 100%;
-    position: relative;
+    transition: transform 0.5s;
     transform-style: preserve-3d;
-    transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .card-inner.flipped { transform: rotateY(180deg); }
 
-  /* Prevent the hidden face from intercepting touches on iOS */
   .card-inner:not(.flipped) .card-back { pointer-events: none; }
   .card-inner.flipped .card-front { pointer-events: none; }
 
@@ -228,19 +394,6 @@
   .card-face::before { top: 14px; left: 14px; border-width: 1px 0 0 1px; }
   .card-face::after  { bottom: 14px; right: 14px; border-width: 0 1px 1px 0; }
 
-  .card-type-tag {
-    position: absolute;
-    top: 14px;
-    right: 16px;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-  }
-  .card-type-tag.short   { color: var(--short-color); }
-  .card-type-tag.long    { color: var(--long-color); }
-  .card-type-tag.special { color: var(--special-color); }
-
   .card-number {
     position: absolute;
     top: 14px;
@@ -252,107 +405,139 @@
     opacity: 0.5;
   }
 
+  .card-type-tag, .card-class-tag, .card-category-tag {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .card-type-tag.short, .card-class-tag.mid { color: var(--short-color); }
+  .card-type-tag.long, .card-class-tag.low { color: var(--long-color); }
+  .card-type-tag.special, .card-class-tag.high { color: var(--special-color); }
+
   .card-label {
     font-family: 'IBM Plex Mono', monospace;
     font-size: 10px;
     letter-spacing: 3px;
     color: var(--muted);
     text-transform: uppercase;
-    margin-bottom: 12px;
+    margin-bottom: 16px;
   }
 
-  /* The big vowel display — uses ก as consonant placeholder */
-  .vowel-display {
+  .thai-text, .vowel-display {
     font-family: 'Niramit', sans-serif;
-    font-size: clamp(52px, 11vw, 82px);
+    font-size: clamp(48px, 11vw, 80px);
     font-weight: 300;
-    line-height: 1.4;
+    color: var(--thai-gold);
     text-align: center;
-    margin-bottom: 6px;
-    letter-spacing: 0.05em;
-    color: #d4a843;
-  }
-
-  /* dotted circle placeholder inherits gold from .vowel-display */
-
-  .sara-name {
-    font-family: 'IBM Plex Sans Thai', sans-serif;
-    font-size: 15px;
-    color: var(--muted);
-    letter-spacing: 2px;
-    margin-bottom: 4px;
-  }
-
-  .rtgs-text {
-    font-family: 'Libre Baskerville', serif;
-    font-style: italic;
-    font-size: clamp(20px, 4vw, 28px);
-    color: var(--text);
-    text-align: center;
-  }
-
-  /* Back face */
-  .back-sound {
-    font-family: 'Libre Baskerville', serif;
-    font-size: clamp(22px, 4vw, 32px);
-    font-weight: 700;
-    color: var(--text);
-    text-align: center;
+    line-height: 1.1;
     margin-bottom: 8px;
   }
 
-  .back-row {
-    display: flex;
-    gap: 28px;
-    margin-bottom: 14px;
-  }
-
-  .back-item { text-align: center; }
-
-  .back-item-label {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 2px;
+  .rtgs-text, .phonetic-text {
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    font-size: clamp(18px, 3.5vw, 26px);
     color: var(--muted);
-    text-transform: uppercase;
-    margin-bottom: 3px;
+    text-align: center;
   }
 
-  .back-item-value {
-    font-family: 'IBM Plex Mono', monospace;
+  .sara-name {
+    font-family: 'IBM Plex Sans Thai', sans-serif;
     font-size: 13px;
+    color: var(--muted);
+    text-align: center;
+    margin-top: 10px;
+    letter-spacing: 1px;
+  }
+
+  .consonant-name {
+    font-family: 'Libre Baskerville', serif;
+    font-size: clamp(20px, 4vw, 30px);
+    font-weight: 700;
     color: var(--text);
+    text-align: center;
+    margin-bottom: 6px;
+  }
+
+  .consonant-sound, .back-sound {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: clamp(14px, 2.5vw, 18px);
+    color: var(--accent);
+    text-align: center;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+  }
+
+  .english-text {
+    font-family: 'Libre Baskerville', serif;
+    font-size: clamp(22px, 4.5vw, 32px);
+    font-weight: 700;
+    color: var(--text);
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .usage-text {
+    font-family: 'IBM Plex Sans Thai', sans-serif;
+    font-size: 13px;
+    color: var(--muted);
+    text-align: center;
+    max-width: 320px;
+    line-height: 1.5;
   }
 
   .position-tag {
     font-family: 'IBM Plex Mono', monospace;
     font-size: 11px;
     color: var(--muted);
-    letter-spacing: 1px;
     text-align: center;
-    margin-bottom: 12px;
+    margin-top: 10px;
+    letter-spacing: 0.5px;
   }
 
-  .example-row {
+  .back-details {
     display: flex;
-    gap: 20px;
-    align-items: center;
+    gap: 24px;
+    margin-top: 4px;
   }
+
+  .detail-item { text-align: center; }
+
+  .detail-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .detail-value {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    color: var(--text);
+  }
+
+  .example-word { margin-top: 14px; text-align: center; }
 
   .example-thai {
     font-family: 'Niramit', sans-serif;
-    font-size: 26px;
-    font-weight: 300;
+    font-size: 20px;
     color: var(--thai-gold);
+    margin-bottom: 2px;
   }
-
-  .example-details { text-align: left; }
 
   .example-rtgs {
     font-family: 'Libre Baskerville', serif;
     font-style: italic;
-    font-size: 14px;
+    font-size: 13px;
     color: var(--muted);
+    margin-bottom: 2px;
   }
 
   .example-eng {
@@ -360,7 +545,6 @@
     font-size: 11px;
     color: var(--muted);
     letter-spacing: 1px;
-    margin-top: 2px;
   }
 
   .pronounce-wrap {
@@ -384,6 +568,8 @@
     display: flex;
     align-items: center;
     gap: 8px;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
   }
   .btn-pronounce:hover { background: var(--thai-gold); color: #000; }
   .btn-pronounce.speaking { background: var(--thai-gold); color: #000; }
@@ -444,6 +630,8 @@
     transition: all 0.15s;
     text-transform: uppercase;
     border: 1px solid;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
   }
   .knew-btn.yes { border-color: #4caf50; color: #4caf50; background: transparent; }
   .knew-btn.yes:hover { background: #4caf50; color: #000; }
@@ -522,106 +710,314 @@
     color: var(--text);
   }
 
+  .view { display: none; }
+  .view.active { display: block; }
+
   @media (max-width: 480px) {
-    .card-scene { height: 270px; }
+    .card-scene { height: 260px; }
     .stats { gap: 20px; }
     .controls { flex-wrap: wrap; }
-    .back-row { gap: 16px; }
+    .back-details { gap: 14px; }
+    .deck-card { padding: 20px 18px; }
   }
 </style>
 </head>
 <body>
-<div class="container">
+
+<!-- ============ HOME SCREEN ============ -->
+<div class="container view active" id="view-home">
+  <div class="home-wrap">
+    <div class="home-header">
+      <div class="logo-thai">ศึกษาภาษาไทย</div>
+      <h1>Thai <span>Study</span></h1>
+      <p class="subtitle">Choose a deck to begin</p>
+    </div>
+
+    <div class="deck-list">
+      <div class="deck-card" onclick="enterDeck('vowels')">
+        <div class="deck-card-top">
+          <div class="deck-thai-label">สระ</div>
+          <div class="deck-count-tag" id="home-count-vowels">29 cards</div>
+        </div>
+        <div class="deck-title">Thai <span>Vowels</span></div>
+        <div class="deck-desc">29 essential vowel forms — short, long &amp; special</div>
+        <div class="deck-progress-row">
+          <div class="deck-progress-track"><div class="deck-progress-fill" id="home-progress-vowels"></div></div>
+          <div class="deck-progress-label" id="home-progress-label-vowels"><b>0</b> / 29 known</div>
+        </div>
+      </div>
+
+      <div class="deck-card" onclick="enterDeck('consonants')">
+        <div class="deck-card-top">
+          <div class="deck-thai-label">พยัญชนะ</div>
+          <div class="deck-count-tag" id="home-count-consonants">44 cards</div>
+        </div>
+        <div class="deck-title">Thai <span>Consonants</span></div>
+        <div class="deck-desc">44 letters across high, mid &amp; low tone classes</div>
+        <div class="deck-progress-row">
+          <div class="deck-progress-track"><div class="deck-progress-fill" id="home-progress-consonants"></div></div>
+          <div class="deck-progress-label" id="home-progress-label-consonants"><b>0</b> / 44 known</div>
+        </div>
+      </div>
+
+      <div class="deck-card" onclick="enterDeck('phrases')">
+        <div class="deck-card-top">
+          <div class="deck-thai-label">วลี</div>
+          <div class="deck-count-tag" id="home-count-phrases">99 cards</div>
+        </div>
+        <div class="deck-title">Thai <span>Phrases</span></div>
+        <div class="deck-desc">99 essential words &amp; phrases by category</div>
+        <div class="deck-progress-row">
+          <div class="deck-progress-track"><div class="deck-progress-fill" id="home-progress-phrases"></div></div>
+          <div class="deck-progress-label" id="home-progress-label-phrases"><b>0</b> / 99 known</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="home-footer-note">PROGRESS SAVES AUTOMATICALLY ON THIS DEVICE</div>
+  </div>
+</div>
+
+<!-- ============ VOWELS DECK ============ -->
+<div class="container view" id="view-vowels">
+  <div class="deck-topbar">
+    <button class="btn-back" onclick="goHome()">&larr; Decks</button>
+    <div class="deck-topbar-spacer"></div>
+  </div>
   <header>
     <div class="logo-thai">สระไทย</div>
     <h1>Thai <span>Vowels</span></h1>
-    <p class="subtitle">28 essential forms — short, long &amp; special</p>
+    <p class="subtitle">29 essential forms</p>
   </header>
 
   <div class="legend">
-    <div class="legend-item"><div class="legend-dot short"></div> Short (14)</div>
-    <div class="legend-item"><div class="legend-dot long"></div> Long (10)</div>
-    <div class="legend-item"><div class="legend-dot special"></div> Special (4)</div>
+    <div class="legend-item"><div class="legend-dot short"></div> Short</div>
+    <div class="legend-item"><div class="legend-dot long"></div> Long</div>
+    <div class="legend-item"><div class="legend-dot special"></div> Special</div>
   </div>
 
-  <div class="filter-bar" id="filter-bar"></div>
+  <div class="filter-bar" id="filter-bar-vowels"></div>
 
   <div class="progress-bar-wrap">
-    <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
-    <div class="progress-label" id="progress-label">1 / 28</div>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill-vowels"></div></div>
+    <div class="progress-label" id="progress-label-vowels">1 / 29</div>
   </div>
 
-  <div class="card-scene" id="card-scene" onclick="flipCard()">
-    <div class="card-inner" id="card-inner">
+  <div class="card-scene" id="card-scene-vowels" onclick="flipCard('vowels')">
+    <div class="card-inner" id="card-inner-vowels">
       <div class="card-face card-front">
-        <div class="card-number" id="card-number">01</div>
-        <div class="card-type-tag short" id="card-type-tag">Short</div>
-        <div class="card-label">Vowel form</div>
-        <div class="vowel-display" id="vowel-display"></div>
-        <div class="sara-name" id="sara-name">สระอะ · sara a</div>
-        <div class="rtgs-text" id="rtgs-text">a</div>
+        <div class="card-number" id="card-number-vowels">01</div>
+        <div class="card-type-tag" id="card-type-tag-vowels">Short</div>
+        <div class="card-label">Vowel Form</div>
+        <div class="vowel-display" id="vowel-display-vowels">ะ</div>
+        <div class="rtgs-text" id="rtgs-text-vowels">"a"</div>
       </div>
       <div class="card-face card-back">
-        <div class="card-number" id="card-number-back">01</div>
-        <div class="card-type-tag short" id="card-type-tag-back">Short</div>
+        <div class="card-number" id="card-number-back-vowels">01</div>
+        <div class="card-type-tag" id="card-type-tag-back-vowels">Short</div>
         <div class="card-label">Details</div>
-        <div class="back-sound" id="back-sound">short "a"</div>
-        <div class="position-tag" id="position-tag">position: after consonant</div>
-        <div class="back-row">
-          <div class="back-item">
-            <div class="back-item-label">Type</div>
-            <div class="back-item-value" id="detail-type">Short</div>
-          </div>
-          <div class="back-item">
-            <div class="back-item-label">Sound</div>
-            <div class="back-item-value" id="detail-sound">a</div>
-          </div>
-          <div class="back-item">
-            <div class="back-item-label">IPA</div>
-            <div class="back-item-value" id="detail-ipa">/a/</div>
-          </div>
+        <div class="sara-name" id="sara-name-vowels">สระอะ · sara a</div>
+        <div class="back-sound" id="back-sound-vowels">short "a"</div>
+        <div class="back-details">
+          <div class="detail-item"><div class="detail-label">Type</div><div class="detail-value" id="detail-type-vowels">Short</div></div>
+          <div class="detail-item"><div class="detail-label">Sound</div><div class="detail-value" id="detail-sound-vowels">a</div></div>
+          <div class="detail-item"><div class="detail-label">IPA</div><div class="detail-value" id="detail-ipa-vowels">/a/</div></div>
         </div>
-        <div class="example-row">
-          <div class="example-thai" id="example-thai">จะ</div>
-          <div class="example-details">
-            <div class="example-rtgs" id="example-rtgs">jà</div>
-            <div class="example-eng" id="example-eng">will / about to</div>
-          </div>
+        <div class="position-tag" id="position-tag-vowels">position: after consonant</div>
+        <div class="example-word">
+          <div class="example-thai" id="example-thai-vowels">จะ</div>
+          <div class="example-rtgs" id="example-rtgs-vowels">jà</div>
+          <div class="example-eng" id="example-eng-vowels">will / about to</div>
         </div>
       </div>
     </div>
   </div>
 
   <div class="pronounce-wrap">
-    <button class="btn-pronounce" id="pronounce-btn" onclick="pronounce()">
-      <span>♪</span> Pronunciation
-    </button>
+    <button class="btn-pronounce" id="pronounce-btn-vowels" onclick="pronounce('vowels')"><span>&#9834;</span> Pronunciation</button>
   </div>
 
-  <div class="flip-hint" id="flip-hint">↑ CLICK CARD TO FLIP ↑</div>
+  <div class="flip-hint" id="flip-hint-vowels">&uarr; CLICK CARD TO FLIP &uarr;</div>
 
-  <div class="knew-it-bar" id="knew-it-bar" style="display:none">
-    <button class="knew-btn no"  onclick="markCard(false)">✕ Still Learning</button>
-    <button class="knew-btn yes" onclick="markCard(true)">✓ Got It!</button>
+  <div class="knew-it-bar" id="knew-it-bar-vowels" style="display:none">
+    <button class="knew-btn no" onclick="markCard('vowels', false)">&#10007; Still Learning</button>
+    <button class="knew-btn yes" onclick="markCard('vowels', true)">&#10003; Got It!</button>
   </div>
 
   <div class="stats">
-    <div class="stat"><div class="stat-num" id="stat-known">0</div><div class="stat-label">Known</div></div>
-    <div class="stat"><div class="stat-num" id="stat-learning">0</div><div class="stat-label">Learning</div></div>
-    <div class="stat"><div class="stat-num" id="stat-remaining">28</div><div class="stat-label">Remaining</div></div>
+    <div class="stat"><div class="stat-num" id="stat-known-vowels">0</div><div class="stat-label">Known</div></div>
+    <div class="stat"><div class="stat-num" id="stat-learning-vowels">0</div><div class="stat-label">Learning</div></div>
+    <div class="stat"><div class="stat-num" id="stat-remaining-vowels">29</div><div class="stat-label">Remaining</div></div>
   </div>
 
   <div class="controls">
-    <button class="btn-icon" onclick="prevCard()" title="Previous">←</button>
-    <button class="btn primary" onclick="nextCard()">NEXT →</button>
-    <button class="btn-icon" onclick="shuffle()" title="Shuffle">⇄</button>
-    <button class="btn danger" onclick="resetAll()">RESET</button>
+    <button class="btn-icon" onclick="prevCard('vowels')" title="Previous">&larr;</button>
+    <button class="btn primary" onclick="nextCard('vowels')">NEXT &rarr;</button>
+    <button class="btn-icon" onclick="shuffle('vowels')" title="Shuffle">&#8644;</button>
+    <button class="btn danger" onclick="resetAll('vowels')">RESET</button>
   </div>
 
   <div class="kbd-hints">
     <div class="kbd-hint"><kbd>Space</kbd> Flip</div>
-    <div class="kbd-hint"><kbd>→</kbd> Next</div>
-    <div class="kbd-hint"><kbd>←</kbd> Prev</div>
+    <div class="kbd-hint"><kbd>&rarr;</kbd> Next</div>
+    <div class="kbd-hint"><kbd>&larr;</kbd> Prev</div>
+    <div class="kbd-hint"><kbd>Y</kbd> Got it</div>
+    <div class="kbd-hint"><kbd>N</kbd> Learning</div>
+    <div class="kbd-hint"><kbd>P</kbd> Pronounce</div>
+  </div>
+</div>
+
+<!-- ============ CONSONANTS DECK ============ -->
+<div class="container view" id="view-consonants">
+  <div class="deck-topbar">
+    <button class="btn-back" onclick="goHome()">&larr; Decks</button>
+    <div class="deck-topbar-spacer"></div>
+  </div>
+  <header>
+    <div class="logo-thai">พยัญชนะไทย</div>
+    <h1>Thai <span>Consonants</span></h1>
+    <p class="subtitle">44 letters — 3 tone classes</p>
+  </header>
+
+  <div class="class-legend">
+    <div class="legend-item"><div class="legend-dot high"></div> High class (11)</div>
+    <div class="legend-item"><div class="legend-dot mid"></div> Mid class (9)</div>
+    <div class="legend-item"><div class="legend-dot low"></div> Low class (24)</div>
+  </div>
+
+  <div class="filter-bar" id="filter-bar-consonants"></div>
+
+  <div class="progress-bar-wrap">
+    <div class="progress-track"><div class="progress-fill" id="progress-fill-consonants"></div></div>
+    <div class="progress-label" id="progress-label-consonants">1 / 44</div>
+  </div>
+
+  <div class="card-scene" id="card-scene-consonants" onclick="flipCard('consonants')">
+    <div class="card-inner" id="card-inner-consonants">
+      <div class="card-face card-front">
+        <div class="card-number" id="card-number-consonants">01</div>
+        <div class="card-class-tag" id="card-class-tag-consonants">Mid</div>
+        <div class="card-label">Consonant</div>
+        <div class="thai-text" id="thai-text-consonants">ก</div>
+        <div class="rtgs-text" id="rtgs-text-consonants">k</div>
+      </div>
+      <div class="card-face card-back">
+        <div class="card-number" id="card-number-back-consonants">01</div>
+        <div class="card-class-tag" id="card-class-tag-back-consonants">Mid</div>
+        <div class="card-label">Details</div>
+        <div class="consonant-name" id="consonant-name-consonants">ไก่ · kai</div>
+        <div class="consonant-sound" id="consonant-sound-consonants">k — (initial) k · (final) k</div>
+        <div class="back-details">
+          <div class="detail-item"><div class="detail-label">Class</div><div class="detail-value" id="detail-class-consonants">Mid</div></div>
+          <div class="detail-item"><div class="detail-label">Initial</div><div class="detail-value" id="detail-initial-consonants">k</div></div>
+          <div class="detail-item"><div class="detail-label">Final</div><div class="detail-value" id="detail-final-consonants">k</div></div>
+        </div>
+        <div class="example-word">
+          <div class="example-thai" id="example-thai-consonants">ไก่</div>
+          <div class="example-eng" id="example-eng-consonants">chicken</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pronounce-wrap">
+    <button class="btn-pronounce" id="pronounce-btn-consonants" onclick="pronounce('consonants')"><span>&#9834;</span> Pronunciation</button>
+  </div>
+
+  <div class="flip-hint" id="flip-hint-consonants">&uarr; CLICK CARD TO FLIP &uarr;</div>
+
+  <div class="knew-it-bar" id="knew-it-bar-consonants" style="display:none">
+    <button class="knew-btn no" onclick="markCard('consonants', false)">&#10007; Still Learning</button>
+    <button class="knew-btn yes" onclick="markCard('consonants', true)">&#10003; Got It!</button>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-num" id="stat-known-consonants">0</div><div class="stat-label">Known</div></div>
+    <div class="stat"><div class="stat-num" id="stat-learning-consonants">0</div><div class="stat-label">Learning</div></div>
+    <div class="stat"><div class="stat-num" id="stat-remaining-consonants">44</div><div class="stat-label">Remaining</div></div>
+  </div>
+
+  <div class="controls">
+    <button class="btn-icon" onclick="prevCard('consonants')" title="Previous">&larr;</button>
+    <button class="btn primary" onclick="nextCard('consonants')">NEXT &rarr;</button>
+    <button class="btn-icon" onclick="shuffle('consonants')" title="Shuffle">&#8644;</button>
+    <button class="btn danger" onclick="resetAll('consonants')">RESET</button>
+  </div>
+
+  <div class="kbd-hints">
+    <div class="kbd-hint"><kbd>Space</kbd> Flip</div>
+    <div class="kbd-hint"><kbd>&rarr;</kbd> Next</div>
+    <div class="kbd-hint"><kbd>&larr;</kbd> Prev</div>
+    <div class="kbd-hint"><kbd>Y</kbd> Got it</div>
+    <div class="kbd-hint"><kbd>N</kbd> Learning</div>
+    <div class="kbd-hint"><kbd>P</kbd> Pronounce</div>
+  </div>
+</div>
+
+<!-- ============ PHRASES DECK ============ -->
+<div class="container view" id="view-phrases">
+  <div class="deck-topbar">
+    <button class="btn-back" onclick="goHome()">&larr; Decks</button>
+    <div class="deck-topbar-spacer"></div>
+  </div>
+  <header>
+    <div class="logo-thai">ภาษาไทย</div>
+    <h1>Thai <span>Flashcards</span></h1>
+    <div class="subtitle">99 ESSENTIAL PHRASES &amp; WORDS</div>
+  </header>
+
+  <div class="categories" id="filter-bar-phrases"></div>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-num" id="stat-known-phrases">0</div><div class="stat-label">Known</div></div>
+    <div class="stat"><div class="stat-num" id="stat-learning-phrases">0</div><div class="stat-label">Learning</div></div>
+    <div class="stat"><div class="stat-num" id="stat-remaining-phrases">99</div><div class="stat-label">Remaining</div></div>
+  </div>
+
+  <div class="progress-bar-wrap">
+    <div class="progress-track"><div class="progress-fill" id="progress-fill-phrases"></div></div>
+    <div class="progress-label" id="progress-label-phrases">1 / 99</div>
+  </div>
+
+  <div class="card-scene" id="card-scene-phrases" onclick="flipCard('phrases')">
+    <div class="card-inner" id="card-inner-phrases">
+      <div class="card-face card-front">
+        <div class="card-category-tag" id="front-category-phrases">Greetings</div>
+        <div class="card-label">Thai</div>
+        <div class="thai-text" id="thai-text-phrases">สวัสดี</div>
+        <div class="phonetic-text" id="phonetic-text-phrases">sà-wàt-dii</div>
+      </div>
+      <div class="card-face card-back">
+        <div class="card-category-tag" id="back-category-phrases">Greetings</div>
+        <div class="card-label">English</div>
+        <div class="english-text" id="english-text-phrases">Hello / Goodbye</div>
+        <div class="usage-text" id="usage-text-phrases">The all-purpose greeting, used any time of day</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pronounce-wrap">
+    <button class="btn-pronounce" id="pronounce-btn-phrases" onclick="pronounce('phrases')"><span>&#9834;</span> Pronunciation</button>
+  </div>
+
+  <div class="flip-hint" id="flip-hint-phrases">&uarr; CLICK CARD TO FLIP &uarr;</div>
+
+  <div class="knew-it-bar" id="knew-it-bar-phrases" style="display:none">
+    <button class="knew-btn no" onclick="markCard('phrases', false)">&#10007; Still Learning</button>
+    <button class="knew-btn yes" onclick="markCard('phrases', true)">&#10003; Got It!</button>
+  </div>
+
+  <div class="controls">
+    <button class="btn-icon" onclick="prevCard('phrases')" title="Previous">&larr;</button>
+    <button class="btn primary" onclick="nextCard('phrases')">NEXT &rarr;</button>
+    <button class="btn-icon" onclick="shuffle('phrases')" title="Shuffle">&#8644;</button>
+    <button class="btn danger" onclick="resetAll('phrases')">RESET</button>
+  </div>
+
+  <div class="kbd-hints">
+    <div class="kbd-hint"><kbd>Space</kbd> Flip</div>
+    <div class="kbd-hint"><kbd>&rarr;</kbd> Next</div>
+    <div class="kbd-hint"><kbd>&larr;</kbd> Prev</div>
     <div class="kbd-hint"><kbd>Y</kbd> Got it</div>
     <div class="kbd-hint"><kbd>N</kbd> Learning</div>
     <div class="kbd-hint"><kbd>P</kbd> Pronounce</div>
@@ -629,12 +1025,9 @@
 </div>
 
 <script>
-// display uses the Unicode dotted circle ◌ (U+25CC) as combining mark placeholder.
-// This is the standard way to show diacritics in isolation — it renders as a distinct glyph
-// that can be coloured independently from the vowel mark.
-const C = 'อ'; // อ is the standard Thai vowel-carrier placeholder used in textbooks
+const C = 'อ'; // standard Thai vowel-carrier placeholder
 
-const vowels = [
+const vowelsData = [
   // SHORT MONOPHTHONGS
   {
     id: "sara-a",
@@ -901,122 +1294,480 @@ const vowels = [
   },
 ];
 
-const filters = ['All', 'Short', 'Long', 'Special'];
-let activeFilter = 'All';
-let filteredCards = [...vowels];
-let currentIndex = 0;
-let isFlipped = false;
-let known = new Set();
-let learning = new Set();
+const consonantsData = [
+  { thai: "ก", rtgs: "k", name: "ไก่", nameRom: "kai", cls: "Mid",  initial: "k",   final: "k",   example: "ไก่",    exEng: "chicken" },
+  { thai: "ข", rtgs: "kh", name: "ไข่", nameRom: "khai", cls: "High", initial: "kh",  final: "k",   example: "ไข่",   exEng: "egg" },
+  { thai: "ฃ", rtgs: "kh", name: "ขวด", nameRom: "khuat", cls: "High", initial: "kh", final: "k",   example: "ขวด",   exEng: "bottle (obsolete)" },
+  { thai: "ค", rtgs: "kh", name: "ควาย", nameRom: "khwai", cls: "Low", initial: "kh", final: "k",   example: "ควาย",  exEng: "buffalo" },
+  { thai: "ฅ", rtgs: "kh", name: "คน",  nameRom: "khon",  cls: "Low", initial: "kh", final: "k",   example: "คน",    exEng: "person (obsolete)" },
+  { thai: "ฆ", rtgs: "kh", name: "ระฆัง", nameRom: "rakhang", cls: "Low", initial: "kh", final: "k", example: "ระฆัง", exEng: "bell" },
+  { thai: "ง", rtgs: "ng", name: "งู",   nameRom: "ngu",   cls: "Low", initial: "ng", final: "ng",  example: "งู",    exEng: "snake" },
+  { thai: "จ", rtgs: "ch", name: "จาน",  nameRom: "chan",   cls: "Mid", initial: "ch", final: "t",   example: "จาน",   exEng: "plate" },
+  { thai: "ฉ", rtgs: "ch", name: "ฉิ่ง",  nameRom: "ching", cls: "High", initial: "ch", final: "—",  example: "ฉิ่ง",  exEng: "cymbal" },
+  { thai: "ช", rtgs: "ch", name: "ช้าง",  nameRom: "chang", cls: "Low", initial: "ch", final: "t",   example: "ช้าง",  exEng: "elephant" },
+  { thai: "ซ", rtgs: "s",  name: "โซ่",   nameRom: "so",    cls: "Low", initial: "s",  final: "t",   example: "โซ่",   exEng: "chain" },
+  { thai: "ฌ", rtgs: "ch", name: "เฌอ",   nameRom: "choe",  cls: "Low", initial: "ch", final: "—",   example: "เฌอ",   exEng: "tree" },
+  { thai: "ญ", rtgs: "y",  name: "หญิง",  nameRom: "ying",  cls: "Low", initial: "y",  final: "n",   example: "หญิง",  exEng: "woman" },
+  { thai: "ฎ", rtgs: "d",  name: "ชฎา",   nameRom: "chada", cls: "Mid", initial: "d",  final: "t",   example: "ชฎา",   exEng: "headdress" },
+  { thai: "ฏ", rtgs: "t",  name: "ปฏัก",  nameRom: "patak", cls: "Mid", initial: "t",  final: "t",   example: "ปฏัก",  exEng: "goad" },
+  { thai: "ฐ", rtgs: "th", name: "ฐาน",   nameRom: "than",  cls: "High", initial: "th", final: "t",  example: "ฐาน",   exEng: "base/pedestal" },
+  { thai: "ฑ", rtgs: "th", name: "มณโฑ",  nameRom: "montho", cls: "Low", initial: "th", final: "t",  example: "ทหาร",  exEng: "soldier" },
+  { thai: "ฒ", rtgs: "th", name: "ผู้เฒ่า", nameRom: "phu thao", cls: "Low", initial: "th", final: "t", example: "เฒ่า", exEng: "elder" },
+  { thai: "ณ", rtgs: "n",  name: "เณร",   nameRom: "nen",   cls: "Low", initial: "n",  final: "n",   example: "เณร",   exEng: "novice monk" },
+  { thai: "ด", rtgs: "d",  name: "เด็ก",   nameRom: "dek",   cls: "Mid", initial: "d",  final: "t",   example: "เด็ก",  exEng: "child" },
+  { thai: "ต", rtgs: "t",  name: "เต่า",   nameRom: "tao",   cls: "Mid", initial: "t",  final: "t",   example: "เต่า",  exEng: "turtle" },
+  { thai: "ถ", rtgs: "th", name: "ถุง",    nameRom: "thung", cls: "High", initial: "th", final: "t",  example: "ถุง",   exEng: "bag/sack" },
+  { thai: "ท", rtgs: "th", name: "ทหาร",   nameRom: "thahan", cls: "Low", initial: "th", final: "t", example: "ทหาร",  exEng: "soldier" },
+  { thai: "ธ", rtgs: "th", name: "ธง",     nameRom: "thong", cls: "Low", initial: "th", final: "t",  example: "ธง",    exEng: "flag" },
+  { thai: "น", rtgs: "n",  name: "หนู",    nameRom: "nu",    cls: "Low", initial: "n",  final: "n",   example: "หนู",   exEng: "mouse" },
+  { thai: "บ", rtgs: "b",  name: "ใบไม้",  nameRom: "baimai", cls: "Mid", initial: "b", final: "p",   example: "ใบไม้", exEng: "leaf" },
+  { thai: "ป", rtgs: "p",  name: "ปลา",    nameRom: "pla",   cls: "Mid", initial: "p",  final: "p",   example: "ปลา",   exEng: "fish" },
+  { thai: "ผ", rtgs: "ph", name: "ผึ้ง",   nameRom: "phueng", cls: "High", initial: "ph", final: "—", example: "ผึ้ง",  exEng: "bee" },
+  { thai: "ฝ", rtgs: "f",  name: "ฝา",     nameRom: "fa",    cls: "High", initial: "f",  final: "—",  example: "ฝา",    exEng: "lid/cover" },
+  { thai: "พ", rtgs: "ph", name: "พาน",    nameRom: "phan",  cls: "Low", initial: "ph", final: "p",   example: "พาน",   exEng: "tray" },
+  { thai: "ฟ", rtgs: "f",  name: "ฟัน",    nameRom: "fan",   cls: "Low", initial: "f",  final: "p",   example: "ฟัน",   exEng: "tooth" },
+  { thai: "ภ", rtgs: "ph", name: "สำเภา",  nameRom: "samphao", cls: "Low", initial: "ph", final: "p", example: "ภาษา",  exEng: "language" },
+  { thai: "ม", rtgs: "m",  name: "ม้า",     nameRom: "ma",    cls: "Low", initial: "m",  final: "m",  example: "ม้า",    exEng: "horse" },
+  { thai: "ย", rtgs: "y",  name: "ยักษ์",  nameRom: "yak",   cls: "Low", initial: "y",  final: "y",  example: "ยักษ์",  exEng: "giant" },
+  { thai: "ร", rtgs: "r",  name: "เรือ",   nameRom: "ruea",  cls: "Low", initial: "r",  final: "n",  example: "เรือ",   exEng: "boat" },
+  { thai: "ล", rtgs: "l",  name: "ลิง",    nameRom: "ling",  cls: "Low", initial: "l",  final: "n",  example: "ลิง",    exEng: "monkey" },
+  { thai: "ว", rtgs: "w",  name: "แหวน",   nameRom: "waen",  cls: "Low", initial: "w",  final: "w",  example: "แหวน",   exEng: "ring" },
+  { thai: "ศ", rtgs: "s",  name: "ศาลา",   nameRom: "sala",  cls: "High", initial: "s", final: "t",  example: "ศาลา",   exEng: "pavilion" },
+  { thai: "ษ", rtgs: "s",  name: "ฤๅษี",  nameRom: "ruesi", cls: "High", initial: "s", final: "t",  example: "ฤๅษี",  exEng: "hermit" },
+  { thai: "ส", rtgs: "s",  name: "เสือ",   nameRom: "suea",  cls: "High", initial: "s", final: "t",  example: "เสือ",   exEng: "tiger" },
+  { thai: "ห", rtgs: "h",  name: "หีบ",    nameRom: "hip",   cls: "High", initial: "h", final: "—",  example: "หีบ",    exEng: "chest/box" },
+  { thai: "ฬ", rtgs: "l",  name: "จุฬา",   nameRom: "chula", cls: "Low", initial: "l",  final: "n",  example: "จุฬา",   exEng: "kite" },
+  { thai: "อ", rtgs: "o",  name: "อ่าง",   nameRom: "ang",   cls: "Mid", initial: "—",  final: "—",  example: "อ่าง",   exEng: "basin/vowel carrier" },
+  { thai: "ฮ", rtgs: "h",  name: "นกฮูก",  nameRom: "nok huk", cls: "Low", initial: "h", final: "—", example: "ฮ่องกง", exEng: "Hong Kong" },
+];
 
-function renderFilters() {
-  const el = document.getElementById('filter-bar');
-  el.innerHTML = filters.map(f =>
-    `<button class="cat-btn ${f === activeFilter ? 'active' : ''}" onclick="setFilter('${f}')">${f === 'All' ? 'All vowels' : f}</button>`
+const phrasesData = [
+  { thai: "สวัสดี", phonetic: "sà-wàt-dii", english: "Hello / Goodbye", usage: "The all-purpose greeting, used any time of day", category: "Greetings" },
+  { thai: "ครับ", phonetic: "khráp", english: "Polite particle (male)", usage: "Add to end of sentences for politeness (men)", category: "Greetings" },
+  { thai: "ค่ะ / คะ", phonetic: "khâ / khá", english: "Polite particle (female)", usage: "Add to end of sentences for politeness (women)", category: "Greetings" },
+  { thai: "ขอบคุณ", phonetic: "khòp-khun", english: "Thank you", usage: "Always pair with ครับ or ค่ะ", category: "Greetings" },
+  { thai: "ขอโทษ", phonetic: "khǒr-thôht", english: "Sorry / Excuse me", usage: "Apology or to get attention", category: "Greetings" },
+  { thai: "ไม่เป็นไร", phonetic: "mâi pen rai", english: "Never mind / It's okay", usage: "The famous Thai 'no worries'", category: "Greetings" },
+  { thai: "ยินดีที่รู้จัก", phonetic: "yin-dii thîi rúu-jàk", english: "Nice to meet you", usage: "First meeting", category: "Greetings" },
+  { thai: "สบายดีไหม", phonetic: "sà-baai-dii mái", english: "How are you?", usage: "Common casual greeting", category: "Greetings" },
+  { thai: "สบายดี", phonetic: "sà-baai-dii", english: "I'm fine / well", usage: "Reply to 'how are you'", category: "Greetings" },
+  { thai: "แล้วพบกันใหม่", phonetic: "láew phóp-kan mài", english: "See you again", usage: "Parting phrase", category: "Greetings" },
+  { thai: "ใช่", phonetic: "châi", english: "Yes (it is)", usage: "Confirming a fact", category: "Essentials" },
+  { thai: "ไม่ใช่", phonetic: "mâi châi", english: "No (it isn't)", usage: "Denying a fact", category: "Essentials" },
+  { thai: "ได้", phonetic: "dâai", english: "Can / OK / Yes", usage: "Agreement or ability", category: "Essentials" },
+  { thai: "ไม่ได้", phonetic: "mâi dâai", english: "Cannot / No", usage: "Inability or refusal", category: "Essentials" },
+  { thai: "ไม่", phonetic: "mâi", english: "No / Not", usage: "Negation — put before verbs", category: "Essentials" },
+  { thai: "อะไร", phonetic: "à-rai", english: "What?", usage: "Also means 'something' in other contexts", category: "Essentials" },
+  { thai: "ที่ไหน", phonetic: "thîi-nǎi", english: "Where?", usage: "Asking location", category: "Essentials" },
+  { thai: "เมื่อไหร่", phonetic: "mûea-rài", english: "When?", usage: "Asking time", category: "Essentials" },
+  { thai: "ทำไม", phonetic: "tham-mai", english: "Why?", usage: "Asking reason", category: "Essentials" },
+  { thai: "เท่าไหร่", phonetic: "thâo-rài", english: "How much?", usage: "Asking price or quantity", category: "Essentials" },
+  { thai: "อร่อย", phonetic: "à-ròi", english: "Delicious", usage: "The highest compliment to a cook", category: "Food" },
+  { thai: "เผ็ด", phonetic: "phèt", english: "Spicy", usage: "Important warning/request word!", category: "Food" },
+  { thai: "ไม่เผ็ด", phonetic: "mâi phèt", english: "Not spicy", usage: "Essential for heat-sensitive visitors", category: "Food" },
+  { thai: "หวาน", phonetic: "wǎan", english: "Sweet", usage: "Describing flavor", category: "Food" },
+  { thai: "เค็ม", phonetic: "khem", english: "Salty", usage: "Describing flavor", category: "Food" },
+  { thai: "น้ำ", phonetic: "nám", english: "Water", usage: "Also means juice/liquid in general", category: "Food" },
+  { thai: "ข้าว", phonetic: "khâao", english: "Rice", usage: "The word also means 'to eat a meal'", category: "Food" },
+  { thai: "ผัด", phonetic: "phàt", english: "Stir-fried", usage: "As in Pad Thai (ผัดไทย)", category: "Food" },
+  { thai: "ต้ม", phonetic: "tôm", english: "Boiled / soup", usage: "As in Tom Yum (ต้มยำ)", category: "Food" },
+  { thai: "เบียร์", phonetic: "bia", english: "Beer", usage: "Direct loanword from English", category: "Food" },
+  { thai: "กาแฟ", phonetic: "kaa-fae", english: "Coffee", usage: "Thai iced coffee is called โอเลี้ยง", category: "Food" },
+  { thai: "เมนู", phonetic: "mee-nuu", english: "Menu", usage: "Loanword, universally understood", category: "Food" },
+  { thai: "อิ่มแล้ว", phonetic: "ìm láew", english: "I'm full", usage: "Politely decline more food", category: "Food" },
+  { thai: "หิว", phonetic: "hǐu", english: "Hungry", usage: "หิวข้าว = hungry for food", category: "Food" },
+  { thai: "หนึ่ง", phonetic: "nùeng", english: "One (1)", usage: "Cardinal number", category: "Numbers" },
+  { thai: "สอง", phonetic: "sǒng", english: "Two (2)", usage: "Cardinal number", category: "Numbers" },
+  { thai: "สาม", phonetic: "sǎam", english: "Three (3)", usage: "Cardinal number", category: "Numbers" },
+  { thai: "สี่", phonetic: "sìi", english: "Four (4)", usage: "Cardinal number", category: "Numbers" },
+  { thai: "ห้า", phonetic: "hâa", english: "Five (5)", usage: "Also used in 555 = hahaha (Thai LOL)", category: "Numbers" },
+  { thai: "หก", phonetic: "hòk", english: "Six (6)", usage: "Cardinal number", category: "Numbers" },
+  { thai: "เจ็ด", phonetic: "jèt", english: "Seven (7)", usage: "Cardinal number", category: "Numbers" },
+  { thai: "แปด", phonetic: "pàet", english: "Eight (8)", usage: "Cardinal number", category: "Numbers" },
+  { thai: "เก้า", phonetic: "kâao", english: "Nine (9)", usage: "Cardinal number", category: "Numbers" },
+  { thai: "สิบ", phonetic: "sìp", english: "Ten (10)", usage: "Cardinal number", category: "Numbers" },
+  { thai: "ร้อย", phonetic: "rói", english: "Hundred (100)", usage: "Used in prices", category: "Numbers" },
+  { thai: "พัน", phonetic: "phan", english: "Thousand (1,000)", usage: "Used in prices", category: "Numbers" },
+  { thai: "ไป", phonetic: "pai", english: "Go / To go to", usage: "ไปไหน = where are you going?", category: "Transport" },
+  { thai: "มา", phonetic: "maa", english: "Come / To come", usage: "มาจากไหน = where do you come from?", category: "Transport" },
+  { thai: "รถไฟฟ้า", phonetic: "rót fai fáa", english: "Skytrain (BTS)", usage: "Literally 'electric train'", category: "Transport" },
+  { thai: "รถแท็กซี่", phonetic: "rót tháek-sîi", english: "Taxi", usage: "Common in Bangkok", category: "Transport" },
+  { thai: "ตรงไป", phonetic: "trong pai", english: "Go straight", usage: "Giving/getting directions", category: "Transport" },
+  { thai: "เลี้ยวซ้าย", phonetic: "líao sáai", english: "Turn left", usage: "Giving/getting directions", category: "Transport" },
+  { thai: "เลี้ยวขวา", phonetic: "líao khwǎa", english: "Turn right", usage: "Giving/getting directions", category: "Transport" },
+  { thai: "หยุด", phonetic: "yùt", english: "Stop", usage: "Essential for telling taxi drivers", category: "Transport" },
+  { thai: "ใกล้", phonetic: "klâi", english: "Near / Close", usage: "Useful for navigation", category: "Transport" },
+  { thai: "ไกล", phonetic: "klai", english: "Far", usage: "Asking if something is far away", category: "Transport" },
+  { thai: "ราคา", phonetic: "raa-khaa", english: "Price", usage: "ราคาเท่าไหร่ = how much is the price?", category: "Shopping" },
+  { thai: "แพง", phonetic: "phaeng", english: "Expensive", usage: "Useful for bargaining", category: "Shopping" },
+  { thai: "ถูก", phonetic: "thùuk", english: "Cheap", usage: "Also means 'correct'", category: "Shopping" },
+  { thai: "ลดราคา", phonetic: "lót raa-khaa", english: "Discount / Reduce price", usage: "Key bargaining phrase", category: "Shopping" },
+  { thai: "ซื้อ", phonetic: "súue", english: "Buy", usage: "ซื้ออะไร = what are you buying?", category: "Shopping" },
+  { thai: "ขาย", phonetic: "khǎai", english: "Sell", usage: "ขายอะไร = what are you selling?", category: "Shopping" },
+  { thai: "เงิน", phonetic: "ngern", english: "Money", usage: "Also means silver", category: "Shopping" },
+  { thai: "บาท", phonetic: "bàat", english: "Baht (Thai currency)", usage: "Thai currency unit", category: "Shopping" },
+  { thai: "ใบเสร็จ", phonetic: "bai-sèt", english: "Receipt", usage: "Asking for a receipt", category: "Shopping" },
+  { thai: "โรงแรม", phonetic: "roong-raem", english: "Hotel", usage: "Standard hotel", category: "Places" },
+  { thai: "ห้องน้ำ", phonetic: "hông-nám", english: "Bathroom / Toilet", usage: "Literally 'water room'", category: "Places" },
+  { thai: "ห้อง", phonetic: "hông", english: "Room", usage: "ห้องนอน = bedroom", category: "Places" },
+  { thai: "วัด", phonetic: "wát", english: "Temple", usage: "Buddhist temple — very common in Thailand", category: "Places" },
+  { thai: "ตลาด", phonetic: "tà-làat", english: "Market", usage: "ตลาดนัด = weekend market", category: "Places" },
+  { thai: "ร้านอาหาร", phonetic: "ráan aa-hǎan", english: "Restaurant", usage: "Literally 'food shop'", category: "Places" },
+  { thai: "ธนาคาร", phonetic: "thá-naa-khaan", english: "Bank", usage: "For currency exchange", category: "Places" },
+  { thai: "โรงพยาบาล", phonetic: "roong-phá-yaa-baan", english: "Hospital", usage: "Important to know!", category: "Places" },
+  { thai: "สนามบิน", phonetic: "sà-nǎam-bin", english: "Airport", usage: "Literally 'flying field'", category: "Places" },
+  { thai: "ชายหาด", phonetic: "chaai-hàat", english: "Beach", usage: "Thailand has many!", category: "Places" },
+  { thai: "ดี", phonetic: "dii", english: "Good", usage: "Also means 'kind' as in character", category: "Emotions" },
+  { thai: "ไม่ดี", phonetic: "mâi dii", english: "Not good / Bad", usage: "Mild way to say something is bad", category: "Emotions" },
+  { thai: "สวย", phonetic: "sǔuai", english: "Beautiful / Pretty", usage: "For people or things", category: "Emotions" },
+  { thai: "ร้อน", phonetic: "rón", english: "Hot", usage: "Weather, food, or object", category: "Emotions" },
+  { thai: "เย็น", phonetic: "yen", english: "Cold / Cool", usage: "Weather or object", category: "Emotions" },
+  { thai: "เหนื่อย", phonetic: "nùeai", english: "Tired", usage: "Common complaint after sightseeing", category: "Emotions" },
+  { thai: "สนุก", phonetic: "sà-nùk", english: "Fun", usage: "Sanuk is central to Thai culture", category: "Emotions" },
+  { thai: "ชอบ", phonetic: "chôp", english: "Like", usage: "ผมชอบ = I like (it)", category: "Emotions" },
+  { thai: "รัก", phonetic: "rák", english: "Love", usage: "ผมรักคุณ = I love you", category: "Emotions" },
+  { thai: "ช่วยด้วย", phonetic: "chûuai dûuai", english: "Help!", usage: "Emergency cry for help", category: "Safety" },
+  { thai: "เรียกตำรวจ", phonetic: "rîak tam-rùat", english: "Call the police!", usage: "Emergency phrase", category: "Safety" },
+  { thai: "เจ็บ", phonetic: "jèp", english: "Hurt / In pain", usage: "เจ็บที่ไหน = where does it hurt?", category: "Safety" },
+  { thai: "ยา", phonetic: "yaa", english: "Medicine", usage: "ร้านขายยา = pharmacy", category: "Safety" },
+  { thai: "แพ้", phonetic: "pháe", english: "Allergic to", usage: "แพ้อาหาร = food allergy", category: "Safety" },
+  { thai: "พูดภาษาอังกฤษได้ไหม", phonetic: "phûut phaa-sǎa ang-grìt dâai mái", english: "Do you speak English?", usage: "Polite way to ask", category: "Conversation" },
+  { thai: "ฉันไม่เข้าใจ", phonetic: "chǎn mâi khâo-jai", english: "I don't understand", usage: "Very useful!", category: "Conversation" },
+  { thai: "พูดช้าๆ ได้ไหม", phonetic: "phûut cháa-cháa dâai mái", english: "Can you speak slowly?", usage: "When Thai is too fast", category: "Conversation" },
+  { thai: "แปลว่าอะไร", phonetic: "plae wâa à-rai", english: "What does it mean?", usage: "Asking for translation", category: "Conversation" },
+  { thai: "ฉันชื่อ", phonetic: "chǎn chûue", english: "My name is...", usage: "ฉันชื่อ + your name", category: "Conversation" },
+  { thai: "คุณชื่ออะไร", phonetic: "khun chûue à-rai", english: "What is your name?", usage: "Polite form", category: "Conversation" },
+  { thai: "มาจากไหน", phonetic: "maa jàak nǎi", english: "Where are you from?", usage: "Common conversation starter", category: "Conversation" },
+  { thai: "เที่ยวไทย", phonetic: "thîao thai", english: "Traveling in Thailand", usage: "เที่ยว = travel/sightsee", category: "Conversation" },
+  { thai: "อยากได้", phonetic: "yàak dâai", english: "I want / Would like", usage: "Polite way to request", category: "Conversation" },
+  { thai: "เชิญ", phonetic: "chern", english: "Please / Go ahead / Welcome", usage: "Inviting someone to proceed", category: "Conversation" },
+];
+
+// ============================================================
+// STORAGE
+// ============================================================
+const STORAGE_KEY = 'thai-study-progress-v1';
+
+function loadProgress() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return {};
+    return JSON.parse(raw);
+  } catch (e) {
+    return {};
+  }
+}
+
+function saveProgress() {
+  try {
+    const out = {};
+    for (const id of Object.keys(decks)) {
+      out[id] = {
+        known: [...decks[id].known],
+        learning: [...decks[id].learning],
+      };
+    }
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(out));
+  } catch (e) {
+    // storage unavailable (private mode etc) - fail silently, app still works in-session
+  }
+}
+
+const savedProgress = loadProgress();
+
+// ============================================================
+// DECK CONFIG
+// ============================================================
+// Each deck holds: data, idKey (how to identify a card uniquely),
+// filters, filterFn, current session state, and a renderCard function
+// that writes the deck-specific DOM fields.
+
+const decks = {
+  vowels: {
+    data: vowelsData,
+    idOf: v => v.id,
+    filters: ['All', 'Short', 'Long', 'Special'],
+    filterLabel: f => f === 'All' ? 'All vowels' : f,
+    matchesFilter: (v, f) => f === 'All' || v.type === f,
+    activeFilter: 'All',
+    filtered: [],
+    currentIndex: 0,
+    isFlipped: false,
+    known: new Set(savedProgress.vowels ? savedProgress.vowels.known : []),
+    learning: new Set(savedProgress.vowels ? savedProgress.vowels.learning : []),
+    pronounceWord: v => v.pronounceWord,
+    renderCard(v) {
+      const typeLower = v.type.toLowerCase();
+      const num = String(vowelsData.indexOf(v) + 1).padStart(2, '0');
+
+      setText('vowel-display-vowels', v.display);
+      setText('sara-name-vowels', v.saraName + ' · ' + v.saraRom);
+      setText('rtgs-text-vowels', '"' + v.rtgs + '"');
+      setText('card-number-vowels', num);
+      setText('card-number-back-vowels', num);
+
+      setTagClass('card-type-tag-vowels', v.type, 'card-type-tag ' + typeLower);
+      setTagClass('card-type-tag-back-vowels', v.type, 'card-type-tag ' + typeLower);
+
+      setText('back-sound-vowels', v.sound);
+      setText('position-tag-vowels', 'position: ' + v.position);
+      setText('detail-type-vowels', v.type);
+      setText('detail-sound-vowels', v.rtgs);
+      setText('detail-ipa-vowels', v.ipa);
+      setText('example-thai-vowels', v.exThai);
+      setText('example-rtgs-vowels', v.exRtgs);
+      setText('example-eng-vowels', v.exEng);
+    },
+  },
+
+  consonants: {
+    data: consonantsData,
+    idOf: c => c.thai,
+    filters: ['All', 'High', 'Mid', 'Low'],
+    filterLabel: f => f === 'All' ? 'All classes' : f + ' class',
+    matchesFilter: (c, f) => f === 'All' || c.cls === f,
+    activeFilter: 'All',
+    filtered: [],
+    currentIndex: 0,
+    isFlipped: false,
+    known: new Set(savedProgress.consonants ? savedProgress.consonants.known : []),
+    learning: new Set(savedProgress.consonants ? savedProgress.consonants.learning : []),
+    pronounceWord: c => c.thai,
+    renderCard(c) {
+      const clsLower = c.cls.toLowerCase();
+      const num = String(consonantsData.indexOf(c) + 1).padStart(2, '0');
+
+      setText('thai-text-consonants', c.thai);
+      setText('rtgs-text-consonants', c.rtgs);
+      setText('card-number-consonants', num);
+      setText('card-number-back-consonants', num);
+
+      setTagClass('card-class-tag-consonants', c.cls + ' class', 'card-class-tag ' + clsLower);
+      setTagClass('card-class-tag-back-consonants', c.cls + ' class', 'card-class-tag ' + clsLower);
+
+      setText('consonant-name-consonants', c.thai + ' · ' + c.nameRom + ' · ' + c.name);
+      setText('consonant-sound-consonants', 'Initial: ' + c.initial + '   Final: ' + c.final);
+      setText('detail-class-consonants', c.cls);
+      setText('detail-initial-consonants', c.initial);
+      setText('detail-final-consonants', c.final);
+      setText('example-thai-consonants', c.example);
+      setText('example-eng-consonants', c.exEng);
+    },
+  },
+
+  phrases: {
+    data: phrasesData,
+    idOf: p => p.thai,
+    filters: ['All', 'Greetings', 'Essentials', 'Food', 'Numbers', 'Transport', 'Shopping', 'Places', 'Emotions', 'Safety', 'Conversation'],
+    filterLabel: f => f,
+    matchesFilter: (p, f) => f === 'All' || p.category === f,
+    activeFilter: 'All',
+    filtered: [],
+    currentIndex: 0,
+    isFlipped: false,
+    known: new Set(savedProgress.phrases ? savedProgress.phrases.known : []),
+    learning: new Set(savedProgress.phrases ? savedProgress.phrases.learning : []),
+    pronounceWord: p => p.thai,
+    renderCard(p) {
+      setText('thai-text-phrases', p.thai);
+      setText('phonetic-text-phrases', p.phonetic);
+      setText('front-category-phrases', p.category);
+      setText('back-category-phrases', p.category);
+      setText('english-text-phrases', p.english);
+      setText('usage-text-phrases', p.usage);
+    },
+  },
+};
+
+// ============================================================
+// DOM HELPERS
+// ============================================================
+function setText(id, val) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = val;
+}
+
+function setTagClass(id, text, className) {
+  const el = document.getElementById(id);
+  if (el) { el.textContent = text; el.className = className; }
+}
+
+// ============================================================
+// NAVIGATION (home <-> deck views)
+// ============================================================
+let currentDeck = null;
+
+function showView(viewId) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById(viewId).classList.add('active');
+}
+
+function goHome() {
+  currentDeck = null;
+  renderHomeStats();
+  showView('view-home');
+  window.scrollTo(0, 0);
+}
+
+function enterDeck(deckId) {
+  currentDeck = deckId;
+  const deck = decks[deckId];
+  if (deck.filtered.length === 0) {
+    setFilter(deckId, deck.activeFilter);
+  } else {
+    renderFilters(deckId);
+    renderCard(deckId);
+    updateStats(deckId);
+  }
+  showView('view-' + deckId);
+  window.scrollTo(0, 0);
+}
+
+// ============================================================
+// HOME SCREEN STATS
+// ============================================================
+function renderHomeStats() {
+  for (const id of Object.keys(decks)) {
+    const deck = decks[id];
+    const total = deck.data.length;
+    const knownCount = deck.known.size;
+    const pct = total > 0 ? (knownCount / total * 100) : 0;
+
+    const fillEl = document.getElementById('home-progress-' + id);
+    if (fillEl) fillEl.style.width = pct + '%';
+
+    const labelEl = document.getElementById('home-progress-label-' + id);
+    if (labelEl) labelEl.innerHTML = '<b>' + knownCount + '</b> / ' + total + ' known';
+
+    const countEl = document.getElementById('home-count-' + id);
+    if (countEl) countEl.textContent = total + ' cards';
+  }
+}
+
+// ============================================================
+// SHARED ENGINE (filters, flip, next/prev, mark, shuffle, reset, pronounce)
+// ============================================================
+function renderFilters(deckId) {
+  const deck = decks[deckId];
+  const el = document.getElementById('filter-bar-' + deckId);
+  if (!el) return;
+  el.innerHTML = deck.filters.map(f =>
+    `<button class="cat-btn ${f === deck.activeFilter ? 'active' : ''}" onclick="setFilter('${deckId}','${f}')">${deck.filterLabel(f)}</button>`
   ).join('');
 }
 
-function setFilter(f) {
-  activeFilter = f;
-  filteredCards = f === 'All' ? [...vowels] : vowels.filter(v => v.type === f);
-  currentIndex = 0;
-  isFlipped = false;
-  renderFilters();
-  renderCard();
-  updateStats();
+function setFilter(deckId, f) {
+  const deck = decks[deckId];
+  deck.activeFilter = f;
+  deck.filtered = f === 'All' ? [...deck.data] : deck.data.filter(item => deck.matchesFilter(item, f));
+  deck.currentIndex = 0;
+  deck.isFlipped = false;
+  renderFilters(deckId);
+  renderCard(deckId);
+  updateStats(deckId);
 }
 
-function renderCard() {
-  const v = filteredCards[currentIndex];
-  if (!v) return;
+function renderCard(deckId) {
+  const deck = decks[deckId];
+  const item = deck.filtered[deck.currentIndex];
+  if (!item) return;
 
-  const typeLower = v.type.toLowerCase();
-  const num = String(vowels.indexOf(v) + 1).padStart(2, '0');
+  deck.renderCard(item);
 
-  document.getElementById('vowel-display').textContent = v.display;
-  document.getElementById('sara-name').textContent = v.saraName + ' · ' + v.saraRom;
-  document.getElementById('rtgs-text').textContent = '"' + v.rtgs + '"';
-  document.getElementById('card-number').textContent = num;
-  document.getElementById('card-number-back').textContent = num;
+  setText('progress-label-' + deckId, (deck.currentIndex + 1) + ' / ' + deck.filtered.length);
+  const fillEl = document.getElementById('progress-fill-' + deckId);
+  if (fillEl) fillEl.style.width = ((deck.currentIndex + 1) / deck.filtered.length * 100) + '%';
 
-  const frontTag = document.getElementById('card-type-tag');
-  frontTag.textContent = v.type;
-  frontTag.className = 'card-type-tag ' + typeLower;
+  const inner = document.getElementById('card-inner-' + deckId);
+  if (inner) deck.isFlipped ? inner.classList.add('flipped') : inner.classList.remove('flipped');
 
-  const backTag = document.getElementById('card-type-tag-back');
-  backTag.textContent = v.type;
-  backTag.className = 'card-type-tag ' + typeLower;
+  const knewBar = document.getElementById('knew-it-bar-' + deckId);
+  if (knewBar) knewBar.style.display = deck.isFlipped ? 'flex' : 'none';
 
-  document.getElementById('back-sound').textContent = v.sound;
-  document.getElementById('position-tag').textContent = 'position: ' + v.position;
-  document.getElementById('detail-type').textContent = v.type;
-  document.getElementById('detail-sound').textContent = v.rtgs;
-  document.getElementById('detail-ipa').textContent = v.ipa;
-  document.getElementById('example-thai').textContent = v.exThai;
-  document.getElementById('example-rtgs').textContent = v.exRtgs;
-  document.getElementById('example-eng').textContent = v.exEng;
-
-  document.getElementById('progress-label').textContent = (currentIndex + 1) + ' / ' + filteredCards.length;
-  document.getElementById('progress-fill').style.width = ((currentIndex + 1) / filteredCards.length * 100) + '%';
-
-  const inner = document.getElementById('card-inner');
-  isFlipped ? inner.classList.add('flipped') : inner.classList.remove('flipped');
-  document.getElementById('knew-it-bar').style.display = isFlipped ? 'flex' : 'none';
-  document.getElementById('flip-hint').textContent = isFlipped ? '↑ CLICK TO FLIP BACK ↑' : '↑ CLICK CARD TO FLIP ↑';
+  const hint = document.getElementById('flip-hint-' + deckId);
+  if (hint) hint.textContent = deck.isFlipped ? '\u2191 CLICK TO FLIP BACK \u2191' : '\u2191 CLICK CARD TO FLIP \u2191';
 }
 
-function flipCard() { isFlipped = !isFlipped; renderCard(); }
-
-function nextCard() {
-  if (currentIndex < filteredCards.length - 1) { currentIndex++; isFlipped = false; renderCard(); }
+function flipCard(deckId) {
+  decks[deckId].isFlipped = !decks[deckId].isFlipped;
+  renderCard(deckId);
 }
 
-function prevCard() {
-  if (currentIndex > 0) { currentIndex--; isFlipped = false; renderCard(); }
-}
-
-function markCard(didKnow) {
-  const v = filteredCards[currentIndex];
-  if (didKnow) { known.add(v.id); learning.delete(v.id); }
-  else { learning.add(v.id); known.delete(v.id); }
-  updateStats();
-  nextCard();
-}
-
-function updateStats() {
-  document.getElementById('stat-known').textContent = known.size;
-  document.getElementById('stat-learning').textContent = learning.size;
-  document.getElementById('stat-remaining').textContent = filteredCards.length - known.size - learning.size;
-}
-
-function shuffle() {
-  for (let i = filteredCards.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [filteredCards[i], filteredCards[j]] = [filteredCards[j], filteredCards[i]];
+function nextCard(deckId) {
+  const deck = decks[deckId];
+  if (deck.currentIndex < deck.filtered.length - 1) {
+    deck.currentIndex++;
+    deck.isFlipped = false;
+    renderCard(deckId);
   }
-  currentIndex = 0; isFlipped = false; renderCard();
 }
 
-function resetAll() {
-  known.clear(); learning.clear(); currentIndex = 0; isFlipped = false;
-  filteredCards = activeFilter === 'All' ? [...vowels] : vowels.filter(v => v.type === activeFilter);
-  updateStats(); renderCard();
+function prevCard(deckId) {
+  const deck = decks[deckId];
+  if (deck.currentIndex > 0) {
+    deck.currentIndex--;
+    deck.isFlipped = false;
+    renderCard(deckId);
+  }
 }
 
-function pronounce() {
-  const v = filteredCards[currentIndex];
-  if (!v || !window.speechSynthesis) return;
+function markCard(deckId, didKnow) {
+  const deck = decks[deckId];
+  const item = deck.filtered[deck.currentIndex];
+  const id = deck.idOf(item);
+  if (didKnow) { deck.known.add(id); deck.learning.delete(id); }
+  else { deck.learning.add(id); deck.known.delete(id); }
+  updateStats(deckId);
+  saveProgress();
+  nextCard(deckId);
+}
+
+function updateStats(deckId) {
+  const deck = decks[deckId];
+  setText('stat-known-' + deckId, deck.known.size);
+  setText('stat-learning-' + deckId, deck.learning.size);
+  setText('stat-remaining-' + deckId, deck.filtered.length - deck.known.size - deck.learning.size);
+}
+
+function shuffle(deckId) {
+  const deck = decks[deckId];
+  for (let i = deck.filtered.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [deck.filtered[i], deck.filtered[j]] = [deck.filtered[j], deck.filtered[i]];
+  }
+  deck.currentIndex = 0;
+  deck.isFlipped = false;
+  renderCard(deckId);
+}
+
+function resetAll(deckId) {
+  const deck = decks[deckId];
+  deck.known.clear();
+  deck.learning.clear();
+  deck.currentIndex = 0;
+  deck.isFlipped = false;
+  deck.filtered = deck.activeFilter === 'All' ? [...deck.data] : deck.data.filter(item => deck.matchesFilter(item, deck.activeFilter));
+  updateStats(deckId);
+  renderCard(deckId);
+  saveProgress();
+  renderHomeStats();
+}
+
+function pronounce(deckId) {
+  const deck = decks[deckId];
+  const item = deck.filtered[deck.currentIndex];
+  if (!item || !window.speechSynthesis) return;
   window.speechSynthesis.cancel();
-  const btn = document.getElementById('pronounce-btn');
-  const utt = new SpeechSynthesisUtterance(v.pronounceWord);
+  const btn = document.getElementById('pronounce-btn-' + deckId);
+  const utt = new SpeechSynthesisUtterance(deck.pronounceWord(item));
   utt.lang = 'th-TH';
   utt.rate = 0.8;
   const voices = window.speechSynthesis.getVoices();
-  const thaiVoice = voices.find(vx => vx.lang === 'th-TH' || vx.lang.startsWith('th'));
+  const thaiVoice = voices.find(v => v.lang === 'th-TH' || v.lang.startsWith('th'));
   if (thaiVoice) utt.voice = thaiVoice;
-  utt.onstart = () => btn.classList.add('speaking');
-  utt.onend   = () => btn.classList.remove('speaking');
-  utt.onerror = () => btn.classList.remove('speaking');
+  utt.onstart = () => btn && btn.classList.add('speaking');
+  utt.onend   = () => btn && btn.classList.remove('speaking');
+  utt.onerror = () => btn && btn.classList.remove('speaking');
   window.speechSynthesis.speak(utt);
 }
 
@@ -1024,22 +1775,33 @@ if (window.speechSynthesis) {
   window.speechSynthesis.addEventListener('voiceschanged', () => {});
 }
 
+// ============================================================
+// KEYBOARD SHORTCUTS (only act on the currently open deck)
+// ============================================================
 document.addEventListener('keydown', e => {
-  if (e.key === ' ') { e.preventDefault(); flipCard(); }
-  if (e.key === 'ArrowRight') nextCard();
-  if (e.key === 'ArrowLeft') prevCard();
-  if ((e.key === 'y' || e.key === 'Y') && isFlipped) markCard(true);
-  if ((e.key === 'n' || e.key === 'N') && isFlipped) markCard(false);
-  if (e.key === 'p' || e.key === 'P') pronounce();
+  if (!currentDeck) return;
+  const deck = decks[currentDeck];
+  if (e.key === ' ') { e.preventDefault(); flipCard(currentDeck); }
+  if (e.key === 'ArrowRight') nextCard(currentDeck);
+  if (e.key === 'ArrowLeft') prevCard(currentDeck);
+  if ((e.key === 'y' || e.key === 'Y') && deck.isFlipped) markCard(currentDeck, true);
+  if ((e.key === 'n' || e.key === 'N') && deck.isFlipped) markCard(currentDeck, false);
+  if (e.key === 'p' || e.key === 'P') pronounce(currentDeck);
+  if (e.key === 'Escape') goHome();
 });
 
-renderFilters();
-renderCard();
-updateStats();
+// ============================================================
+// INIT
+// ============================================================
+renderHomeStats();
 
 if (document.fonts) {
-  document.fonts.ready.then(() => renderCard());
+  document.fonts.ready.then(() => {
+    if (currentDeck) renderCard(currentDeck);
+  });
 }
+
 </script>
 </body>
 </html>
+
