@@ -720,6 +720,324 @@
     .back-details { gap: 14px; }
     .deck-card { padding: 20px 18px; }
   }
+
+  /* ===== WORD CATCH GAME STYLES ===== */
+  #view-wordgame.active {
+    position: fixed;
+    inset: 0;
+    height: 100vh;
+    overflow: hidden;
+    background: var(--bg);
+    z-index: 50;
+  }
+
+  #view-wordgame::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(200,255,0,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(200,255,0,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .screen {
+    position: absolute;
+    inset: 0;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    z-index: 1;
+  }
+  .screen.active { display: flex; }
+
+  /* ============ START SCREEN ============ */
+  #wc-screen-start {
+    justify-content: center;
+    padding: 24px;
+    text-align: center;
+  }
+
+  h1.title {
+    font-family: 'Libre Baskerville', serif;
+    font-size: clamp(34px, 9vw, 54px);
+    font-weight: 700;
+    letter-spacing: -1px;
+    line-height: 1.05;
+    margin-bottom: 14px;
+  }
+  h1.title span { color: var(--accent); font-style: italic; }
+
+  .start-desc {
+    font-size: 14px;
+    color: var(--muted);
+    max-width: 360px;
+    line-height: 1.6;
+    margin-bottom: 36px;
+  }
+
+  .start-desc b { color: var(--text); font-weight: 500; }
+
+  .btn-start {
+    background: var(--accent);
+    border: none;
+    color: #000;
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 18px 48px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: transform 0.1s, background 0.15s;
+  }
+  .btn-start:active { transform: scale(0.96); background: #d4ff33; }
+
+  .best-score {
+    margin-top: 28px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 1px;
+  }
+  .best-score b { color: var(--thai-gold); font-weight: 500; }
+
+  /* ============ GAME SCREEN ============ */
+  #wc-screen-game {
+    justify-content: flex-start;
+  }
+
+  .game-hud {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 18px;
+    z-index: 5;
+    flex-shrink: 0;
+  }
+
+  .hud-stat {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .hud-stat b {
+    display: block;
+    font-size: 22px;
+    color: var(--accent);
+    letter-spacing: 0;
+    margin-top: 2px;
+    font-weight: 500;
+  }
+  .hud-stat.timer b { color: var(--thai-gold); }
+  .hud-stat.right { text-align: right; }
+
+  .target-banner {
+    width: 100%;
+    text-align: center;
+    padding: 10px 16px 18px;
+    flex-shrink: 0;
+    position: relative;
+  }
+
+  .btn-quit {
+    position: absolute;
+    top: 8px;
+    right: 16px;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 6px 11px;
+    border-radius: 2px;
+    cursor: pointer;
+  }
+
+  .target-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .target-word {
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    font-weight: 700;
+    font-size: clamp(28px, 7vw, 42px);
+    color: var(--accent);
+    line-height: 1.1;
+  }
+
+  .play-field {
+    position: relative;
+    width: 100%;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .bubble {
+    position: absolute;
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 999px;
+    padding: 13px 22px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: clamp(14px, 3.6vw, 17px);
+    color: var(--text);
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    will-change: transform;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.4);
+    transition: border-color 0.15s, box-shadow 0.15s;
+    white-space: nowrap;
+  }
+  .bubble:active { transform: scale(0.94); }
+
+  .bubble.wrong {
+    opacity: 0.25;
+    pointer-events: none;
+    border-color: var(--danger);
+    color: var(--danger);
+    filter: grayscale(0.6);
+  }
+
+  .bubble.correct {
+    border-color: var(--success);
+    color: var(--success);
+    background: #142914;
+    box-shadow: 0 0 0 3px rgba(76,175,80,0.25), 0 4px 14px rgba(0,0,0,0.4);
+    animation: correctPulse 0.5s ease-out;
+  }
+
+  @keyframes correctPulse {
+    0% { transform: scale(1); }
+    40% { transform: scale(1.18); }
+    100% { transform: scale(1.08); }
+  }
+
+  .fanfare-burst {
+    position: absolute;
+    pointer-events: none;
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 600;
+    font-size: 20px;
+    color: var(--accent);
+    animation: burstUp 0.9s ease-out forwards;
+    z-index: 10;
+    white-space: nowrap;
+  }
+  @keyframes burstUp {
+    0% { opacity: 0; transform: translateY(0) scale(0.8); }
+    20% { opacity: 1; transform: translateY(-8px) scale(1.1); }
+    100% { opacity: 0; transform: translateY(-60px) scale(1); }
+  }
+
+  .round-footer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 18px 16px 28px;
+    flex-shrink: 0;
+    min-height: 84px;
+    align-items: center;
+  }
+
+  .btn-next {
+    background: var(--accent);
+    border: none;
+    color: #000;
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 16px 44px;
+    border-radius: 2px;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.25s, transform 0.25s;
+    pointer-events: none;
+  }
+  .btn-next.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  /* ============ END SCREEN ============ */
+  #wc-screen-end {
+    justify-content: center;
+    padding: 24px;
+    text-align: center;
+  }
+
+  .end-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .end-score {
+    font-family: 'Libre Baskerville', serif;
+    font-weight: 700;
+    font-size: clamp(56px, 16vw, 90px);
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .end-sub {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 36px;
+  }
+  .end-sub b { color: var(--thai-gold); }
+
+  .end-buttons {
+    display: flex;
+    gap: 14px;
+  }
+
+  .btn-secondary {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 14px 28px;
+    border-radius: 2px;
+    cursor: pointer;
+  }
+
+  @media (max-width: 420px) {
+    .game-hud { padding: 12px 14px; }
+    .hud-stat b { font-size: 18px; }
+    .bubble { padding: 11px 18px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bubble.correct, .fanfare-burst { animation: none; }
+  }
+
 </style>
 </head>
 <body>
@@ -770,6 +1088,19 @@
         <div class="deck-progress-row">
           <div class="deck-progress-track"><div class="deck-progress-fill" id="home-progress-phrases"></div></div>
           <div class="deck-progress-label" id="home-progress-label-phrases"><b>0</b> / 99 known</div>
+        </div>
+      </div>
+
+      <div class="deck-card" onclick="enterDeck('wordgame')">
+        <div class="deck-card-top">
+          <div class="deck-thai-label">เกม</div>
+          <div class="deck-count-tag" id="home-count-wordgame">10 rounds</div>
+        </div>
+        <div class="deck-title">Word <span>Catch</span></div>
+        <div class="deck-desc">Tap the matching Thai phrase before time runs out</div>
+        <div class="deck-progress-row">
+          <div class="deck-progress-track"><div class="deck-progress-fill" id="home-progress-wordgame" style="background: var(--thai-gold);"></div></div>
+          <div class="deck-progress-label" id="home-progress-label-wordgame"><b>0</b> best score</div>
         </div>
       </div>
     </div>
@@ -1022,6 +1353,59 @@
     <div class="kbd-hint"><kbd>N</kbd> Learning</div>
     <div class="kbd-hint"><kbd>P</kbd> Pronounce</div>
   </div>
+</div>
+
+<div class="view" id="view-wordgame">
+<!-- ============ START SCREEN ============ -->
+<div class="screen active" id="wc-screen-start">
+  <button class="btn-back" id="wc-btn-back-home" style="position:absolute; top:16px; left:16px;" onclick="goHome()">&larr; Decks</button>
+  <div class="logo-thai">เกมจับคำ</div>
+  <h1 class="title">Word <span>Catch</span></h1>
+  <p class="start-desc">An English word appears. <b>Tap the matching Thai phrase</b> before the slow ones catch you off guard &mdash; faster taps score more points.</p>
+  <button class="btn-start" id="wc-btn-start">Start Game</button>
+  <div class="best-score" id="wc-best-score-display"></div>
+</div>
+
+<!-- ============ GAME SCREEN ============ -->
+<div class="screen" id="wc-screen-game">
+  <div class="game-hud">
+    <div class="hud-stat">
+      Score
+      <b id="wc-hud-score">0</b>
+    </div>
+    <div class="hud-stat timer">
+      Time
+      <b id="wc-hud-timer">0.0</b>
+    </div>
+    <div class="hud-stat right">
+      Round
+      <b id="wc-hud-round">1</b>
+    </div>
+  </div>
+
+  <div class="target-banner">
+    <button class="btn-quit" id="wc-btn-quit-game">&times; Quit</button>
+    <div class="target-label">Find the Thai word for</div>
+    <div class="target-word" id="wc-target-word">Hello</div>
+  </div>
+
+  <div class="play-field" id="wc-play-field"></div>
+
+  <div class="round-footer">
+    <button class="btn-next" id="wc-btn-next">Next Word &rarr;</button>
+  </div>
+</div>
+
+<!-- ============ END SCREEN ============ -->
+<div class="screen" id="wc-screen-end">
+  <div class="end-label">Round Complete</div>
+  <div class="end-score" id="wc-end-score">0</div>
+  <div class="end-sub">points &middot; best: <b id="wc-end-best">0</b></div>
+  <div class="end-buttons">
+    <button class="btn-secondary" id="wc-btn-end-home">Quit</button>
+    <button class="btn-start" id="wc-btn-end-again">Play Again</button>
+  </div>
+</div>
 </div>
 
 <script>
@@ -1611,6 +1995,13 @@ function goHome() {
 
 function enterDeck(deckId) {
   currentDeck = deckId;
+
+  if (deckId === 'wordgame') {
+    showView('view-wordgame');
+    window.scrollTo(0, 0);
+    return;
+  }
+
   const deck = decks[deckId];
   if (deck.filtered.length === 0) {
     setFilter(deckId, deck.activeFilter);
@@ -1641,6 +2032,17 @@ function renderHomeStats() {
 
     const countEl = document.getElementById('home-count-' + id);
     if (countEl) countEl.textContent = total + ' cards';
+  }
+
+  // Word Catch game uses a best-score model, not known/total - rendered separately
+  try {
+    const best = parseInt(localStorage.getItem('thai-word-catch-best') || '0', 10);
+    const gameFillEl = document.getElementById('home-progress-wordgame');
+    if (gameFillEl) gameFillEl.style.width = Math.min(best / 2000 * 100, 100) + '%';
+    const gameLabelEl = document.getElementById('home-progress-label-wordgame');
+    if (gameLabelEl) gameLabelEl.innerHTML = '<b>' + best + '</b> best score';
+  } catch (e) {
+    // localStorage unavailable - game tile just shows static defaults
   }
 }
 
@@ -1780,6 +2182,10 @@ if (window.speechSynthesis) {
 // ============================================================
 document.addEventListener('keydown', e => {
   if (!currentDeck) return;
+  if (currentDeck === 'wordgame') {
+    if (e.key === 'Escape') goHome();
+    return;
+  }
   const deck = decks[currentDeck];
   if (e.key === ' ') { e.preventDefault(); flipCard(currentDeck); }
   if (e.key === 'ArrowRight') nextCard(currentDeck);
@@ -1801,6 +2207,991 @@ if (document.fonts) {
   });
 }
 
+
+// ===== END MAIN APP SCRIPT - WORD CATCH GAME BELOW =====
+// ===== WORD CATCH GAME (namespaced to avoid colliding with flashcard engine) =====
+const WordCatch = (function() {
+const VOCAB = [
+  {
+    "english": "Hello",
+    "letters": "sawatdee",
+    "phonetic": "sawàtdii",
+    "thai": "สวัสดี"
+  },
+  {
+    "english": "Thank You",
+    "letters": "khob-khun",
+    "phonetic": "kɔ̀ɔpkun",
+    "thai": "ขอบคุณ"
+  },
+  {
+    "english": "Sorry",
+    "letters": "khor-thot",
+    "phonetic": "kɔ̌ɔtôot",
+    "thai": "ขอโทษ"
+  },
+  {
+    "english": "I, Me, I'm",
+    "letters": "chan / pom",
+    "phonetic": "chán / pǒm",
+    "thai": "ฉัน / ผม"
+  },
+  {
+    "english": "We",
+    "letters": "rao",
+    "phonetic": "rao",
+    "thai": "เรา"
+  },
+  {
+    "english": "He, She, They, Them",
+    "letters": "kao",
+    "phonetic": "káo",
+    "thai": "เขา, เค้า"
+  },
+  {
+    "english": "You",
+    "letters": "khun",
+    "phonetic": "kun",
+    "thai": "คุณ"
+  },
+  {
+    "english": "Name",
+    "letters": "chue",
+    "phonetic": "chʉ̂ʉ",
+    "thai": "ชื่อ"
+  },
+  {
+    "english": "Water",
+    "letters": "naam",
+    "phonetic": "náam",
+    "thai": "น้ำ"
+  },
+  {
+    "english": "Eat",
+    "letters": "gin",
+    "phonetic": "gin",
+    "thai": "กิน"
+  },
+  {
+    "english": "Go",
+    "letters": "bpai",
+    "phonetic": "bpai",
+    "thai": "ไป"
+  },
+  {
+    "english": "Speak",
+    "letters": "puut",
+    "phonetic": "pûut",
+    "thai": "พูด"
+  },
+  {
+    "english": "Food",
+    "letters": "a-haan",
+    "phonetic": "aa-hǎan",
+    "thai": "อาหาร"
+  },
+  {
+    "english": "Restaurant",
+    "letters": "raan a-haan",
+    "phonetic": "ráan aa-hǎan",
+    "thai": "ร้านอาหาร"
+  },
+  {
+    "english": "Market",
+    "letters": "talad",
+    "phonetic": "dtalàat",
+    "thai": "ตลาด"
+  },
+  {
+    "english": "Car",
+    "letters": "rot",
+    "phonetic": "rót",
+    "thai": "รถ"
+  },
+  {
+    "english": "Station",
+    "letters": "satani",
+    "phonetic": "satǎanii",
+    "thai": "สถาณี"
+  },
+  {
+    "english": "Teacher",
+    "letters": "kruu",
+    "phonetic": "kruu",
+    "thai": "ครู"
+  },
+  {
+    "english": "Red",
+    "letters": "sii-dang",
+    "phonetic": "sǐi dɛɛng",
+    "thai": "สีแดง"
+  },
+  {
+    "english": "Sea",
+    "letters": "talay",
+    "phonetic": "talee",
+    "thai": "ทะเล"
+  },
+  {
+    "english": "1",
+    "letters": "nung",
+    "phonetic": "nʉ̀ng",
+    "thai": "หนึ่ง"
+  },
+  {
+    "english": "Dog",
+    "letters": "maa",
+    "phonetic": "mǎa",
+    "thai": "หมา"
+  },
+  {
+    "english": "Today",
+    "letters": "wan-nii",
+    "phonetic": "wanníi",
+    "thai": "วันนี้"
+  },
+  {
+    "english": "Buy",
+    "letters": "sue",
+    "phonetic": "sʉ́ʉ",
+    "thai": "ซื้อ"
+  },
+  {
+    "english": "Year",
+    "letters": "bii",
+    "phonetic": "bpii",
+    "thai": "ปี"
+  },
+  {
+    "english": "To Do (something)",
+    "letters": "tam",
+    "phonetic": "tam",
+    "thai": "ทำ"
+  },
+  {
+    "english": "Good",
+    "letters": "dii",
+    "phonetic": "dii",
+    "thai": "ดี"
+  },
+  {
+    "english": "Beautiful",
+    "letters": "su-ai",
+    "phonetic": "sǔai",
+    "thai": "สวย"
+  },
+  {
+    "english": "Yes",
+    "letters": "chai",
+    "phonetic": "châi",
+    "thai": "ใช่"
+  },
+  {
+    "english": "Delicious",
+    "letters": "aroi",
+    "phonetic": "arɔ̀i",
+    "thai": "อร่อย"
+  },
+  {
+    "english": "To Watch / To See",
+    "letters": "duu",
+    "phonetic": "duu",
+    "thai": "เห็น"
+  },
+  {
+    "english": "Small",
+    "letters": "lek",
+    "phonetic": "lék",
+    "thai": "เล็ก"
+  },
+  {
+    "english": "Near",
+    "letters": "glai",
+    "phonetic": "glâi",
+    "thai": "ใกล้"
+  },
+  {
+    "english": "Coffee",
+    "letters": "gafee",
+    "phonetic": "gaafɛɛ",
+    "thai": "กาแฟ"
+  },
+  {
+    "english": "Mango",
+    "letters": "mamuang",
+    "phonetic": "mámûang",
+    "thai": "มะม่วง"
+  },
+  {
+    "english": "Tomorrow",
+    "letters": "prungnii",
+    "phonetic": "prûngníi",
+    "thai": "พรุ่งนี้"
+  },
+  {
+    "english": "10",
+    "letters": "sip",
+    "phonetic": "sìp",
+    "thai": "สิบ"
+  },
+  {
+    "english": "Minute",
+    "letters": "naatii",
+    "phonetic": "naatii",
+    "thai": "นาที"
+  },
+  {
+    "english": "Noodles",
+    "letters": "guaytiao",
+    "phonetic": "gǔaidtǐao",
+    "thai": "ก๋วยเตี๋ยว"
+  },
+  {
+    "english": "Pork",
+    "letters": "moo",
+    "phonetic": "mǔu",
+    "thai": "หมู"
+  },
+  {
+    "english": "To Walk",
+    "letters": "deun",
+    "phonetic": "dəən",
+    "thai": "เดิน"
+  },
+  {
+    "english": "Big",
+    "letters": "yai",
+    "phonetic": "yâi",
+    "thai": "ใหญ่"
+  },
+  {
+    "english": "Day",
+    "letters": "wan",
+    "phonetic": "wan",
+    "thai": "วัน"
+  },
+  {
+    "english": "Beer",
+    "letters": "bia",
+    "phonetic": "bia",
+    "thai": "เบียร์"
+  },
+  {
+    "english": "Road",
+    "letters": "tanon",
+    "phonetic": "tanǒn",
+    "thai": "ถนน"
+  },
+  {
+    "english": "No",
+    "letters": "mai",
+    "phonetic": "mâi",
+    "thai": "ไม่"
+  },
+  {
+    "english": "Hot",
+    "letters": "ron",
+    "phonetic": "rɔ́ɔn",
+    "thai": "ร้อน"
+  },
+  {
+    "english": "Turn Left",
+    "letters": "liao sai",
+    "phonetic": "líao sáai",
+    "thai": "เลี้ยวซ้าย"
+  },
+  {
+    "english": "100",
+    "letters": "nung roy",
+    "phonetic": "nʉ̀ng rɔ́ɔi",
+    "thai": "หนึ่งร้อย"
+  },
+  {
+    "english": "Very",
+    "letters": "maak",
+    "phonetic": "mâak",
+    "thai": "มาก"
+  },
+  {
+    "english": "Yesterday",
+    "letters": "muawanni",
+    "phonetic": "mʉ̂awaanníi",
+    "thai": "เมื่อวาน"
+  },
+  {
+    "english": "To Cook",
+    "letters": "tam ahaan",
+    "phonetic": "tam aa-hǎan",
+    "thai": "ทำอาหาร"
+  },
+  {
+    "english": "Finished",
+    "letters": "set leeo",
+    "phonetic": "sètlɛ́ɛo",
+    "thai": "เสร็จ"
+  },
+  {
+    "english": "Cold",
+    "letters": "naao",
+    "phonetic": "nǎao",
+    "thai": "หนาว"
+  },
+  {
+    "english": "Rice",
+    "letters": "khao",
+    "phonetic": "kâao",
+    "thai": "ข้าว"
+  },
+  {
+    "english": "House",
+    "letters": "baan",
+    "phonetic": "bâan",
+    "thai": "บ้าน"
+  },
+  {
+    "english": "Expensive",
+    "letters": "paeng",
+    "phonetic": "pɛɛng",
+    "thai": "แพง"
+  },
+  {
+    "english": "A Little Bit",
+    "letters": "nitnoi",
+    "phonetic": "nít nɔ̀i",
+    "thai": "นิดหน่อย"
+  },
+  {
+    "english": "Listen",
+    "letters": "fang",
+    "phonetic": "fang",
+    "thai": "ฟัง"
+  },
+  {
+    "english": "Chicken",
+    "letters": "gai",
+    "phonetic": "gài",
+    "thai": "ไก่"
+  },
+  {
+    "english": "1000",
+    "letters": "nung pan",
+    "phonetic": "nʉ̀ng pan",
+    "thai": "หนึ่งพัน"
+  },
+  {
+    "english": "What",
+    "letters": "arai",
+    "phonetic": "arai",
+    "thai": "อะไร"
+  },
+  {
+    "english": "Spicy",
+    "letters": "pet",
+    "phonetic": "pèt",
+    "thai": "เผ็ด"
+  },
+  {
+    "english": "Police",
+    "letters": "damruat",
+    "phonetic": "dtamrùat",
+    "thai": "ตำรวจ"
+  },
+  {
+    "english": "Beach",
+    "letters": "haad",
+    "phonetic": "hàat",
+    "thai": "หาด"
+  },
+  {
+    "english": "This",
+    "letters": "nii",
+    "phonetic": "nîi",
+    "thai": "นี่"
+  },
+  {
+    "english": "Week",
+    "letters": "aatit",
+    "phonetic": "aatít",
+    "thai": "อาทิตย์"
+  },
+  {
+    "english": "Turn Right",
+    "letters": "liao kwaa",
+    "phonetic": "líao kwǎa",
+    "thai": "เลี้ยวขวา"
+  },
+  {
+    "english": "To Meet",
+    "letters": "je",
+    "phonetic": "jəə",
+    "thai": "เจอ"
+  },
+  {
+    "english": "Glass / Cup",
+    "letters": "gaeo",
+    "phonetic": "gɛ̂ɛo",
+    "thai": "กระจก"
+  },
+  {
+    "english": "Fish",
+    "letters": "pla",
+    "phonetic": "bplaa",
+    "thai": "ปลา"
+  },
+  {
+    "english": "Country",
+    "letters": "bratet",
+    "phonetic": "bpratêet",
+    "thai": "ประเทศ"
+  },
+  {
+    "english": "Bathroom / Restroom",
+    "letters": "hong naam",
+    "phonetic": "hɔ̂ngnáam",
+    "thai": "ห้องน้ำ"
+  },
+  {
+    "english": "Where?",
+    "letters": "tiinai",
+    "phonetic": "tîinǎi",
+    "thai": "ที่ไหน"
+  },
+  {
+    "english": "Skytrain",
+    "letters": "rotfaifaa",
+    "phonetic": "rótfaifáa",
+    "thai": "รถไฟฟ้า"
+  },
+  {
+    "english": "Here",
+    "letters": "tiinii",
+    "phonetic": "tîinîi",
+    "thai": "ที่นี่"
+  },
+  {
+    "english": "Airport",
+    "letters": "sanaambin",
+    "phonetic": "sanǎambin",
+    "thai": "สนามบิน"
+  },
+  {
+    "english": "Sour",
+    "letters": "briao",
+    "phonetic": "bprîao",
+    "thai": "เปรี้ยว"
+  },
+  {
+    "english": "Go Straight",
+    "letters": "drongbai",
+    "phonetic": "dtrongbpai",
+    "thai": "ตรงไป"
+  },
+  {
+    "english": "10,000",
+    "letters": "nung meun",
+    "phonetic": "nʉ̀ng mʉ̀ʉn",
+    "thai": "หนึ่งหมื่น"
+  },
+  {
+    "english": "Coconut",
+    "letters": "mapraow",
+    "phonetic": "mápráao",
+    "thai": "มะพร้าว"
+  },
+  {
+    "english": "Shrimp",
+    "letters": "goong",
+    "phonetic": "gûng",
+    "thai": "กุ้ง"
+  },
+  {
+    "english": "To Want",
+    "letters": "yaak",
+    "phonetic": "yàak",
+    "thai": "อยาก"
+  },
+  {
+    "english": "Motorbike Taxi",
+    "letters": "motersai rapjang",
+    "phonetic": "mɔɔdtəəsai-rápjâang",
+    "thai": "มอเตอร์ไซค์รับจ้าง"
+  },
+  {
+    "english": "And, With",
+    "letters": "gap",
+    "phonetic": "gàp",
+    "thai": "กับ"
+  },
+  {
+    "english": "Egg",
+    "letters": "kai",
+    "phonetic": "kài",
+    "thai": "ไข่"
+  },
+  {
+    "english": "Friend",
+    "letters": "puan",
+    "phonetic": "pʉ̂an",
+    "thai": "เพื่อน"
+  },
+  {
+    "english": "Banana",
+    "letters": "gluai",
+    "phonetic": "glûai",
+    "thai": "กล้วย"
+  },
+  {
+    "english": "Holiday / Vacation / Weekend",
+    "letters": "wan-yut",
+    "phonetic": "wanyùt",
+    "thai": "วันหยุด"
+  },
+  {
+    "english": "How Much?",
+    "letters": "taorai",
+    "phonetic": "tâorài",
+    "thai": "เท่าไหร่"
+  },
+  {
+    "english": "When?",
+    "letters": "muarai",
+    "phonetic": "mʉ̂arài",
+    "thai": "เมื่อไหร่"
+  },
+  {
+    "english": "Drunk",
+    "letters": "mao",
+    "phonetic": "mao",
+    "thai": "เมา"
+  },
+  {
+    "english": "Raining",
+    "letters": "fondok",
+    "phonetic": "fǒndtòk",
+    "thai": "ฝนตก"
+  },
+  {
+    "english": "Mother",
+    "letters": "mae",
+    "phonetic": "mɛɛ",
+    "thai": "แม่"
+  },
+  {
+    "english": "To Practice",
+    "letters": "feuk",
+    "phonetic": "fʉ̀k",
+    "thai": "ฝึก"
+  },
+  {
+    "english": "But",
+    "letters": "dte",
+    "phonetic": "dtɛ̀ɛ",
+    "thai": "แต่"
+  },
+  {
+    "english": "If",
+    "letters": "ta",
+    "phonetic": "tâa",
+    "thai": "ถ้า"
+  },
+  {
+    "english": "Can",
+    "letters": "dai",
+    "phonetic": "dâai",
+    "thai": "ได้"
+  },
+  {
+    "english": "Cannot",
+    "letters": "mai dai",
+    "phonetic": "mâi dâai",
+    "thai": "ไม่ได้"
+  }
+];
+
+// ============================================================
+// CONFIG
+// ============================================================
+const ROUNDS_PER_GAME = 10;
+const DECOY_COUNT = 4; // + 1 correct = 5 bubbles total
+const SIMILAR_DECOY_CHANCE = 0.6; // chance to prefer a sound-alike decoy pool per round
+const BUBBLE_SPEED_MIN = 0.35;
+const BUBBLE_SPEED_MAX = 0.75;
+const MAX_TIME_FOR_FULL_POINTS = 1.5; // seconds - tap faster than this for max points
+const MAX_TIME_FOR_ANY_BONUS = 8;     // seconds - after this, only base points
+const BASE_POINTS = 50;
+const MAX_BONUS = 150;
+
+const STORAGE_KEY = 'thai-word-catch-best';
+
+// ============================================================
+// STATE
+// ============================================================
+let gameState = {
+  round: 0,
+  score: 0,
+  roundStartTime: 0,
+  timerInterval: null,
+  bubbles: [],       // { el, x, y, vx, vy, w, h, entry, locked }
+  fieldW: 0,
+  fieldH: 0,
+  rafId: null,
+  answered: false,
+  usedTargets: [],
+};
+
+// ============================================================
+// HELPERS
+// ============================================================
+function firstSound(s) {
+  s = s.toLowerCase().trim();
+  for (let i = 0; i < s.length; i++) {
+    if ('aeiou'.includes(s[i])) {
+      return i > 0 ? s.slice(0, i) : s[0];
+    }
+  }
+  return s.slice(0, 2);
+}
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function pickTarget() {
+  // avoid repeats until we've cycled through most of the vocab
+  if (gameState.usedTargets.length >= VOCAB.length - DECOY_COUNT) {
+    gameState.usedTargets = [];
+  }
+  let candidates = VOCAB.filter((v, i) => !gameState.usedTargets.includes(i));
+  const idx = VOCAB.indexOf(candidates[Math.floor(Math.random() * candidates.length)]);
+  gameState.usedTargets.push(idx);
+  return idx;
+}
+
+function buildRound() {
+  const targetIdx = pickTarget();
+  const target = VOCAB[targetIdx];
+
+  let pool = VOCAB.filter((v, i) => i !== targetIdx);
+  let decoys = [];
+
+  // try to pull some sound-alike decoys
+  if (Math.random() < SIMILAR_DECOY_CHANCE) {
+    const targetSound = firstSound(target.letters);
+    const soundAlikes = pool.filter(v => firstSound(v.letters) === targetSound);
+    const howMany = Math.min(soundAlikes.length, Math.ceil(DECOY_COUNT / 2));
+    decoys = shuffle(soundAlikes).slice(0, howMany);
+  }
+
+  // fill remaining with random decoys (excluding ones already picked)
+  const remaining = pool.filter(v => !decoys.includes(v));
+  const stillNeeded = DECOY_COUNT - decoys.length;
+  decoys = decoys.concat(shuffle(remaining).slice(0, stillNeeded));
+
+  const options = shuffle([target, ...decoys]);
+  return { target, options };
+}
+
+// ============================================================
+// BUBBLE PHYSICS
+// ============================================================
+function spawnBubbles(options, target) {
+  const field = document.getElementById('wc-play-field');
+  field.innerHTML = '';
+  gameState.bubbles = [];
+  gameState.fieldW = field.clientWidth;
+  gameState.fieldH = field.clientHeight;
+
+  options.forEach((opt, i) => {
+    const el = document.createElement('div');
+    el.className = 'bubble';
+    el.textContent = opt.letters;
+    el.dataset.isCorrect = (opt === target) ? '1' : '0';
+    field.appendChild(el);
+
+    const w = el.offsetWidth;
+    const h = el.offsetHeight;
+
+    // spawn positions spread roughly evenly to avoid initial overlap
+    const cols = 3;
+    const col = i % cols;
+    const row = Math.floor(i / cols);
+    const cellW = gameState.fieldW / cols;
+    const x = Math.min(Math.max(col * cellW + Math.random() * (cellW - w), 4), gameState.fieldW - w - 4);
+    const y = Math.min(Math.max(row * 90 + Math.random() * 40, 4), gameState.fieldH - h - 4);
+
+    const angle = Math.random() * Math.PI * 2;
+    const speed = BUBBLE_SPEED_MIN + Math.random() * (BUBBLE_SPEED_MAX - BUBBLE_SPEED_MIN);
+
+    const bubble = {
+      el, x, y,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed,
+      w, h,
+      opt,
+    };
+
+    el.style.transform = `translate(${x}px, ${y}px)`;
+    el.addEventListener('click', () => handleBubbleTap(bubble));
+
+    gameState.bubbles.push(bubble);
+  });
+}
+
+function animateBubbles() {
+  for (const b of gameState.bubbles) {
+    if (gameState.answered && b.el.dataset.isCorrect !== '1') continue; // freeze wrong ones after answer, keep correct one floating
+    b.x += b.vx;
+    b.y += b.vy;
+
+    if (b.x <= 0) { b.x = 0; b.vx *= -1; }
+    if (b.x + b.w >= gameState.fieldW) { b.x = gameState.fieldW - b.w; b.vx *= -1; }
+    if (b.y <= 0) { b.y = 0; b.vy *= -1; }
+    if (b.y + b.h >= gameState.fieldH) { b.y = gameState.fieldH - b.h; b.vy *= -1; }
+
+    b.el.style.transform = `translate(${b.x}px, ${b.y}px)`;
+  }
+  gameState.rafId = requestAnimationFrame(animateBubbles);
+}
+
+// ============================================================
+// TIMER
+// ============================================================
+function startTimer() {
+  gameState.roundStartTime = performance.now();
+  clearInterval(gameState.timerInterval);
+  gameState.timerInterval = setInterval(() => {
+    const elapsed = (performance.now() - gameState.roundStartTime) / 1000;
+    document.getElementById('wc-hud-timer').textContent = elapsed.toFixed(1);
+  }, 100);
+}
+
+function stopTimer() {
+  clearInterval(gameState.timerInterval);
+}
+
+function getElapsedSeconds() {
+  return (performance.now() - gameState.roundStartTime) / 1000;
+}
+
+// ============================================================
+// SCORING
+// ============================================================
+function calcPoints(elapsedSeconds) {
+  if (elapsedSeconds <= MAX_TIME_FOR_FULL_POINTS) {
+    return BASE_POINTS + MAX_BONUS;
+  }
+  if (elapsedSeconds >= MAX_TIME_FOR_ANY_BONUS) {
+    return BASE_POINTS;
+  }
+  const t = (elapsedSeconds - MAX_TIME_FOR_FULL_POINTS) / (MAX_TIME_FOR_ANY_BONUS - MAX_TIME_FOR_FULL_POINTS);
+  const bonus = Math.round(MAX_BONUS * (1 - t));
+  return BASE_POINTS + bonus;
+}
+
+// ============================================================
+// AUDIO / SPEECH
+// ============================================================
+function speakThai(text) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const utt = new SpeechSynthesisUtterance(text);
+  utt.lang = 'th-TH';
+  utt.rate = 0.85;
+  const voices = window.speechSynthesis.getVoices();
+  const thaiVoice = voices.find(v => v.lang === 'th-TH' || v.lang.startsWith('th'));
+  if (thaiVoice) utt.voice = thaiVoice;
+  window.speechSynthesis.speak(utt);
+}
+
+// simple celebratory chime using Web Audio (no external asset needed)
+let audioCtx = null;
+function playChime() {
+  try {
+    audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+    const now = audioCtx.currentTime;
+    const notes = [660, 880, 1320]; // bright ascending triad
+    notes.forEach((freq, i) => {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0.0001, now + i * 0.08);
+      gain.gain.exponentialRampToValueAtTime(0.18, now + i * 0.08 + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + i * 0.08 + 0.35);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start(now + i * 0.08);
+      osc.stop(now + i * 0.08 + 0.4);
+    });
+  } catch (e) {
+    // audio unavailable - game still works visually
+  }
+}
+
+// ============================================================
+// ROUND FLOW
+// ============================================================
+function showFanfare(x, y, text) {
+  const field = document.getElementById('wc-play-field');
+  const burst = document.createElement('div');
+  burst.className = 'fanfare-burst';
+  burst.textContent = text;
+  burst.style.left = x + 'px';
+  burst.style.top = y + 'px';
+  field.appendChild(burst);
+  setTimeout(() => burst.remove(), 900);
+}
+
+function handleBubbleTap(bubble) {
+  if (gameState.answered) {
+    // After answering, only the correct bubble stays tappable - replay its pronunciation
+    if (bubble.opt === gameState.currentRound.target) {
+      speakThai(bubble.opt.thai);
+    }
+    return;
+  }
+
+  if (bubble.opt === gameState.currentRound.target) {
+    gameState.answered = true;
+    stopTimer();
+
+    const elapsed = getElapsedSeconds();
+    const points = calcPoints(elapsed);
+    gameState.score += points;
+
+    bubble.el.classList.add('correct');
+    document.getElementById('wc-hud-score').textContent = gameState.score;
+    document.getElementById('wc-hud-timer').textContent = elapsed.toFixed(1);
+
+    showFanfare(bubble.x + bubble.w / 2 - 30, bubble.y - 10, '+' + points);
+    playChime();
+    speakThai(bubble.opt.thai);
+
+    // dim all other bubbles, freeze the field except a gentle float on the correct one
+    gameState.bubbles.forEach(b => {
+      if (b !== bubble) {
+        b.el.style.opacity = '0.15';
+        b.el.style.pointerEvents = 'none';
+      }
+    });
+
+    const nextBtn = document.getElementById('wc-btn-next');
+    nextBtn.classList.add('show');
+  } else {
+    bubble.el.classList.add('wrong');
+  }
+}
+
+function startRound() {
+  gameState.answered = false;
+  gameState.round++;
+  document.getElementById('wc-hud-round').textContent = gameState.round + ' / ' + ROUNDS_PER_GAME;
+  document.getElementById('wc-btn-next').classList.remove('show');
+
+  const round = buildRound();
+  gameState.currentRound = round;
+
+  document.getElementById('wc-target-word').textContent = round.target.english;
+
+  spawnBubbles(round.options, round.target);
+  startTimer();
+
+  if (!gameState.rafId) {
+    animateBubbles();
+  }
+}
+
+function endGame() {
+  cancelAnimationFrame(gameState.rafId);
+  gameState.rafId = null;
+  stopTimer();
+
+  const best = parseInt(localStorage.getItem(STORAGE_KEY) || '0', 10);
+  const newBest = Math.max(best, gameState.score);
+  try { localStorage.setItem(STORAGE_KEY, newBest); } catch (e) {}
+
+  document.getElementById('wc-end-score').textContent = gameState.score;
+  document.getElementById('wc-end-best').textContent = newBest;
+
+  showScreen('wc-screen-end');
+}
+
+function nextOrEnd() {
+  if (gameState.round >= ROUNDS_PER_GAME) {
+    endGame();
+  } else {
+    startRound();
+  }
+}
+
+// ============================================================
+// SCREEN MANAGEMENT
+// ============================================================
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function startGame() {
+  gameState.round = 0;
+  gameState.score = 0;
+  gameState.usedTargets = [];
+  document.getElementById('wc-hud-score').textContent = '0';
+  showScreen('wc-screen-game');
+  startRound();
+}
+
+function quitToHome() {
+  // Exit the game entirely, back to the Thai Study home screen (defined in the outer app scope)
+  cancelAnimationFrame(gameState.rafId);
+  gameState.rafId = null;
+  stopTimer();
+  if (window.speechSynthesis) window.speechSynthesis.cancel();
+  showScreen('wc-screen-start'); // reset internal game state for next visit
+  renderBestScore();
+  if (typeof window.goHome === 'function') {
+    window.goHome();
+  }
+}
+
+function renderBestScore() {
+  const best = parseInt(localStorage.getItem(STORAGE_KEY) || '0', 10);
+  const el = document.getElementById('wc-best-score-display');
+  el.innerHTML = best > 0 ? 'Best score: <b>' + best + '</b>' : '';
+}
+
+// ============================================================
+// EVENTS / INIT
+// ============================================================
+window.addEventListener('resize', () => {
+  const field = document.getElementById('wc-play-field');
+  if (field) {
+    gameState.fieldW = field.clientWidth;
+    gameState.fieldH = field.clientHeight;
+  }
+});
+
+if (window.speechSynthesis) {
+  window.speechSynthesis.addEventListener('voiceschanged', () => {});
+}
+
+
+return { startGame, quitToHome, nextOrEnd, renderBestScore, init: function() {
+  document.getElementById('wc-btn-start').addEventListener('click', startGame);
+  document.getElementById('wc-btn-next').addEventListener('click', nextOrEnd);
+  document.getElementById('wc-btn-end-again').addEventListener('click', startGame);
+  document.getElementById('wc-btn-end-home').addEventListener('click', quitToHome);
+  document.getElementById('wc-btn-quit-game').addEventListener('click', quitToHome);
+  renderBestScore();
+}};
+})();
+
+WordCatch.init();
 </script>
 </body>
 </html>
