@@ -7,22 +7,25 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Thai Study">
-<meta name="theme-color" content="#0e0e0e">
-<link rel="apple-touch-icon" href="icon.png">
+<meta name="theme-color" content="#000000">
+<link rel="apple-touch-icon" href="travelaroi-icon-512.png">
+<link rel="icon" href="travelaroi-icon-512.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Thai:wght@300;400;500&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Niramit:wght@300;400&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --bg: #0e0e0e;
-    --surface: #1a1a1a;
-    --card-front: #1c1c1c;
-    --card-back: #1a2a1a;
-    --accent: #c8ff00;
-    --text: #f0ede6;
-    --muted: #666;
-    --border: #2a2a2a;
+    --bg: #000000;
+    --surface: #161616;
+    --card-front: #141414;
+    --card-back: #161608;
+    --card: #141414;
+    --accent: #d9da4a;
+    --accent-bright: #e8ea63;
+    --text: #f7f7f2;
+    --muted: #7a7a7a;
+    --border: #262626;
     --thai-gold: #d4a843;
     --short-color: #7eb8d4;
     --long-color: #c8a0e0;
@@ -30,6 +33,8 @@
     --class-high: #ff9966;
     --class-mid: #7eb8d4;
     --class-low: #c8a0e0;
+    --success: #4caf50;
+    --danger: #ff4444;
   }
 
   html, body { background: var(--bg); }
@@ -51,8 +56,8 @@
     position: fixed;
     inset: 0;
     background-image:
-      linear-gradient(rgba(200,255,0,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(200,255,0,0.03) 1px, transparent 1px);
+      linear-gradient(rgba(217,218,75,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(217,218,75,0.04) 1px, transparent 1px);
     background-size: 40px 40px;
     pointer-events: none;
     z-index: 0;
@@ -223,6 +228,31 @@
     opacity: 0.6;
   }
 
+  .travelaroi-credit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 16px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: var(--muted);
+    text-decoration: none;
+    opacity: 0.75;
+    transition: opacity 0.15s;
+  }
+  .travelaroi-credit:hover { opacity: 1; }
+  .travelaroi-credit .wordmark {
+    font-family: 'Libre Baskerville', serif;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0;
+  }
+  .travelaroi-credit .wordmark .lime { color: var(--accent); }
+  .travelaroi-credit .wordmark .white { color: var(--text); }
+  .travelaroi-credit .wordmark .dot { color: var(--accent); }
+
   /* ---------- DECK HEADER / SWITCH BUTTON ---------- */
 
   .deck-topbar {
@@ -379,7 +409,7 @@
   .card-back {
     background: var(--card-back);
     transform: rotateY(180deg);
-    border-color: #2a3a2a;
+    border-color: #2a2e1a;
   }
 
   .card-face::before, .card-face::after {
@@ -663,7 +693,7 @@
   }
   .btn:hover { border-color: var(--text); }
   .btn.primary { background: var(--accent); border-color: var(--accent); color: #000; font-weight: 500; }
-  .btn.primary:hover { background: #d4ff33; }
+  .btn.primary:hover { background: var(--accent-bright); }
   .btn.danger { border-color: #ff4444; color: #ff4444; }
   .btn.danger:hover { background: #ff4444; color: #000; }
 
@@ -737,8 +767,8 @@
     position: absolute;
     inset: 0;
     background-image:
-      linear-gradient(rgba(200,255,0,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(200,255,0,0.03) 1px, transparent 1px);
+      linear-gradient(rgba(217,218,75,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(217,218,75,0.04) 1px, transparent 1px);
     background-size: 40px 40px;
     pointer-events: none;
     z-index: 0;
@@ -795,7 +825,7 @@
     cursor: pointer;
     transition: transform 0.1s, background 0.15s;
   }
-  .btn-start:active { transform: scale(0.96); background: #d4ff33; }
+  .btn-start:active { transform: scale(0.96); background: var(--accent-bright); }
 
   .best-score {
     margin-top: 28px;
@@ -1107,6 +1137,9 @@
     </div>
 
     <div class="home-footer-note">PROGRESS SAVES AUTOMATICALLY ON THIS DEVICE</div>
+    <a class="travelaroi-credit" href="https://travelaroi.com" target="_blank" rel="noopener">
+      a study tool by <span class="wordmark"><span class="lime">Travel</span><span class="white">aroi</span></span>
+    </a>
   </div>
 </div>
 
