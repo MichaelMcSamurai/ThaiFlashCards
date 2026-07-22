@@ -633,6 +633,13 @@
   .btn-pronounce:hover { background: var(--thai-gold); color: #000; }
   .btn-pronounce.speaking { background: var(--thai-gold); color: #000; }
 
+  .example-rtgs-clickable {
+    cursor: pointer;
+    transition: color 0.15s ease;
+  }
+  .example-rtgs-clickable:hover { color: var(--thai-gold); }
+  .example-rtgs-clickable.speaking { color: var(--thai-gold); }
+
   .flip-hint {
     text-align: center;
     font-family: 'IBM Plex Mono', monospace;
@@ -1310,7 +1317,7 @@
         <div class="example-word">
           <div class="example-thai" id="example-thai-consonants">ไก่</div>
           <div class="example-eng" id="example-eng-consonants">chicken</div>
-          <div class="example-rtgs" id="example-rom-consonants">gài</div>
+          <div class="example-rtgs example-rtgs-clickable" id="example-rom-consonants" onclick="event.stopPropagation(); pronounceExample('consonants')" title="Click to hear it">gài</div>
         </div>
       </div>
     </div>
@@ -2235,6 +2242,24 @@ function pronounce(deckId) {
   utt.onstart = () => btn && btn.classList.add('speaking');
   utt.onend   = () => btn && btn.classList.remove('speaking');
   utt.onerror = () => btn && btn.classList.remove('speaking');
+  window.speechSynthesis.speak(utt);
+}
+
+function pronounceExample(deckId) {
+  const deck = decks[deckId];
+  const item = deck.filtered[deck.currentIndex];
+  if (!item || !item.example || !window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const el = document.getElementById('example-rom-' + deckId);
+  const utt = new SpeechSynthesisUtterance(item.example);
+  utt.lang = 'th-TH';
+  utt.rate = 0.8;
+  const voices = window.speechSynthesis.getVoices();
+  const thaiVoice = voices.find(v => v.lang === 'th-TH' || v.lang.startsWith('th'));
+  if (thaiVoice) utt.voice = thaiVoice;
+  utt.onstart = () => el && el.classList.add('speaking');
+  utt.onend   = () => el && el.classList.remove('speaking');
+  utt.onerror = () => el && el.classList.remove('speaking');
   window.speechSynthesis.speak(utt);
 }
 
