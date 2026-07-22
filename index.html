@@ -503,6 +503,35 @@
     margin-bottom: 12px;
   }
 
+  .back-top-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+
+  .back-thai-text {
+    font-family: 'Niramit', sans-serif;
+    font-size: clamp(36px, 8vw, 56px);
+    font-weight: 300;
+    color: var(--thai-gold);
+    line-height: 1;
+  }
+
+  .letter-name {
+    font-family: 'Libre Baskerville', serif;
+    font-weight: 700;
+    font-size: clamp(20px, 4vw, 28px);
+    color: var(--thai-gold);
+  }
+
+  .back-emoji {
+    font-size: clamp(32px, 6vw, 44px);
+    line-height: 1;
+  }
+
   .english-text {
     font-family: 'Libre Baskerville', serif;
     font-size: clamp(22px, 4.5vw, 32px);
@@ -1261,17 +1290,18 @@
     <div class="card-inner" id="card-inner-consonants">
       <div class="card-face card-front">
         <div class="card-number" id="card-number-consonants">01</div>
-        <div class="card-class-tag" id="card-class-tag-consonants">Mid</div>
         <div class="card-label">Consonant</div>
         <div class="thai-text" id="thai-text-consonants">ก</div>
-        <div class="rtgs-text" id="rtgs-text-consonants">k</div>
       </div>
       <div class="card-face card-back">
         <div class="card-number" id="card-number-back-consonants">01</div>
         <div class="card-class-tag" id="card-class-tag-back-consonants">Mid</div>
         <div class="card-label">Details</div>
-        <div class="consonant-name" id="consonant-name-consonants">ไก่ · kai</div>
-        <div class="consonant-sound" id="consonant-sound-consonants">k — (initial) k · (final) k</div>
+        <div class="back-top-row">
+          <div class="back-thai-text" id="back-thai-text-consonants">ก</div>
+          <div class="letter-name" id="letter-name-consonants">gaaw gài</div>
+          <div class="back-emoji" id="back-emoji-consonants">&#129296;</div>
+        </div>
         <div class="back-details">
           <div class="detail-item"><div class="detail-label">Class</div><div class="detail-value" id="detail-class-consonants">Mid</div></div>
           <div class="detail-item"><div class="detail-label">Initial</div><div class="detail-value" id="detail-initial-consonants">k</div></div>
@@ -1280,6 +1310,7 @@
         <div class="example-word">
           <div class="example-thai" id="example-thai-consonants">ไก่</div>
           <div class="example-eng" id="example-eng-consonants">chicken</div>
+          <div class="example-rtgs" id="example-rom-consonants">gài</div>
         </div>
       </div>
     </div>
@@ -1713,50 +1744,50 @@ const vowelsData = [
 ];
 
 const consonantsData = [
-  { thai: "ก", rtgs: "k", name: "ไก่", nameRom: "kai", cls: "Mid",  initial: "k",   final: "k",   example: "ไก่",    exEng: "chicken" },
-  { thai: "ข", rtgs: "kh", name: "ไข่", nameRom: "khai", cls: "High", initial: "kh",  final: "k",   example: "ไข่",   exEng: "egg" },
-  { thai: "ฃ", rtgs: "kh", name: "ขวด", nameRom: "khuat", cls: "High", initial: "kh", final: "k",   example: "ขวด",   exEng: "bottle (obsolete)" },
-  { thai: "ค", rtgs: "kh", name: "ควาย", nameRom: "khwai", cls: "Low", initial: "kh", final: "k",   example: "ควาย",  exEng: "buffalo" },
-  { thai: "ฅ", rtgs: "kh", name: "คน",  nameRom: "khon",  cls: "Low", initial: "kh", final: "k",   example: "คน",    exEng: "person (obsolete)" },
-  { thai: "ฆ", rtgs: "kh", name: "ระฆัง", nameRom: "rakhang", cls: "Low", initial: "kh", final: "k", example: "ระฆัง", exEng: "bell" },
-  { thai: "ง", rtgs: "ng", name: "งู",   nameRom: "ngu",   cls: "Low", initial: "ng", final: "ng",  example: "งู",    exEng: "snake" },
-  { thai: "จ", rtgs: "ch", name: "จาน",  nameRom: "chan",   cls: "Mid", initial: "ch", final: "t",   example: "จาน",   exEng: "plate" },
-  { thai: "ฉ", rtgs: "ch", name: "ฉิ่ง",  nameRom: "ching", cls: "High", initial: "ch", final: "—",  example: "ฉิ่ง",  exEng: "cymbal" },
-  { thai: "ช", rtgs: "ch", name: "ช้าง",  nameRom: "chang", cls: "Low", initial: "ch", final: "t",   example: "ช้าง",  exEng: "elephant" },
-  { thai: "ซ", rtgs: "s",  name: "โซ่",   nameRom: "so",    cls: "Low", initial: "s",  final: "t",   example: "โซ่",   exEng: "chain" },
-  { thai: "ฌ", rtgs: "ch", name: "เฌอ",   nameRom: "choe",  cls: "Low", initial: "ch", final: "—",   example: "เฌอ",   exEng: "tree" },
-  { thai: "ญ", rtgs: "y",  name: "หญิง",  nameRom: "ying",  cls: "Low", initial: "y",  final: "n",   example: "หญิง",  exEng: "woman" },
-  { thai: "ฎ", rtgs: "d",  name: "ชฎา",   nameRom: "chada", cls: "Mid", initial: "d",  final: "t",   example: "ชฎา",   exEng: "headdress" },
-  { thai: "ฏ", rtgs: "t",  name: "ปฏัก",  nameRom: "patak", cls: "Mid", initial: "t",  final: "t",   example: "ปฏัก",  exEng: "goad" },
-  { thai: "ฐ", rtgs: "th", name: "ฐาน",   nameRom: "than",  cls: "High", initial: "th", final: "t",  example: "ฐาน",   exEng: "base/pedestal" },
-  { thai: "ฑ", rtgs: "th", name: "มณโฑ",  nameRom: "montho", cls: "Low", initial: "th", final: "t",  example: "ทหาร",  exEng: "soldier" },
-  { thai: "ฒ", rtgs: "th", name: "ผู้เฒ่า", nameRom: "phu thao", cls: "Low", initial: "th", final: "t", example: "เฒ่า", exEng: "elder" },
-  { thai: "ณ", rtgs: "n",  name: "เณร",   nameRom: "nen",   cls: "Low", initial: "n",  final: "n",   example: "เณร",   exEng: "novice monk" },
-  { thai: "ด", rtgs: "d",  name: "เด็ก",   nameRom: "dek",   cls: "Mid", initial: "d",  final: "t",   example: "เด็ก",  exEng: "child" },
-  { thai: "ต", rtgs: "t",  name: "เต่า",   nameRom: "tao",   cls: "Mid", initial: "t",  final: "t",   example: "เต่า",  exEng: "turtle" },
-  { thai: "ถ", rtgs: "th", name: "ถุง",    nameRom: "thung", cls: "High", initial: "th", final: "t",  example: "ถุง",   exEng: "bag/sack" },
-  { thai: "ท", rtgs: "th", name: "ทหาร",   nameRom: "thahan", cls: "Low", initial: "th", final: "t", example: "ทหาร",  exEng: "soldier" },
-  { thai: "ธ", rtgs: "th", name: "ธง",     nameRom: "thong", cls: "Low", initial: "th", final: "t",  example: "ธง",    exEng: "flag" },
-  { thai: "น", rtgs: "n",  name: "หนู",    nameRom: "nu",    cls: "Low", initial: "n",  final: "n",   example: "หนู",   exEng: "mouse" },
-  { thai: "บ", rtgs: "b",  name: "ใบไม้",  nameRom: "baimai", cls: "Mid", initial: "b", final: "p",   example: "ใบไม้", exEng: "leaf" },
-  { thai: "ป", rtgs: "p",  name: "ปลา",    nameRom: "pla",   cls: "Mid", initial: "p",  final: "p",   example: "ปลา",   exEng: "fish" },
-  { thai: "ผ", rtgs: "ph", name: "ผึ้ง",   nameRom: "phueng", cls: "High", initial: "ph", final: "—", example: "ผึ้ง",  exEng: "bee" },
-  { thai: "ฝ", rtgs: "f",  name: "ฝา",     nameRom: "fa",    cls: "High", initial: "f",  final: "—",  example: "ฝา",    exEng: "lid/cover" },
-  { thai: "พ", rtgs: "ph", name: "พาน",    nameRom: "phan",  cls: "Low", initial: "ph", final: "p",   example: "พาน",   exEng: "tray" },
-  { thai: "ฟ", rtgs: "f",  name: "ฟัน",    nameRom: "fan",   cls: "Low", initial: "f",  final: "p",   example: "ฟัน",   exEng: "tooth" },
-  { thai: "ภ", rtgs: "ph", name: "สำเภา",  nameRom: "samphao", cls: "Low", initial: "ph", final: "p", example: "ภาษา",  exEng: "language" },
-  { thai: "ม", rtgs: "m",  name: "ม้า",     nameRom: "ma",    cls: "Low", initial: "m",  final: "m",  example: "ม้า",    exEng: "horse" },
-  { thai: "ย", rtgs: "y",  name: "ยักษ์",  nameRom: "yak",   cls: "Low", initial: "y",  final: "y",  example: "ยักษ์",  exEng: "giant" },
-  { thai: "ร", rtgs: "r",  name: "เรือ",   nameRom: "ruea",  cls: "Low", initial: "r",  final: "n",  example: "เรือ",   exEng: "boat" },
-  { thai: "ล", rtgs: "l",  name: "ลิง",    nameRom: "ling",  cls: "Low", initial: "l",  final: "n",  example: "ลิง",    exEng: "monkey" },
-  { thai: "ว", rtgs: "w",  name: "แหวน",   nameRom: "waen",  cls: "Low", initial: "w",  final: "w",  example: "แหวน",   exEng: "ring" },
-  { thai: "ศ", rtgs: "s",  name: "ศาลา",   nameRom: "sala",  cls: "High", initial: "s", final: "t",  example: "ศาลา",   exEng: "pavilion" },
-  { thai: "ษ", rtgs: "s",  name: "ฤๅษี",  nameRom: "ruesi", cls: "High", initial: "s", final: "t",  example: "ฤๅษี",  exEng: "hermit" },
-  { thai: "ส", rtgs: "s",  name: "เสือ",   nameRom: "suea",  cls: "High", initial: "s", final: "t",  example: "เสือ",   exEng: "tiger" },
-  { thai: "ห", rtgs: "h",  name: "หีบ",    nameRom: "hip",   cls: "High", initial: "h", final: "—",  example: "หีบ",    exEng: "chest/box" },
-  { thai: "ฬ", rtgs: "l",  name: "จุฬา",   nameRom: "chula", cls: "Low", initial: "l",  final: "n",  example: "จุฬา",   exEng: "kite" },
-  { thai: "อ", rtgs: "o",  name: "อ่าง",   nameRom: "ang",   cls: "Mid", initial: "—",  final: "—",  example: "อ่าง",   exEng: "basin/vowel carrier" },
-  { thai: "ฮ", rtgs: "h",  name: "นกฮูก",  nameRom: "nok huk", cls: "Low", initial: "h", final: "—", example: "ฮ่องกง", exEng: "Hong Kong" },
+  { thai: "ก", rtgs: "k", name: "ไก่", nameRom: "kai", cls: "Mid",  initial: "k",   final: "k",   example: "ไก่",    exEng: "chicken", exRom: "gài", letterName: "gaaw gài", emoji: "🐓" },
+  { thai: "ข", rtgs: "kh", name: "ไข่", nameRom: "khai", cls: "High", initial: "kh",  final: "k",   example: "ไข่",   exEng: "egg", exRom: "khài", letterName: "khăaw khài", emoji: "🥚" },
+  { thai: "ฃ", rtgs: "kh", name: "ขวด", nameRom: "khuat", cls: "High", initial: "kh", final: "k",   example: "ขวด",   exEng: "bottle (obsolete)", exRom: "khùuat", letterName: "khăaw khùuat", emoji: "🍾" },
+  { thai: "ค", rtgs: "kh", name: "ควาย", nameRom: "khwai", cls: "Low", initial: "kh", final: "k",   example: "ควาย",  exEng: "buffalo", exRom: "khwaai", letterName: "khaaw khwaai", emoji: "🐃" },
+  { thai: "ฅ", rtgs: "kh", name: "คน",  nameRom: "khon",  cls: "Low", initial: "kh", final: "k",   example: "คน",    exEng: "person (obsolete)", exRom: "khon", letterName: "khaaw khon", emoji: "🧍" },
+  { thai: "ฆ", rtgs: "kh", name: "ระฆัง", nameRom: "rakhang", cls: "Low", initial: "kh", final: "k", example: "ระฆัง", exEng: "bell", exRom: "rá-khang", letterName: "khaaw rá-khang", emoji: "🔔" },
+  { thai: "ง", rtgs: "ng", name: "งู",   nameRom: "ngu",   cls: "Low", initial: "ng", final: "ng",  example: "งู",    exEng: "snake", exRom: "nguu", letterName: "ngaaw nguu", emoji: "🐍" },
+  { thai: "จ", rtgs: "ch", name: "จาน",  nameRom: "chan",   cls: "Mid", initial: "ch", final: "t",   example: "จาน",   exEng: "plate", exRom: "jaan", letterName: "jaaw jaan", emoji: "🍽️" },
+  { thai: "ฉ", rtgs: "ch", name: "ฉิ่ง",  nameRom: "ching", cls: "High", initial: "ch", final: "—",  example: "ฉิ่ง",  exEng: "cymbal", exRom: "chìng", letterName: "chăaw chìng", emoji: "🎶" },
+  { thai: "ช", rtgs: "ch", name: "ช้าง",  nameRom: "chang", cls: "Low", initial: "ch", final: "t",   example: "ช้าง",  exEng: "elephant", exRom: "cháang", letterName: "chaaw cháang", emoji: "🐘" },
+  { thai: "ซ", rtgs: "s",  name: "โซ่",   nameRom: "so",    cls: "Low", initial: "s",  final: "t",   example: "โซ่",   exEng: "chain", exRom: "sôo", letterName: "saaw sôo", emoji: "⛓️" },
+  { thai: "ฌ", rtgs: "ch", name: "เฌอ",   nameRom: "choe",  cls: "Low", initial: "ch", final: "—",   example: "เฌอ",   exEng: "tree", exRom: "chooe", letterName: "chaaw chooe", emoji: "🌳" },
+  { thai: "ญ", rtgs: "y",  name: "หญิง",  nameRom: "ying",  cls: "Low", initial: "y",  final: "n",   example: "หญิง",  exEng: "woman", exRom: "yĭng", letterName: "yaaw yĭng", emoji: "👩" },
+  { thai: "ฎ", rtgs: "d",  name: "ชฎา",   nameRom: "chada", cls: "Mid", initial: "d",  final: "t",   example: "ชฎา",   exEng: "headdress", exRom: "chá-daa", letterName: "daaw chá-daa", emoji: "👑" },
+  { thai: "ฏ", rtgs: "t",  name: "ปฏัก",  nameRom: "patak", cls: "Mid", initial: "t",  final: "t",   example: "ปฏัก",  exEng: "goad", exRom: "bpà-dtàk", letterName: "dtaaw bpà-dtàk", emoji: "🔱" },
+  { thai: "ฐ", rtgs: "th", name: "ฐาน",   nameRom: "than",  cls: "High", initial: "th", final: "t",  example: "ฐาน",   exEng: "base/pedestal", exRom: "thăan", letterName: "thăaw-thăan", emoji: "🏛️" },
+  { thai: "ฑ", rtgs: "th", name: "มณโฑ",  nameRom: "montho", cls: "Low", initial: "th", final: "t",  example: "ทหาร",  exEng: "soldier", exRom: "thá-hăan", letterName: "thaaw mon-thoo", emoji: "👸" },
+  { thai: "ฒ", rtgs: "th", name: "ผู้เฒ่า", nameRom: "phu thao", cls: "Low", initial: "th", final: "t", example: "เฒ่า", exEng: "elder", exRom: "thâo", letterName: "thaaw phûu-thăo", emoji: "👴" },
+  { thai: "ณ", rtgs: "n",  name: "เณร",   nameRom: "nen",   cls: "Low", initial: "n",  final: "n",   example: "เณร",   exEng: "novice monk", exRom: "naen", letterName: "naaw naen", emoji: "🙏" },
+  { thai: "ด", rtgs: "d",  name: "เด็ก",   nameRom: "dek",   cls: "Mid", initial: "d",  final: "t",   example: "เด็ก",  exEng: "child", exRom: "dèk", letterName: "daaw dèk", emoji: "👶" },
+  { thai: "ต", rtgs: "t",  name: "เต่า",   nameRom: "tao",   cls: "Mid", initial: "t",  final: "t",   example: "เต่า",  exEng: "turtle", exRom: "dtào", letterName: "dtaaw dtào", emoji: "🐢" },
+  { thai: "ถ", rtgs: "th", name: "ถุง",    nameRom: "thung", cls: "High", initial: "th", final: "t",  example: "ถุง",   exEng: "bag/sack", exRom: "thŭng", letterName: "thăaw thŭng", emoji: "🛍️" },
+  { thai: "ท", rtgs: "th", name: "ทหาร",   nameRom: "thahan", cls: "Low", initial: "th", final: "t", example: "ทหาร",  exEng: "soldier", exRom: "thá-hăan", letterName: "thaaw thá-hăan", emoji: "🪖" },
+  { thai: "ธ", rtgs: "th", name: "ธง",     nameRom: "thong", cls: "Low", initial: "th", final: "t",  example: "ธง",    exEng: "flag", exRom: "thong", letterName: "thaaw thong", emoji: "🚩" },
+  { thai: "น", rtgs: "n",  name: "หนู",    nameRom: "nu",    cls: "Low", initial: "n",  final: "n",   example: "หนู",   exEng: "mouse", exRom: "nŭu", letterName: "naaw nŭu", emoji: "🐭" },
+  { thai: "บ", rtgs: "b",  name: "ใบไม้",  nameRom: "baimai", cls: "Mid", initial: "b", final: "p",   example: "ใบไม้", exEng: "leaf", exRom: "bai-mái", letterName: "baaw bai-mái", emoji: "🍃" },
+  { thai: "ป", rtgs: "p",  name: "ปลา",    nameRom: "pla",   cls: "Mid", initial: "p",  final: "p",   example: "ปลา",   exEng: "fish", exRom: "bplaa", letterName: "bpaaw bplaa", emoji: "🐟" },
+  { thai: "ผ", rtgs: "ph", name: "ผึ้ง",   nameRom: "phueng", cls: "High", initial: "ph", final: "—", example: "ผึ้ง",  exEng: "bee", exRom: "phûeng", letterName: "phăaw phûeng", emoji: "🐝" },
+  { thai: "ฝ", rtgs: "f",  name: "ฝา",     nameRom: "fa",    cls: "High", initial: "f",  final: "—",  example: "ฝา",    exEng: "lid/cover", exRom: "făa", letterName: "făaw făa", emoji: "🫙" },
+  { thai: "พ", rtgs: "ph", name: "พาน",    nameRom: "phan",  cls: "Low", initial: "ph", final: "p",   example: "พาน",   exEng: "tray", exRom: "phaan", letterName: "phaaw phaan", emoji: "🧺" },
+  { thai: "ฟ", rtgs: "f",  name: "ฟัน",    nameRom: "fan",   cls: "Low", initial: "f",  final: "p",   example: "ฟัน",   exEng: "tooth", exRom: "fan", letterName: "faaw fan", emoji: "🦷" },
+  { thai: "ภ", rtgs: "ph", name: "สำเภา",  nameRom: "samphao", cls: "Low", initial: "ph", final: "p", example: "ภาษา",  exEng: "language", exRom: "phaa-săa", letterName: "phaaw săm-phao", emoji: "🚢" },
+  { thai: "ม", rtgs: "m",  name: "ม้า",     nameRom: "ma",    cls: "Low", initial: "m",  final: "m",  example: "ม้า",    exEng: "horse", exRom: "máa", letterName: "maaw máa", emoji: "🐴" },
+  { thai: "ย", rtgs: "y",  name: "ยักษ์",  nameRom: "yak",   cls: "Low", initial: "y",  final: "y",  example: "ยักษ์",  exEng: "giant", exRom: "yák", letterName: "yaaw yák", emoji: "👹" },
+  { thai: "ร", rtgs: "r",  name: "เรือ",   nameRom: "ruea",  cls: "Low", initial: "r",  final: "n",  example: "เรือ",   exEng: "boat", exRom: "ruuea", letterName: "raaw ruuea", emoji: "⛵" },
+  { thai: "ล", rtgs: "l",  name: "ลิง",    nameRom: "ling",  cls: "Low", initial: "l",  final: "n",  example: "ลิง",    exEng: "monkey", exRom: "ling", letterName: "laaw ling", emoji: "🐒" },
+  { thai: "ว", rtgs: "w",  name: "แหวน",   nameRom: "waen",  cls: "Low", initial: "w",  final: "w",  example: "แหวน",   exEng: "ring", exRom: "wăaen", letterName: "waaw wăaen", emoji: "💍" },
+  { thai: "ศ", rtgs: "s",  name: "ศาลา",   nameRom: "sala",  cls: "High", initial: "s", final: "t",  example: "ศาลา",   exEng: "pavilion", exRom: "săa-laa", letterName: "săaw săa-laa", emoji: "🛕" },
+  { thai: "ษ", rtgs: "s",  name: "ฤๅษี",  nameRom: "ruesi", cls: "High", initial: "s", final: "t",  example: "ฤๅษี",  exEng: "hermit", exRom: "ruue-sĭi", letterName: "săaw ruue-sĭi", emoji: "🧙" },
+  { thai: "ส", rtgs: "s",  name: "เสือ",   nameRom: "suea",  cls: "High", initial: "s", final: "t",  example: "เสือ",   exEng: "tiger", exRom: "sŭuea", letterName: "săaw sŭuea", emoji: "🐯" },
+  { thai: "ห", rtgs: "h",  name: "หีบ",    nameRom: "hip",   cls: "High", initial: "h", final: "—",  example: "หีบ",    exEng: "chest/box", exRom: "hìip", letterName: "hăaw hìip", emoji: "📦" },
+  { thai: "ฬ", rtgs: "l",  name: "จุฬา",   nameRom: "chula", cls: "Low", initial: "l",  final: "n",  example: "จุฬา",   exEng: "kite", exRom: "jù-laa", letterName: "laaw jù-laa", emoji: "🪁" },
+  { thai: "อ", rtgs: "o",  name: "อ่าง",   nameRom: "ang",   cls: "Mid", initial: "—",  final: "—",  example: "อ่าง",   exEng: "basin/vowel carrier", exRom: "àang", letterName: "aaw àang", emoji: "🛁" },
+  { thai: "ฮ", rtgs: "h",  name: "นกฮูก",  nameRom: "nok huk", cls: "Low", initial: "h", final: "—", example: "ฮ่องกง", exEng: "Hong Kong", exRom: "hông kong", letterName: "haaw nók-hûuk", emoji: "🦉" },
 ];
 
 const phrasesData = [
@@ -1956,20 +1987,20 @@ const decks = {
       const num = String(consonantsData.indexOf(c) + 1).padStart(2, '0');
 
       setText('thai-text-consonants', c.thai);
-      setText('rtgs-text-consonants', c.rtgs);
       setText('card-number-consonants', num);
       setText('card-number-back-consonants', num);
 
-      setTagClass('card-class-tag-consonants', c.cls + ' class', 'card-class-tag ' + clsLower);
       setTagClass('card-class-tag-back-consonants', c.cls + ' class', 'card-class-tag ' + clsLower);
 
-      setText('consonant-name-consonants', c.thai + ' · ' + c.nameRom + ' · ' + c.name);
-      setText('consonant-sound-consonants', 'Initial: ' + c.initial + '   Final: ' + c.final);
+      setText('back-thai-text-consonants', c.thai);
+      setText('letter-name-consonants', c.letterName);
+      setText('back-emoji-consonants', c.emoji);
       setText('detail-class-consonants', c.cls);
       setText('detail-initial-consonants', c.initial);
       setText('detail-final-consonants', c.final);
       setText('example-thai-consonants', c.example);
       setText('example-eng-consonants', c.exEng);
+      setText('example-rom-consonants', c.exRom);
     },
   },
 
