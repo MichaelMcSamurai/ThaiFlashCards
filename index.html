@@ -468,6 +468,10 @@
     margin-bottom: 8px;
   }
 
+  .vowel-carrier {
+    opacity: 0.3;
+  }
+
   .rtgs-text, .phonetic-text {
     font-family: 'Libre Baskerville', serif;
     font-style: italic;
@@ -1227,7 +1231,7 @@
         <div class="position-tag" id="position-tag-vowels">position: after consonant</div>
         <div class="example-word">
           <div class="example-thai" id="example-thai-vowels">จะ</div>
-          <div class="example-rtgs" id="example-rtgs-vowels">jà</div>
+          <div class="example-rtgs example-rtgs-clickable" id="example-rtgs-vowels" onclick="event.stopPropagation(); pronounceExample('vowels')" title="Click to hear it">jà</div>
           <div class="example-eng" id="example-eng-vowels">will / about to</div>
         </div>
       </div>
@@ -1488,7 +1492,7 @@ const vowelsData = [
   {
     id: "sara-a",
     saraName: "สระอะ", saraRom: "sara a",
-    display: "ะ",
+    display: "ะ", pre: "", post: "ะ", noCarrier: true,
     rtgs: "a", sound: 'short "a"', ipa: "/a/", type: "Short",
     position: "after consonant",
     exThai: "จะ", exRtgs: "jà", exEng: "will / about to",
@@ -1497,7 +1501,7 @@ const vowelsData = [
   {
     id: "sara-i",
     saraName: "สระอิ", saraRom: "sara i",
-    display: C + "ิ",
+    display: C + "ิ", pre: "", post: "ิ",
     rtgs: "i", sound: 'short "i"', ipa: "/i/", type: "Short",
     position: "above consonant",
     exThai: "กิน", exRtgs: "gin", exEng: "to eat",
@@ -1506,7 +1510,7 @@ const vowelsData = [
   {
     id: "sara-ue-short",
     saraName: "สระอึ", saraRom: "sara ue",
-    display: C + "ึ",
+    display: C + "ึ", pre: "", post: "ึ",
     rtgs: "ue", sound: 'short "ue"', ipa: "/ɯ/", type: "Short",
     position: "above consonant",
     exThai: "ฝึก", exRtgs: "fùek", exEng: "to practise",
@@ -1515,7 +1519,7 @@ const vowelsData = [
   {
     id: "sara-u-short",
     saraName: "สระอุ", saraRom: "sara u",
-    display: C + "ุ",
+    display: C + "ุ", pre: "", post: "ุ",
     rtgs: "u", sound: 'short "u"', ipa: "/u/", type: "Short",
     position: "below consonant",
     exThai: "ดุ", exRtgs: "dù", exEng: "fierce / to scold",
@@ -1524,7 +1528,7 @@ const vowelsData = [
   {
     id: "sara-e-short",
     saraName: "สระเอะ", saraRom: "sara e",
-    display: "เ" + C + "ะ",
+    display: "เ" + C + "ะ", pre: "เ", post: "ะ",
     rtgs: "e", sound: 'short "e"', ipa: "/e/", type: "Short",
     position: "before + after consonant",
     exThai: "เตะ", exRtgs: "tè", exEng: "to kick",
@@ -1533,7 +1537,7 @@ const vowelsData = [
   {
     id: "sara-ae-short",
     saraName: "สระแอะ", saraRom: "sara ae",
-    display: "แ" + C + "ะ",
+    display: "แ" + C + "ะ", pre: "แ", post: "ะ",
     rtgs: "ae", sound: 'short "ae"', ipa: "/ɛ/", type: "Short",
     position: "before + after consonant",
     exThai: "แตะ", exRtgs: "tàe", exEng: "to touch",
@@ -1542,7 +1546,7 @@ const vowelsData = [
   {
     id: "sara-o-short",
     saraName: "สระโอะ", saraRom: "sara o",
-    display: "โ" + C + "ะ",
+    display: "โ" + C + "ะ", pre: "โ", post: "ะ",
     rtgs: "o", sound: 'short "o"', ipa: "/o/", type: "Short",
     position: "before + after consonant",
     exThai: "โต๊ะ", exRtgs: "tó", exEng: "table",
@@ -1551,7 +1555,7 @@ const vowelsData = [
   {
     id: "sara-aw-short",
     saraName: "สระเอาะ", saraRom: "sara aw",
-    display: "เ" + C + "าะ",
+    display: "เ" + C + "าะ", pre: "เ", post: "าะ",
     rtgs: "aw", sound: 'short "aw"', ipa: "/ɔ/", type: "Short",
     position: "before + after consonant",
     exThai: "เบาะ", exRtgs: "bàw", exEng: "cushion",
@@ -1560,7 +1564,7 @@ const vowelsData = [
   {
     id: "sara-oe-short",
     saraName: "สระเออะ", saraRom: "sara oe",
-    display: "เ" + C + "อะ",
+    display: "เ" + C + "อะ", pre: "เ", post: "อะ",
     rtgs: "oe", sound: 'short "oe"', ipa: "/ɤ/", type: "Short",
     position: "before + after consonant",
     exThai: "เลอะ", exRtgs: "lóe", exEng: "messy / dirty",
@@ -1569,7 +1573,7 @@ const vowelsData = [
   {
     id: "sara-ia-short",
     saraName: "สระเอียะ", saraRom: "sara ia",
-    display: "เ" + C + "ียะ",
+    display: "เ" + C + "ียะ", pre: "เ", post: "ียะ",
     rtgs: "ia", sound: 'short "ia"', ipa: "/ia/", type: "Short",
     position: "before + after consonant",
     exThai: "เปียะ", exRtgs: "pìa", exEng: "wet (rare)",
@@ -1578,7 +1582,7 @@ const vowelsData = [
   {
     id: "sara-uea-short",
     saraName: "สระเอือะ", saraRom: "sara uea",
-    display: "เ" + C + "ือะ",
+    display: "เ" + C + "ือะ", pre: "เ", post: "ือะ",
     rtgs: "uea", sound: 'short "uea"', ipa: "/ɯa/", type: "Short",
     position: "before + after consonant",
     exThai: "เกือะ", exRtgs: "gùea", exEng: "(rare form)",
@@ -1587,7 +1591,7 @@ const vowelsData = [
   {
     id: "sara-ua-short",
     saraName: "สระอัวะ", saraRom: "sara ua",
-    display: C + "ัวะ",
+    display: C + "ัวะ", pre: "", post: "ัวะ",
     rtgs: "ua", sound: 'short "ua"', ipa: "/ua/", type: "Short",
     position: "after consonant",
     exThai: "วัวะ", exRtgs: "wúa", exEng: "(rare short form)",
@@ -1596,7 +1600,7 @@ const vowelsData = [
   {
     id: "sara-ai-mai-muan",
     saraName: "สระใอ", saraRom: "sara ai (mai muan)",
-    display: "ใ" + C,
+    display: "ใ" + C, pre: "ใ", post: "",
     rtgs: "ai", sound: '"ai" sound', ipa: "/aj/", type: "Short",
     position: "before consonant",
     exThai: "ใจ", exRtgs: "jai", exEng: "heart / mind",
@@ -1605,7 +1609,7 @@ const vowelsData = [
   {
     id: "sara-ai-mai-malai",
     saraName: "สระไอ", saraRom: "sara ai (mai malai)",
-    display: "ไ" + C,
+    display: "ไ" + C, pre: "ไ", post: "",
     rtgs: "ai", sound: '"ai" sound', ipa: "/aj/", type: "Short",
     position: "before consonant",
     exThai: "ไป", exRtgs: "pai", exEng: "to go",
@@ -1615,7 +1619,7 @@ const vowelsData = [
   {
     id: "sara-aa",
     saraName: "สระอา", saraRom: "sara aa",
-    display: C + "า",
+    display: C + "า", pre: "", post: "า",
     rtgs: "aa", sound: 'long "aa"', ipa: "/aː/", type: "Long",
     position: "after consonant",
     exThai: "มา", exRtgs: "maa", exEng: "to come",
@@ -1624,7 +1628,7 @@ const vowelsData = [
   {
     id: "sara-ii",
     saraName: "สระอี", saraRom: "sara ii",
-    display: C + "ี",
+    display: C + "ี", pre: "", post: "ี",
     rtgs: "ii", sound: 'long "ii"', ipa: "/iː/", type: "Long",
     position: "above consonant",
     exThai: "ดี", exRtgs: "dii", exEng: "good",
@@ -1633,7 +1637,7 @@ const vowelsData = [
   {
     id: "sara-uue",
     saraName: "สระอือ", saraRom: "sara uue",
-    display: C + "ือ",
+    display: C + "ือ", pre: "", post: "ือ",
     rtgs: "uue", sound: 'long "uue"', ipa: "/ɯː/", type: "Long",
     position: "above + after consonant",
     exThai: "มือ", exRtgs: "mue", exEng: "hand",
@@ -1642,7 +1646,7 @@ const vowelsData = [
   {
     id: "sara-uu",
     saraName: "สระอู", saraRom: "sara uu",
-    display: C + "ู",
+    display: C + "ู", pre: "", post: "ู",
     rtgs: "uu", sound: 'long "uu"', ipa: "/uː/", type: "Long",
     position: "below consonant",
     exThai: "ดู", exRtgs: "duu", exEng: "to look / watch",
@@ -1651,7 +1655,7 @@ const vowelsData = [
   {
     id: "sara-ee",
     saraName: "สระเอ", saraRom: "sara ee",
-    display: "เ" + C,
+    display: "เ" + C, pre: "เ", post: "",
     rtgs: "ee", sound: 'long "ee"', ipa: "/eː/", type: "Long",
     position: "before consonant",
     exThai: "เห็น", exRtgs: "hěn", exEng: "to see",
@@ -1660,7 +1664,7 @@ const vowelsData = [
   {
     id: "sara-aae",
     saraName: "สระแอ", saraRom: "sara aae",
-    display: "แ" + C,
+    display: "แ" + C, pre: "แ", post: "",
     rtgs: "aae", sound: 'long "aae"', ipa: "/ɛː/", type: "Long",
     position: "before consonant",
     exThai: "แขน", exRtgs: "khǎen", exEng: "arm",
@@ -1669,7 +1673,7 @@ const vowelsData = [
   {
     id: "sara-oo",
     saraName: "สระโอ", saraRom: "sara oo",
-    display: "โ" + C,
+    display: "โ" + C, pre: "โ", post: "",
     rtgs: "oo", sound: 'long "oo"', ipa: "/oː/", type: "Long",
     position: "before consonant",
     exThai: "โต", exRtgs: "too", exEng: "big / grown up",
@@ -1678,7 +1682,7 @@ const vowelsData = [
   {
     id: "sara-aaw",
     saraName: "สระออ", saraRom: "sara aaw",
-    display: C + "อ",
+    display: C + "อ", pre: "", post: "อ",
     rtgs: "aaw", sound: 'long "aaw"', ipa: "/ɔː/", type: "Long",
     position: "after consonant",
     exThai: "ช้อน", exRtgs: "chón", exEng: "spoon",
@@ -1687,7 +1691,7 @@ const vowelsData = [
   {
     id: "sara-ooe",
     saraName: "สระเออ", saraRom: "sara ooe",
-    display: "เ" + C + "อ",
+    display: "เ" + C + "อ", pre: "เ", post: "อ",
     rtgs: "ooe", sound: 'long "ooe"', ipa: "/ɤː/", type: "Long",
     position: "before + after consonant",
     exThai: "เจอ", exRtgs: "joe", exEng: "to meet / encounter",
@@ -1696,7 +1700,7 @@ const vowelsData = [
   {
     id: "sara-iia",
     saraName: "สระเอีย", saraRom: "sara iia",
-    display: "เ" + C + "ีย",
+    display: "เ" + C + "ีย", pre: "เ", post: "ีย",
     rtgs: "iia", sound: 'long "iia"', ipa: "/ia/", type: "Long",
     position: "before + above + after consonant",
     exThai: "เรียน", exRtgs: "rian", exEng: "to study",
@@ -1705,7 +1709,7 @@ const vowelsData = [
   {
     id: "sara-uuea",
     saraName: "สระเอือ", saraRom: "sara uuea",
-    display: "เ" + C + "ือ",
+    display: "เ" + C + "ือ", pre: "เ", post: "ือ",
     rtgs: "uuea", sound: 'long "uuea"', ipa: "/ɯa/", type: "Long",
     position: "before + above + after consonant",
     exThai: "เรือ", exRtgs: "ruea", exEng: "boat",
@@ -1715,7 +1719,7 @@ const vowelsData = [
   {
     id: "sara-ao",
     saraName: "สระเอา", saraRom: "sara ao",
-    display: "เ" + C + "า",
+    display: "เ" + C + "า", pre: "เ", post: "า",
     rtgs: "ao", sound: '"ao" diphthong', ipa: "/aw/", type: "Special",
     position: "before + after consonant",
     exThai: "เขา", exRtgs: "khǎo", exEng: "he / she / they",
@@ -1724,7 +1728,7 @@ const vowelsData = [
   {
     id: "sara-am",
     saraName: "สระอำ", saraRom: "sara am",
-    display: C + "ำ",
+    display: C + "ำ", pre: "", post: "ำ",
     rtgs: "am", sound: '"am" nasal', ipa: "/am/", type: "Special",
     position: "after consonant",
     exThai: "ทำ", exRtgs: "tham", exEng: "to do / make",
@@ -1733,7 +1737,7 @@ const vowelsData = [
   {
     id: "rr",
     saraName: "สระรร", saraRom: "rr (sara rr)",
-    display: C + "รร",
+    display: C + "รร", pre: "", post: "รร",
     rtgs: "an / a", sound: '"an" or "a"', ipa: "/an/ or /a/", type: "Special",
     position: "after consonant",
     exThai: "กรรม", exRtgs: "gam", exEng: "karma",
@@ -1742,7 +1746,7 @@ const vowelsData = [
   {
     id: "sara-uua",
     saraName: "สระอัว", saraRom: "sara uua",
-    display: C + "ัว",
+    display: C + "ัว", pre: "", post: "ัว",
     rtgs: "uua", sound: '"uua" diphthong', ipa: "/ua/", type: "Special",
     position: "after consonant",
     exThai: "วัว", exRtgs: "wua", exEng: "cow",
@@ -1951,12 +1955,15 @@ const decks = {
     isFlipped: false,
     known: new Set(savedProgress.vowels ? savedProgress.vowels.known : []),
     learning: new Set(savedProgress.vowels ? savedProgress.vowels.learning : []),
-    pronounceWord: v => v.pronounceWord,
+    pronounceWord: v => v.display,
+    exampleWord: v => v.exThai,
     renderCard(v) {
       const typeLower = v.type.toLowerCase();
       const num = String(vowelsData.indexOf(v) + 1).padStart(2, '0');
 
-      setText('vowel-display-vowels', v.display);
+      const carrierHtml = v.noCarrier ? '' : '<span class="vowel-carrier">' + C + '</span>';
+      const vowelDisplayEl = document.getElementById('vowel-display-vowels');
+      if (vowelDisplayEl) vowelDisplayEl.innerHTML = v.pre + carrierHtml + v.post;
       setText('sara-name-vowels', v.saraName + ' · ' + v.saraRom);
       setText('rtgs-text-vowels', '"' + v.rtgs + '"');
       setText('card-number-vowels', num);
@@ -1989,6 +1996,7 @@ const decks = {
     known: new Set(savedProgress.consonants ? savedProgress.consonants.known : []),
     learning: new Set(savedProgress.consonants ? savedProgress.consonants.learning : []),
     pronounceWord: c => c.thai,
+    exampleWord: c => c.example,
     renderCard(c) {
       const clsLower = c.cls.toLowerCase();
       const num = String(consonantsData.indexOf(c) + 1).padStart(2, '0');
@@ -2255,10 +2263,11 @@ function pronounce(deckId) {
 function pronounceExample(deckId) {
   const deck = decks[deckId];
   const item = deck.filtered[deck.currentIndex];
-  if (!item || !item.example || !window.speechSynthesis) return;
+  const word = item && deck.exampleWord(item);
+  if (!word || !window.speechSynthesis) return;
   window.speechSynthesis.cancel();
-  const el = document.getElementById('example-rom-' + deckId);
-  const utt = new SpeechSynthesisUtterance(item.example);
+  const el = document.getElementById('example-rom-' + deckId) || document.getElementById('example-rtgs-' + deckId);
+  const utt = new SpeechSynthesisUtterance(word);
   utt.lang = 'th-TH';
   utt.rate = 0.8;
   const voices = window.speechSynthesis.getVoices();
@@ -2493,7 +2502,7 @@ const VOCAB = [
     "english": "To Watch / To See",
     "letters": "duu",
     "phonetic": "duu",
-    "thai": "เห็น"
+    "thai": "ดู"
   },
   {
     "english": "Small",
