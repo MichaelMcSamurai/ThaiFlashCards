@@ -1152,13 +1152,13 @@
       <div class="deck-card" onclick="enterDeck('phrases')">
         <div class="deck-card-top">
           <div class="deck-thai-label">วลี</div>
-          <div class="deck-count-tag" id="home-count-phrases">99 cards</div>
+          <div class="deck-count-tag" id="home-count-phrases">114 cards</div>
         </div>
         <div class="deck-title">Thai <span>Phrases</span></div>
-        <div class="deck-desc">99 essential words &amp; phrases by category</div>
+        <div class="deck-desc">114 essential words &amp; phrases by category</div>
         <div class="deck-progress-row">
           <div class="deck-progress-track"><div class="deck-progress-fill" id="home-progress-phrases"></div></div>
-          <div class="deck-progress-label" id="home-progress-label-phrases"><b>0</b> / 99 known</div>
+          <div class="deck-progress-label" id="home-progress-label-phrases"><b>0</b> / 114 known</div>
         </div>
       </div>
 
@@ -1369,8 +1369,8 @@
   </div>
   <header>
     <div class="logo-thai">ภาษาไทย</div>
-    <h1>Thai <span>Flashcards</span></h1>
-    <div class="subtitle">99 ESSENTIAL PHRASES &amp; WORDS</div>
+    <h1>Thai <span>Phrases</span></h1>
+    <div class="subtitle">114 ESSENTIAL PHRASES &amp; WORDS</div>
   </header>
 
   <div class="categories" id="filter-bar-phrases"></div>
@@ -1378,12 +1378,12 @@
   <div class="stats">
     <div class="stat"><div class="stat-num" id="stat-known-phrases">0</div><div class="stat-label">Known</div></div>
     <div class="stat"><div class="stat-num" id="stat-learning-phrases">0</div><div class="stat-label">Learning</div></div>
-    <div class="stat"><div class="stat-num" id="stat-remaining-phrases">99</div><div class="stat-label">Remaining</div></div>
+    <div class="stat"><div class="stat-num" id="stat-remaining-phrases">114</div><div class="stat-label">Remaining</div></div>
   </div>
 
   <div class="progress-bar-wrap">
     <div class="progress-track"><div class="progress-fill" id="progress-fill-phrases"></div></div>
-    <div class="progress-label" id="progress-label-phrases">1 / 99</div>
+    <div class="progress-label" id="progress-label-phrases">1 / 114</div>
   </div>
 
   <div class="card-scene" id="card-scene-phrases" onclick="flipCard('phrases')">
@@ -1846,6 +1846,12 @@ const phrasesData = [
   { thai: "แปด", phonetic: "pàet", english: "Eight (8)", usage: "Cardinal number", category: "Numbers" },
   { thai: "เก้า", phonetic: "kâao", english: "Nine (9)", usage: "Cardinal number", category: "Numbers" },
   { thai: "สิบ", phonetic: "sìp", english: "Ten (10)", usage: "Cardinal number", category: "Numbers" },
+  { thai: "ยี่สิบ", phonetic: "yîi-sìp", english: "Twenty (20)", usage: "Cardinal number", category: "Numbers" },
+  { thai: "สามสิบ", phonetic: "sǎam-sìp", english: "Thirty (30)", usage: "Cardinal number", category: "Numbers" },
+  { thai: "สี่สิบ", phonetic: "sìi-sìp", english: "Forty (40)", usage: "Cardinal number", category: "Numbers" },
+  { thai: "ห้าสิบ", phonetic: "hâa-sìp", english: "Fifty (50)", usage: "Cardinal number", category: "Numbers" },
+  { thai: "หกสิบ", phonetic: "hòk-sìp", english: "Sixty (60)", usage: "Cardinal number", category: "Numbers" },
+  { thai: "หกสิบห้า", phonetic: "hòk-sìp-hâa", english: "Sixty Five (65)", usage: "Cardinal number", category: "Numbers" },
   { thai: "ร้อย", phonetic: "rói", english: "Hundred (100)", usage: "Used in prices", category: "Numbers" },
   { thai: "พัน", phonetic: "phan", english: "Thousand (1,000)", usage: "Used in prices", category: "Numbers" },
   { thai: "ไป", phonetic: "pai", english: "Go / To go to", usage: "ไปไหน = where are you going?", category: "Transport" },
@@ -1901,6 +1907,15 @@ const phrasesData = [
   { thai: "เที่ยวไทย", phonetic: "thîao thai", english: "Traveling in Thailand", usage: "เที่ยว = travel/sightsee", category: "Conversation" },
   { thai: "อยากได้", phonetic: "yàak dâai", english: "I want / Would like", usage: "Polite way to request", category: "Conversation" },
   { thai: "เชิญ", phonetic: "chern", english: "Please / Go ahead / Welcome", usage: "Inviting someone to proceed", category: "Conversation" },
+  { thai: "อายุเท่าไหร่", phonetic: "Ayu tao rai?", english: "How old are you?", usage: "Asking someone's age", category: "Essentials" },
+  { thai: "รถไฟ", phonetic: "Rot fai", english: "Train", usage: "Mode of transport by rail", category: "Transport" },
+  { thai: "อาบน้ำ", phonetic: "Ab nam", english: "Shower", usage: "To bathe or shower", category: "Essentials" },
+  { thai: "ติงต๊อง", phonetic: "ting-tǒng", english: "Crazy", usage: "Informal, playful way to call someone (or something) crazy or silly", category: "Emotions" },
+  { thai: "ร้อนจะตายอยู่แล้ว", phonetic: "Ron ja taiyu leaw", english: "Heat is killing me", usage: "Casual exclamation about extreme heat", category: "Emotions" },
+  { thai: "กิน", phonetic: "Gin", english: "Eat", usage: "Basic verb, to eat", category: "Food" },
+  { thai: "ดื่ม", phonetic: "Duem", english: "Drink", usage: "Basic verb, to drink", category: "Food" },
+  { thai: "เอา", phonetic: "Ao", english: "I take/I want", usage: "Used when selecting or requesting something, e.g. ordering or shopping", category: "Shopping" },
+  { thai: "ไม่เอาครับ", phonetic: "Mai ao kap", english: "I don't want", usage: "Polite way to decline something offered", category: "Shopping" },
 ];
 
 // ============================================================
@@ -2031,7 +2046,7 @@ const decks = {
     isFlipped: false,
     known: new Set(savedProgress.phrases ? savedProgress.phrases.known : []),
     learning: new Set(savedProgress.phrases ? savedProgress.phrases.learning : []),
-    pronounceWord: p => p.thai,
+    pronounceWord: p => p.tts || p.thai,
     renderCard(p) {
       setText('thai-text-phrases', p.thai);
       setText('phonetic-text-phrases', p.phonetic);
@@ -2248,16 +2263,19 @@ function pronounce(deckId) {
   if (!item || !window.speechSynthesis) return;
   window.speechSynthesis.cancel();
   const btn = document.getElementById('pronounce-btn-' + deckId);
-  const utt = new SpeechSynthesisUtterance(deck.pronounceWord(item));
-  utt.lang = 'th-TH';
-  utt.rate = 0.8;
-  const voices = window.speechSynthesis.getVoices();
-  const thaiVoice = voices.find(v => v.lang === 'th-TH' || v.lang.startsWith('th'));
-  if (thaiVoice) utt.voice = thaiVoice;
-  utt.onstart = () => btn && btn.classList.add('speaking');
-  utt.onend   = () => btn && btn.classList.remove('speaking');
-  utt.onerror = () => btn && btn.classList.remove('speaking');
-  window.speechSynthesis.speak(utt);
+  const wordToSpeak = deck.pronounceWord(item);
+  setTimeout(() => {
+    const utt = new SpeechSynthesisUtterance(wordToSpeak);
+    utt.lang = 'th-TH';
+    utt.rate = 0.8;
+    const voices = window.speechSynthesis.getVoices();
+    const thaiVoice = voices.find(v => v.lang === 'th-TH' || v.lang.startsWith('th'));
+    if (thaiVoice) utt.voice = thaiVoice;
+    utt.onstart = () => btn && btn.classList.add('speaking');
+    utt.onend   = () => btn && btn.classList.remove('speaking');
+    utt.onerror = () => btn && btn.classList.remove('speaking');
+    window.speechSynthesis.speak(utt);
+  }, 60);
 }
 
 function pronounceExample(deckId) {
@@ -2267,16 +2285,18 @@ function pronounceExample(deckId) {
   if (!word || !window.speechSynthesis) return;
   window.speechSynthesis.cancel();
   const el = document.getElementById('example-rom-' + deckId) || document.getElementById('example-rtgs-' + deckId);
-  const utt = new SpeechSynthesisUtterance(word);
-  utt.lang = 'th-TH';
-  utt.rate = 0.8;
-  const voices = window.speechSynthesis.getVoices();
-  const thaiVoice = voices.find(v => v.lang === 'th-TH' || v.lang.startsWith('th'));
-  if (thaiVoice) utt.voice = thaiVoice;
-  utt.onstart = () => el && el.classList.add('speaking');
-  utt.onend   = () => el && el.classList.remove('speaking');
-  utt.onerror = () => el && el.classList.remove('speaking');
-  window.speechSynthesis.speak(utt);
+  setTimeout(() => {
+    const utt = new SpeechSynthesisUtterance(word);
+    utt.lang = 'th-TH';
+    utt.rate = 0.8;
+    const voices = window.speechSynthesis.getVoices();
+    const thaiVoice = voices.find(v => v.lang === 'th-TH' || v.lang.startsWith('th'));
+    if (thaiVoice) utt.voice = thaiVoice;
+    utt.onstart = () => el && el.classList.add('speaking');
+    utt.onend   = () => el && el.classList.remove('speaking');
+    utt.onerror = () => el && el.classList.remove('speaking');
+    window.speechSynthesis.speak(utt);
+  }, 60);
 }
 
 if (window.speechSynthesis) {
