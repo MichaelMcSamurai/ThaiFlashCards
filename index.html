@@ -2130,10 +2130,19 @@ function renderFilters(deckId) {
   ).join('');
 }
 
+function shuffleArray(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
 function setFilter(deckId, f) {
   const deck = decks[deckId];
   deck.activeFilter = f;
   deck.filtered = f === 'All' ? [...deck.data] : deck.data.filter(item => deck.matchesFilter(item, f));
+  shuffleArray(deck.filtered);
   deck.currentIndex = 0;
   deck.isFlipped = false;
   renderFilters(deckId);
@@ -2205,10 +2214,7 @@ function updateStats(deckId) {
 
 function shuffle(deckId) {
   const deck = decks[deckId];
-  for (let i = deck.filtered.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [deck.filtered[i], deck.filtered[j]] = [deck.filtered[j], deck.filtered[i]];
-  }
+  shuffleArray(deck.filtered);
   deck.currentIndex = 0;
   deck.isFlipped = false;
   renderCard(deckId);
@@ -2221,6 +2227,7 @@ function resetAll(deckId) {
   deck.currentIndex = 0;
   deck.isFlipped = false;
   deck.filtered = deck.activeFilter === 'All' ? [...deck.data] : deck.data.filter(item => deck.matchesFilter(item, deck.activeFilter));
+  shuffleArray(deck.filtered);
   updateStats(deckId);
   renderCard(deckId);
   saveProgress();
