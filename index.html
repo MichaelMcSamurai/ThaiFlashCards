@@ -387,6 +387,7 @@
   }
 
   .card-inner.flipped { transform: rotateY(180deg); }
+  .card-inner.no-transition { transition: none !important; }
 
   .card-inner:not(.flipped) .card-back { pointer-events: none; }
   .card-inner.flipped .card-front { pointer-events: none; }
@@ -1771,7 +1772,7 @@ const consonantsData = [
   { thai: "ฎ", rtgs: "d",  name: "ชฎา",   nameRom: "chada", cls: "Mid", initial: "d",  final: "t",   example: "ชฎา",   exEng: "headdress", exRom: "chá-daa", letterName: "daaw chá-daa", emoji: "👑" },
   { thai: "ฏ", rtgs: "t",  name: "ปฏัก",  nameRom: "patak", cls: "Mid", initial: "t",  final: "t",   example: "ปฏัก",  exEng: "goad", exRom: "bpà-dtàk", letterName: "dtaaw bpà-dtàk", emoji: "🔱" },
   { thai: "ฐ", rtgs: "th", name: "ฐาน",   nameRom: "than",  cls: "High", initial: "th", final: "t",  example: "ฐาน",   exEng: "base/pedestal", exRom: "thăan", letterName: "thăaw-thăan", emoji: "🏛️" },
-  { thai: "ฑ", rtgs: "th", name: "มณโฑ",  nameRom: "montho", cls: "Low", initial: "th", final: "t",  example: "ทหาร",  exEng: "soldier", exRom: "thá-hăan", letterName: "thaaw mon-thoo", emoji: "👸" },
+  { thai: "ฑ", rtgs: "th", name: "มณโฑ",  nameRom: "montho", cls: "Low", initial: "th", final: "t",  example: "ทหาร",  exEng: "soldier", exRom: "thá-hăan", letterName: "thaaw mon-thoo", emoji: "🪖" },
   { thai: "ฒ", rtgs: "th", name: "ผู้เฒ่า", nameRom: "phu thao", cls: "Low", initial: "th", final: "t", example: "เฒ่า", exEng: "elder", exRom: "thâo", letterName: "thaaw phûu-thăo", emoji: "👴" },
   { thai: "ณ", rtgs: "n",  name: "เณร",   nameRom: "nen",   cls: "Low", initial: "n",  final: "n",   example: "เณร",   exEng: "novice monk", exRom: "naen", letterName: "naaw naen", emoji: "🙏" },
   { thai: "ด", rtgs: "d",  name: "เด็ก",   nameRom: "dek",   cls: "Mid", initial: "d",  final: "t",   example: "เด็ก",  exEng: "child", exRom: "dèk", letterName: "daaw dèk", emoji: "👶" },
@@ -1786,7 +1787,7 @@ const consonantsData = [
   { thai: "ฝ", rtgs: "f",  name: "ฝา",     nameRom: "fa",    cls: "High", initial: "f",  final: "—",  example: "ฝา",    exEng: "lid/cover", exRom: "făa", letterName: "făaw făa", emoji: "🫙" },
   { thai: "พ", rtgs: "ph", name: "พาน",    nameRom: "phan",  cls: "Low", initial: "ph", final: "p",   example: "พาน",   exEng: "tray", exRom: "phaan", letterName: "phaaw phaan", emoji: "🧺" },
   { thai: "ฟ", rtgs: "f",  name: "ฟัน",    nameRom: "fan",   cls: "Low", initial: "f",  final: "p",   example: "ฟัน",   exEng: "tooth", exRom: "fan", letterName: "faaw fan", emoji: "🦷" },
-  { thai: "ภ", rtgs: "ph", name: "สำเภา",  nameRom: "samphao", cls: "Low", initial: "ph", final: "p", example: "ภาษา",  exEng: "language", exRom: "phaa-săa", letterName: "phaaw săm-phao", emoji: "🚢" },
+  { thai: "ภ", rtgs: "ph", name: "สำเภา",  nameRom: "samphao", cls: "Low", initial: "ph", final: "p", example: "ภาษา",  exEng: "language", exRom: "phaa-săa", letterName: "phaaw săm-phao", emoji: "🗣️" },
   { thai: "ม", rtgs: "m",  name: "ม้า",     nameRom: "ma",    cls: "Low", initial: "m",  final: "m",  example: "ม้า",    exEng: "horse", exRom: "máa", letterName: "maaw máa", emoji: "🐴" },
   { thai: "ย", rtgs: "y",  name: "ยักษ์",  nameRom: "yak",   cls: "Low", initial: "y",  final: "y",  example: "ยักษ์",  exEng: "giant", exRom: "yák", letterName: "yaaw yák", emoji: "👹" },
   { thai: "ร", rtgs: "r",  name: "เรือ",   nameRom: "ruea",  cls: "Low", initial: "r",  final: "n",  example: "เรือ",   exEng: "boat", exRom: "ruuea", letterName: "raaw ruuea", emoji: "⛵" },
@@ -1798,7 +1799,7 @@ const consonantsData = [
   { thai: "ห", rtgs: "h",  name: "หีบ",    nameRom: "hip",   cls: "High", initial: "h", final: "—",  example: "หีบ",    exEng: "chest/box", exRom: "hìip", letterName: "hăaw hìip", emoji: "📦" },
   { thai: "ฬ", rtgs: "l",  name: "จุฬา",   nameRom: "chula", cls: "Low", initial: "l",  final: "n",  example: "จุฬา",   exEng: "kite", exRom: "jù-laa", letterName: "laaw jù-laa", emoji: "🪁" },
   { thai: "อ", rtgs: "o",  name: "อ่าง",   nameRom: "ang",   cls: "Mid", initial: "—",  final: "—",  example: "อ่าง",   exEng: "basin/vowel carrier", exRom: "àang", letterName: "aaw àang", emoji: "🛁" },
-  { thai: "ฮ", rtgs: "h",  name: "นกฮูก",  nameRom: "nok huk", cls: "Low", initial: "h", final: "—", example: "ฮ่องกง", exEng: "Hong Kong", exRom: "hông kong", letterName: "haaw nók-hûuk", emoji: "🦉" },
+  { thai: "ฮ", rtgs: "h",  name: "นกฮูก",  nameRom: "nok huk", cls: "Low", initial: "h", final: "—", example: "ฮ่องกง", exEng: "Hong Kong", exRom: "hông kong", letterName: "haaw nók-hûuk", emoji: "🏙️" },
 ];
 
 const phrasesData = [
@@ -2169,6 +2170,7 @@ function setFilter(deckId, f) {
   deck.currentIndex = 0;
   deck.isFlipped = false;
   renderFilters(deckId);
+  snapToFrontInstantly(deckId);
   renderCard(deckId);
   updateStats(deckId);
 }
@@ -2199,11 +2201,21 @@ function flipCard(deckId) {
   renderCard(deckId);
 }
 
+function snapToFrontInstantly(deckId) {
+  const inner = document.getElementById('card-inner-' + deckId);
+  if (!inner) return;
+  inner.classList.add('no-transition');
+  inner.classList.remove('flipped');
+  void inner.offsetHeight; // force reflow so the class change takes effect immediately
+  inner.classList.remove('no-transition');
+}
+
 function nextCard(deckId) {
   const deck = decks[deckId];
   if (deck.currentIndex < deck.filtered.length - 1) {
     deck.currentIndex++;
     deck.isFlipped = false;
+    snapToFrontInstantly(deckId);
     renderCard(deckId);
   }
 }
@@ -2213,6 +2225,7 @@ function prevCard(deckId) {
   if (deck.currentIndex > 0) {
     deck.currentIndex--;
     deck.isFlipped = false;
+    snapToFrontInstantly(deckId);
     renderCard(deckId);
   }
 }
@@ -2240,6 +2253,7 @@ function shuffle(deckId) {
   shuffleArray(deck.filtered);
   deck.currentIndex = 0;
   deck.isFlipped = false;
+  snapToFrontInstantly(deckId);
   renderCard(deckId);
 }
 
@@ -2252,6 +2266,7 @@ function resetAll(deckId) {
   deck.filtered = deck.activeFilter === 'All' ? [...deck.data] : deck.data.filter(item => deck.matchesFilter(item, deck.activeFilter));
   shuffleArray(deck.filtered);
   updateStats(deckId);
+  snapToFrontInstantly(deckId);
   renderCard(deckId);
   saveProgress();
   renderHomeStats();
