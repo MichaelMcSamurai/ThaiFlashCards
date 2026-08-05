@@ -537,6 +537,57 @@
     line-height: 1;
   }
 
+  .lc-english-text {
+    font-family: 'Libre Baskerville', serif;
+    font-size: clamp(32px, 7vw, 48px);
+    font-weight: 700;
+    color: var(--text);
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .lc-caption {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    color: var(--muted);
+    text-transform: uppercase;
+    text-align: center;
+  }
+
+  .card-day-tag {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--special-color);
+    border: 1px solid var(--special-color);
+    padding: 3px 8px;
+    border-radius: 2px;
+    opacity: 0.9;
+  }
+
+  .lc-romanization {
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    font-weight: 700;
+    font-size: clamp(34px, 7.5vw, 52px);
+    color: var(--thai-gold);
+    text-align: center;
+    margin-bottom: 14px;
+  }
+
+  .lc-thai-script {
+    font-family: 'Niramit', sans-serif;
+    font-size: clamp(20px, 4vw, 26px);
+    font-weight: 300;
+    color: var(--muted);
+    text-align: center;
+  }
+
   .english-text {
     font-family: 'Libre Baskerville', serif;
     font-size: clamp(22px, 4.5vw, 32px);
@@ -1124,6 +1175,19 @@
     </div>
 
     <div class="deck-list">
+      <div class="deck-card" onclick="enterDeck('language')">
+        <div class="deck-card-top">
+          <div class="deck-thai-label">ห้องเรียน</div>
+          <div class="deck-count-tag" id="home-count-language">33 cards</div>
+        </div>
+        <div class="deck-title">Language <span>Class</span></div>
+        <div class="deck-desc">Vocabulary from class, organized by session</div>
+        <div class="deck-progress-row">
+          <div class="deck-progress-track"><div class="deck-progress-fill" id="home-progress-language"></div></div>
+          <div class="deck-progress-label" id="home-progress-label-language"><b>0</b> / 33 known</div>
+        </div>
+      </div>
+
       <div class="deck-card" onclick="enterDeck('vowels')">
         <div class="deck-card-top">
           <div class="deck-thai-label">สระ</div>
@@ -1181,6 +1245,76 @@
     <a class="travelaroi-credit" href="https://travelaroi.com" target="_blank" rel="noopener">
       a study tool by <span class="wordmark"><span class="lime">Travel</span><span class="white">aroi</span></span>
     </a>
+  </div>
+</div>
+
+<!-- ============ LANGUAGE CLASS DECK ============ -->
+<div class="container view" id="view-language">
+  <div class="deck-topbar">
+    <button class="btn-back" onclick="goHome()">&larr; Decks</button>
+    <div class="deck-topbar-spacer"></div>
+  </div>
+  <header>
+    <div class="logo-thai">ห้องเรียน</div>
+    <h1>Language <span>Class</span></h1>
+    <p class="subtitle">VOCABULARY BY CLASS SESSION</p>
+  </header>
+
+  <div class="filter-bar" id="filter-bar-language"></div>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-num" id="stat-known-language">0</div><div class="stat-label">Known</div></div>
+    <div class="stat"><div class="stat-num" id="stat-learning-language">0</div><div class="stat-label">Learning</div></div>
+    <div class="stat"><div class="stat-num" id="stat-remaining-language">33</div><div class="stat-label">Remaining</div></div>
+  </div>
+
+  <div class="progress-bar-wrap">
+    <div class="progress-track"><div class="progress-fill" id="progress-fill-language"></div></div>
+    <div class="progress-label" id="progress-label-language">1 / 33</div>
+  </div>
+
+  <div class="card-scene" id="card-scene-language" onclick="flipCard('language')">
+    <div class="card-inner" id="card-inner-language">
+      <div class="card-face card-front">
+        <div class="card-day-tag" id="card-day-tag-language">CLASS 3</div>
+        <div class="card-label">English</div>
+        <div class="lc-english-text" id="lc-english-text">Pencil</div>
+        <div class="lc-caption" id="lc-caption-language">Class 3</div>
+      </div>
+      <div class="card-face card-back">
+        <div class="card-day-tag" id="card-day-tag-back-language">CLASS 3</div>
+        <div class="card-label">Thai</div>
+        <div class="lc-romanization" id="lc-romanization">dīnsǒo</div>
+        <div class="lc-thai-script" id="lc-thai-script">ดินสอ</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pronounce-wrap">
+    <button class="btn-pronounce" id="pronounce-btn-language" onclick="pronounce('language')"><span>&#9834;</span> Pronunciation</button>
+  </div>
+
+  <div class="flip-hint" id="flip-hint-language">&uarr; CLICK CARD TO FLIP &uarr;</div>
+
+  <div class="knew-it-bar" id="knew-it-bar-language" style="display:none">
+    <button class="knew-btn no" onclick="markCard('language', false)">&#10007; Still Learning</button>
+    <button class="knew-btn yes" onclick="markCard('language', true)">&#10003; Got It!</button>
+  </div>
+
+  <div class="controls">
+    <button class="btn-icon" onclick="prevCard('language')" title="Previous">&larr;</button>
+    <button class="btn primary" onclick="nextCard('language')">NEXT &rarr;</button>
+    <button class="btn-icon" onclick="shuffle('language')" title="Shuffle">&#8644;</button>
+    <button class="btn danger" onclick="resetAll('language')">RESET</button>
+  </div>
+
+  <div class="kbd-hints">
+    <div class="kbd-hint"><kbd>Space</kbd> Flip</div>
+    <div class="kbd-hint"><kbd>&rarr;</kbd> Next</div>
+    <div class="kbd-hint"><kbd>&larr;</kbd> Prev</div>
+    <div class="kbd-hint"><kbd>Y</kbd> Got it</div>
+    <div class="kbd-hint"><kbd>N</kbd> Learning</div>
+    <div class="kbd-hint"><kbd>P</kbd> Pronounce</div>
   </div>
 </div>
 
@@ -1919,6 +2053,47 @@ const phrasesData = [
   { thai: "ไม่เอาครับ", phonetic: "Mai ao kap", english: "I don't want", usage: "Polite way to decline something offered", category: "Shopping" },
 ];
 
+const languageClassData = [
+  { thai: "นี่", phonetic: "nîi", english: "This", cls: "Class 3" },
+  { thai: "นั่น", phonetic: "nân", english: "That", cls: "Class 3" },
+  { thai: "เรียกว่า", phonetic: "rîak wâa", english: "Called, named", cls: "Class 3" },
+  { thai: "ปากกา", phonetic: "pàakkāa", english: "Pen", cls: "Class 3" },
+  { thai: "ดินสอ", phonetic: "dīnsǒo", english: "Pencil", cls: "Class 3" },
+  { thai: "ยางลบ", phonetic: "yâaŋ lóp", english: "Eraser", cls: "Class 3" },
+  { thai: "ไม่ใช่", phonetic: "mây chây", english: "No, it is not", cls: "Class 3" },
+  { thai: "ไม่ทราบ", phonetic: "mây sâap", english: "Do not know", cls: "Class 3" },
+  { thai: "ชอบ", phonetic: "chôop", english: "Like", cls: "Class 3" },
+  { thai: "ภาษาไทย", phonetic: "phasăa thāy", english: "Thai Language", cls: "Class 3" },
+  { thai: "ภาษาอังกฤษ", phonetic: "phasăa 'aŋkrìt", english: "English language", cls: "Class 3" },
+  { thai: "ภาษาญี่ปุ่น", phonetic: "phasăa yîipùn", english: "Japanese language", cls: "Class 3" },
+  { thai: "ภาษาเกาหลี", phonetic: "phasăa kāwlîi", english: "Korean language", cls: "Class 3" },
+  { thai: "ภาษาฝรั่งเศส", phonetic: "phasăa faràŋsèet", english: "French language", cls: "Class 3" },
+  { thai: "ภาษาเยอรมัน", phonetic: "phasăa yēeramān", english: "German language", cls: "Class 3" },
+  { thai: "ภาษาสเปน", phonetic: "phasăa sapeen", english: "Spanish language", cls: "Class 3" },
+  { thai: "สี", phonetic: "sǐi", english: "Colour", cls: "Class 3" },
+  { thai: "สีแดง", phonetic: "sǐi dɛɛŋ", english: "Red colour", cls: "Class 3" },
+  { thai: "สีส้ม", phonetic: "sǐi sôm", english: "Orange colour", cls: "Class 3" },
+  { thai: "สีเขียว", phonetic: "sǐi khǐaw", english: "Green colour", cls: "Class 3" },
+  { thai: "สีดำ", phonetic: "sǐi dām", english: "Black colour", cls: "Class 3" },
+  { thai: "สีขาว", phonetic: "sǐi khǎaw", english: "White colour", cls: "Class 3" },
+  { thai: "สีฟ้า", phonetic: "sǐi fáa", english: "Sky blue colour", cls: "Class 3" },
+  { thai: "สีน้ำเงิน", phonetic: "sǐi námŋēn", english: "Blue colour", cls: "Class 3" },
+  { thai: "สีน้ำตาล", phonetic: "sǐi námtāan", english: "Brown colour", cls: "Class 3" },
+  { thai: "สีชมพู", phonetic: "sǐi chōmphūu", english: "Pink colour", cls: "Class 3" },
+  { thai: "สีทอง", phonetic: "sǐi thŏɔŋ", english: "Gold colour", cls: "Class 3" },
+  { thai: "สีเงิน", phonetic: "sǐi ŋēn", english: "Silver colour", cls: "Class 3" },
+  { thai: "สีเหลือง", phonetic: "sǐi lǔaŋ", english: "Yellow colour", cls: "Class 3" },
+  { thai: "สีม่วง", phonetic: "sǐi mûaŋ", english: "Purple colour", cls: "Class 3" },
+  { thai: "สีเทา", phonetic: "sǐi thāw", english: "Gray colour", cls: "Class 3" },
+  { thai: "สี...แก่", phonetic: "sǐi ... kɛ̀ɛ", english: "Dark ... colour", cls: "Class 3" },
+  { thai: "สี...อ่อน", phonetic: "sǐi ... 'ɔ̀ɔn", english: "Light ... colour", cls: "Class 3" },
+];
+
+// Filter chips for the Language Class deck are derived from whatever class
+// labels exist in the data, so adding a new "Class 4", "Class 5", etc. batch
+// of cards automatically gets its own filter button - no code changes needed.
+const languageClassFilters = ['All', ...new Set(languageClassData.map(p => p.cls))];
+
 // ============================================================
 // STORAGE
 // ============================================================
@@ -1959,6 +2134,29 @@ const savedProgress = loadProgress();
 // that writes the deck-specific DOM fields.
 
 const decks = {
+  language: {
+    data: languageClassData,
+    idOf: p => p.thai,
+    filters: languageClassFilters,
+    filterLabel: f => f === 'All' ? 'All Classes' : f,
+    matchesFilter: (p, f) => f === 'All' || p.cls === f,
+    activeFilter: 'All',
+    filtered: [],
+    currentIndex: 0,
+    isFlipped: false,
+    known: new Set(savedProgress.language ? savedProgress.language.known : []),
+    learning: new Set(savedProgress.language ? savedProgress.language.learning : []),
+    pronounceWord: p => p.thai,
+    renderCard(p) {
+      setText('lc-english-text', p.english);
+      setText('lc-romanization', p.phonetic);
+      setText('lc-thai-script', p.thai);
+      setText('lc-caption-language', p.cls);
+      setText('card-day-tag-language', p.cls.toUpperCase());
+      setText('card-day-tag-back-language', p.cls.toUpperCase());
+    },
+  },
+
   vowels: {
     data: vowelsData,
     idOf: v => v.id,
@@ -2193,7 +2391,7 @@ function renderCard(deckId) {
   if (knewBar) knewBar.style.display = deck.isFlipped ? 'flex' : 'none';
 
   const hint = document.getElementById('flip-hint-' + deckId);
-  if (hint) hint.textContent = deck.isFlipped ? '\u2191 CLICK TO FLIP BACK \u2191' : '\u2191 CLICK CARD TO FLIP \u2191';
+  if (hint) hint.textContent = deck.isFlipped ? '↑ CLICK TO FLIP BACK ↑' : '↑ CLICK CARD TO FLIP ↑';
 }
 
 function flipCard(deckId) {
@@ -3336,4 +3534,3 @@ WordCatch.init();
 </script>
 </body>
 </html>
-
