@@ -1178,13 +1178,13 @@
       <div class="deck-card" onclick="enterDeck('language')">
         <div class="deck-card-top">
           <div class="deck-thai-label">ห้องเรียน</div>
-          <div class="deck-count-tag" id="home-count-language">33 cards</div>
+          <div class="deck-count-tag" id="home-count-language">61 cards</div>
         </div>
         <div class="deck-title">Language <span>Class</span></div>
         <div class="deck-desc">Vocabulary from class, organized by session</div>
         <div class="deck-progress-row">
           <div class="deck-progress-track"><div class="deck-progress-fill" id="home-progress-language"></div></div>
-          <div class="deck-progress-label" id="home-progress-label-language"><b>0</b> / 33 known</div>
+          <div class="deck-progress-label" id="home-progress-label-language"><b>0</b> / 61 known</div>
         </div>
       </div>
 
@@ -1265,12 +1265,12 @@
   <div class="stats">
     <div class="stat"><div class="stat-num" id="stat-known-language">0</div><div class="stat-label">Known</div></div>
     <div class="stat"><div class="stat-num" id="stat-learning-language">0</div><div class="stat-label">Learning</div></div>
-    <div class="stat"><div class="stat-num" id="stat-remaining-language">33</div><div class="stat-label">Remaining</div></div>
+    <div class="stat"><div class="stat-num" id="stat-remaining-language">61</div><div class="stat-label">Remaining</div></div>
   </div>
 
   <div class="progress-bar-wrap">
     <div class="progress-track"><div class="progress-fill" id="progress-fill-language"></div></div>
-    <div class="progress-label" id="progress-label-language">1 / 33</div>
+    <div class="progress-label" id="progress-label-language">1 / 61</div>
   </div>
 
   <div class="card-scene" id="card-scene-language" onclick="flipCard('language')">
@@ -2087,6 +2087,34 @@ const languageClassData = [
   { thai: "สีเทา", phonetic: "sǐi thāw", english: "Gray colour", cls: "Class 3" },
   { thai: "สี...แก่", phonetic: "sǐi ... kɛ̀ɛ", english: "Dark ... colour", cls: "Class 3" },
   { thai: "สี...อ่อน", phonetic: "sǐi ... 'ɔ̀ɔn", english: "Light ... colour", cls: "Class 3" },
+  { thai: "ไม้บรรทัด", phonetic: "máybānthát", english: "Ruler", cls: "Class 4" },
+  { thai: "หนังสือ", phonetic: "nǎŋsǔu", english: "Book", cls: "Class 4" },
+  { thai: "สมุด", phonetic: "samùt", english: "Note book, pad", cls: "Class 4" },
+  { thai: "กระดาษ", phonetic: "kradàat", english: "Paper", cls: "Class 4" },
+  { thai: "โต๊ะ", phonetic: "tó", english: "Table", cls: "Class 4" },
+  { thai: "เก้าอี้", phonetic: "kâw'îi", english: "Chair", cls: "Class 4" },
+  { thai: "กะ", phonetic: "ka", english: "And", cls: "Class 4" },
+  { thai: "กี่", phonetic: "kîi", english: "How many? (used with a classifier)", cls: "Class 4" },
+  { thai: "อัน", phonetic: "'ān", english: "Counting unit for things, a common numerical designation (classifier)", cls: "Class 4" },
+  { thai: "ตัว", phonetic: "tūa", english: "Counting unit for things and mostly for animals (classifier)", cls: "Class 4" },
+  { thai: "แผ่น", phonetic: "phèn", english: "Counting unit for thin sheet or flat shaped things, such as a sheet of paper (classifier)", cls: "Class 4" },
+  { thai: "เล่ม", phonetic: "lêm", english: "Counting unit for books, candles, knives, sickles (classifier)", cls: "Class 4" },
+  { thai: "ใบ", phonetic: "bāy", english: "Counting unit for sheet, shapes and other specific things such as bags, cups, glasses, fruit (classifier)", cls: "Class 4" },
+  { thai: "หิว", phonetic: "hǐw", english: "Hungry", cls: "Class 4" },
+  { thai: "นักเรียน", phonetic: "nákrian", english: "Students, pupil", cls: "Class 4" },
+  { thai: "ผู้ชาย", phonetic: "phûuchāay", english: "Male", cls: "Class 4" },
+  { thai: "ผู้หญิง", phonetic: "phûuyǐng", english: "Female", cls: "Class 4" },
+  { thai: "คนเอเชีย", phonetic: "khon 'ēechīa", english: "Asian", cls: "Class 4" },
+  { thai: "ฝรั่ง", phonetic: "faràŋ", english: "Occidental, European, Westerner", cls: "Class 4" },
+  { thai: "คน", phonetic: "khon", english: "Human being, person; counting unit for number of men, women (classifier)", cls: "Class 4" },
+  { thai: "ที่นี่", phonetic: "thîinîi", english: "Here", cls: "Class 4" },
+  { thai: "ที่นั่น", phonetic: "thîinân", english: "There, over there", cls: "Class 4" },
+  { thai: "ร้อน", phonetic: "rɔ́ɔn", english: "Hot", cls: "Class 4" },
+  { thai: "เย็น", phonetic: "yen", english: "Cool", cls: "Class 4" },
+  { thai: "เป็น", phonetic: "pēn", english: "Is, am, are, to be", cls: "Class 4" },
+  { thai: "มี", phonetic: "mīi", english: "To have, there is, there are", cls: "Class 4" },
+  { thai: "ไหม", phonetic: "mǎy", english: "Does...? (positive question word)", cls: "Class 4" },
+  { thai: "ไม่", phonetic: "mây", english: "Not, no, un-, in-, im-, -less, dis-", cls: "Class 4" },
 ];
 
 // Filter chips for the Language Class deck are derived from whatever class
@@ -2363,7 +2391,9 @@ function shuffleArray(arr) {
 function setFilter(deckId, f) {
   const deck = decks[deckId];
   deck.activeFilter = f;
-  deck.filtered = f === 'All' ? [...deck.data] : deck.data.filter(item => deck.matchesFilter(item, f));
+  const categoryMatch = f === 'All' ? [...deck.data] : deck.data.filter(item => deck.matchesFilter(item, f));
+  // known cards are excluded from the active study rotation - Reset brings them back
+  deck.filtered = categoryMatch.filter(item => !deck.known.has(deck.idOf(item)));
   shuffleArray(deck.filtered);
   deck.currentIndex = 0;
   deck.isFlipped = false;
@@ -2376,21 +2406,29 @@ function setFilter(deckId, f) {
 function renderCard(deckId) {
   const deck = decks[deckId];
   const item = deck.filtered[deck.currentIndex];
-  if (!item) return;
+
+  const inner = document.getElementById('card-inner-' + deckId);
+  const knewBar = document.getElementById('knew-it-bar-' + deckId);
+  const hint = document.getElementById('flip-hint-' + deckId);
+  const fillEl = document.getElementById('progress-fill-' + deckId);
+
+  if (!item) {
+    // Nothing left to study in this filter - everything has been marked Known
+    setText('progress-label-' + deckId, 'All caught up!');
+    if (fillEl) fillEl.style.width = '100%';
+    if (inner) inner.classList.remove('flipped');
+    if (knewBar) knewBar.style.display = 'none';
+    if (hint) hint.textContent = '✓ NOTHING LEFT TO STUDY — TAP RESET TO REVIEW ALL';
+    return;
+  }
 
   deck.renderCard(item);
 
   setText('progress-label-' + deckId, (deck.currentIndex + 1) + ' / ' + deck.filtered.length);
-  const fillEl = document.getElementById('progress-fill-' + deckId);
   if (fillEl) fillEl.style.width = ((deck.currentIndex + 1) / deck.filtered.length * 100) + '%';
 
-  const inner = document.getElementById('card-inner-' + deckId);
   if (inner) deck.isFlipped ? inner.classList.add('flipped') : inner.classList.remove('flipped');
-
-  const knewBar = document.getElementById('knew-it-bar-' + deckId);
   if (knewBar) knewBar.style.display = deck.isFlipped ? 'flex' : 'none';
-
-  const hint = document.getElementById('flip-hint-' + deckId);
   if (hint) hint.textContent = deck.isFlipped ? '↑ CLICK TO FLIP BACK ↑' : '↑ CLICK CARD TO FLIP ↑';
 }
 
@@ -2431,19 +2469,38 @@ function prevCard(deckId) {
 function markCard(deckId, didKnow) {
   const deck = decks[deckId];
   const item = deck.filtered[deck.currentIndex];
+  if (!item) return;
   const id = deck.idOf(item);
-  if (didKnow) { deck.known.add(id); deck.learning.delete(id); }
-  else { deck.learning.add(id); deck.known.delete(id); }
-  updateStats(deckId);
-  saveProgress();
-  nextCard(deckId);
+  if (didKnow) {
+    deck.known.add(id);
+    deck.learning.delete(id);
+    // pull it out of the active rotation so it stops showing up until Reset
+    deck.filtered.splice(deck.currentIndex, 1);
+    if (deck.currentIndex >= deck.filtered.length) {
+      deck.currentIndex = Math.max(deck.filtered.length - 1, 0);
+    }
+    deck.isFlipped = false;
+    updateStats(deckId);
+    saveProgress();
+    snapToFrontInstantly(deckId);
+    renderCard(deckId);
+  } else {
+    // still-learning cards stay in rotation so they keep coming back
+    deck.learning.add(id);
+    deck.known.delete(id);
+    updateStats(deckId);
+    saveProgress();
+    nextCard(deckId);
+  }
 }
 
 function updateStats(deckId) {
   const deck = decks[deckId];
   setText('stat-known-' + deckId, deck.known.size);
   setText('stat-learning-' + deckId, deck.learning.size);
-  setText('stat-remaining-' + deckId, deck.filtered.length - deck.known.size - deck.learning.size);
+  // known cards are already excluded from deck.filtered, so remaining is just
+  // whatever's left in the rotation that isn't currently marked Learning
+  setText('stat-remaining-' + deckId, Math.max(deck.filtered.length - deck.learning.size, 0));
 }
 
 function shuffle(deckId) {
@@ -2461,6 +2518,7 @@ function resetAll(deckId) {
   deck.learning.clear();
   deck.currentIndex = 0;
   deck.isFlipped = false;
+  // known is now empty, so every card in the category matches back into rotation
   deck.filtered = deck.activeFilter === 'All' ? [...deck.data] : deck.data.filter(item => deck.matchesFilter(item, deck.activeFilter));
   shuffleArray(deck.filtered);
   updateStats(deckId);
