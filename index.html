@@ -1178,13 +1178,13 @@
       <div class="deck-card" onclick="enterDeck('language')">
         <div class="deck-card-top">
           <div class="deck-thai-label">ห้องเรียน</div>
-          <div class="deck-count-tag" id="home-count-language">61 cards</div>
+          <div class="deck-count-tag" id="home-count-language">126 cards</div>
         </div>
         <div class="deck-title">Language <span>Class</span></div>
         <div class="deck-desc">Vocabulary from class, organized by session</div>
         <div class="deck-progress-row">
           <div class="deck-progress-track"><div class="deck-progress-fill" id="home-progress-language"></div></div>
-          <div class="deck-progress-label" id="home-progress-label-language"><b>0</b> / 61 known</div>
+          <div class="deck-progress-label" id="home-progress-label-language"><b>0</b> / 126 known</div>
         </div>
       </div>
 
@@ -1265,12 +1265,12 @@
   <div class="stats">
     <div class="stat"><div class="stat-num" id="stat-known-language">0</div><div class="stat-label">Known</div></div>
     <div class="stat"><div class="stat-num" id="stat-learning-language">0</div><div class="stat-label">Learning</div></div>
-    <div class="stat"><div class="stat-num" id="stat-remaining-language">61</div><div class="stat-label">Remaining</div></div>
+    <div class="stat"><div class="stat-num" id="stat-remaining-language">126</div><div class="stat-label">Remaining</div></div>
   </div>
 
   <div class="progress-bar-wrap">
     <div class="progress-track"><div class="progress-fill" id="progress-fill-language"></div></div>
-    <div class="progress-label" id="progress-label-language">1 / 61</div>
+    <div class="progress-label" id="progress-label-language">1 / 126</div>
   </div>
 
   <div class="card-scene" id="card-scene-language" onclick="flipCard('language')">
@@ -1573,6 +1573,7 @@
   <div class="logo-thai">เกมจับคำ</div>
   <h1 class="title">Word <span>Catch</span></h1>
   <p class="start-desc">An English word appears. <b>Tap the matching Thai phrase</b> before the slow ones catch you off guard &mdash; faster taps score more points.</p>
+  <div class="filter-bar" id="wc-category-bar"></div>
   <button class="btn-start" id="wc-btn-start">Start Game</button>
   <div class="best-score" id="wc-best-score-display"></div>
 </div>
@@ -2058,11 +2059,11 @@ const languageClassData = [
   { thai: "นั่น", phonetic: "nân", english: "That", cls: "Class 3" },
   { thai: "เรียกว่า", phonetic: "rîak wâa", english: "Called, named", cls: "Class 3" },
   { thai: "ปากกา", phonetic: "pàakkāa", english: "Pen", cls: "Class 3" },
-  { thai: "ดินสอ", phonetic: "dīnsǒo", english: "Pencil", cls: "Class 3" },
+  { thai: "ดินสอ", phonetic: "dīnsɔ̌ɔ", english: "Pencil", cls: "Class 3" },
   { thai: "ยางลบ", phonetic: "yâaŋ lóp", english: "Eraser", cls: "Class 3" },
   { thai: "ไม่ใช่", phonetic: "mây chây", english: "No, it is not", cls: "Class 3" },
   { thai: "ไม่ทราบ", phonetic: "mây sâap", english: "Do not know", cls: "Class 3" },
-  { thai: "ชอบ", phonetic: "chôop", english: "Like", cls: "Class 3" },
+  { thai: "ชอบ", phonetic: "chɔ̂ɔp", english: "Like", cls: "Class 3" },
   { thai: "ภาษาไทย", phonetic: "phasăa thāy", english: "Thai Language", cls: "Class 3" },
   { thai: "ภาษาอังกฤษ", phonetic: "phasăa 'aŋkrìt", english: "English language", cls: "Class 3" },
   { thai: "ภาษาญี่ปุ่น", phonetic: "phasăa yîipùn", english: "Japanese language", cls: "Class 3" },
@@ -2088,33 +2089,98 @@ const languageClassData = [
   { thai: "สี...แก่", phonetic: "sǐi ... kɛ̀ɛ", english: "Dark ... colour", cls: "Class 3" },
   { thai: "สี...อ่อน", phonetic: "sǐi ... 'ɔ̀ɔn", english: "Light ... colour", cls: "Class 3" },
   { thai: "ไม้บรรทัด", phonetic: "máybānthát", english: "Ruler", cls: "Class 4" },
-  { thai: "หนังสือ", phonetic: "nǎŋsǔu", english: "Book", cls: "Class 4" },
+  { thai: "หนังสือ", phonetic: "nāŋsǔu", english: "Book", cls: "Class 4" },
   { thai: "สมุด", phonetic: "samùt", english: "Note book, pad", cls: "Class 4" },
   { thai: "กระดาษ", phonetic: "kradàat", english: "Paper", cls: "Class 4" },
   { thai: "โต๊ะ", phonetic: "tó", english: "Table", cls: "Class 4" },
   { thai: "เก้าอี้", phonetic: "kâw'îi", english: "Chair", cls: "Class 4" },
   { thai: "กะ", phonetic: "ka", english: "And", cls: "Class 4" },
-  { thai: "กี่", phonetic: "kîi", english: "How many? (used with a classifier)", cls: "Class 4" },
+  { thai: "กี่", phonetic: "kìi", english: "How many? (used with a classifier)", cls: "Class 4" },
   { thai: "อัน", phonetic: "'ān", english: "Counting unit for things, a common numerical designation (classifier)", cls: "Class 4" },
   { thai: "ตัว", phonetic: "tūa", english: "Counting unit for things and mostly for animals (classifier)", cls: "Class 4" },
   { thai: "แผ่น", phonetic: "phèn", english: "Counting unit for thin sheet or flat shaped things, such as a sheet of paper (classifier)", cls: "Class 4" },
   { thai: "เล่ม", phonetic: "lêm", english: "Counting unit for books, candles, knives, sickles (classifier)", cls: "Class 4" },
   { thai: "ใบ", phonetic: "bāy", english: "Counting unit for sheet, shapes and other specific things such as bags, cups, glasses, fruit (classifier)", cls: "Class 4" },
   { thai: "หิว", phonetic: "hǐw", english: "Hungry", cls: "Class 4" },
-  { thai: "นักเรียน", phonetic: "nákrian", english: "Students, pupil", cls: "Class 4" },
+  { thai: "นักเรียน", phonetic: "nákrīan", english: "Students, pupil", cls: "Class 4" },
   { thai: "ผู้ชาย", phonetic: "phûuchāay", english: "Male", cls: "Class 4" },
-  { thai: "ผู้หญิง", phonetic: "phûuyǐng", english: "Female", cls: "Class 4" },
-  { thai: "คนเอเชีย", phonetic: "khon 'ēechīa", english: "Asian", cls: "Class 4" },
+  { thai: "ผู้หญิง", phonetic: "phûuyǐŋ", english: "Female", cls: "Class 4" },
+  { thai: "คนเอเชีย", phonetic: "khōn 'ēechīa", english: "Asian", cls: "Class 4" },
   { thai: "ฝรั่ง", phonetic: "faràŋ", english: "Occidental, European, Westerner", cls: "Class 4" },
-  { thai: "คน", phonetic: "khon", english: "Human being, person; counting unit for number of men, women (classifier)", cls: "Class 4" },
+  { thai: "คน", phonetic: "khōn", english: "Human being, person; counting unit for number of men, women (classifier)", cls: "Class 4" },
   { thai: "ที่นี่", phonetic: "thîinîi", english: "Here", cls: "Class 4" },
   { thai: "ที่นั่น", phonetic: "thîinân", english: "There, over there", cls: "Class 4" },
   { thai: "ร้อน", phonetic: "rɔ́ɔn", english: "Hot", cls: "Class 4" },
-  { thai: "เย็น", phonetic: "yen", english: "Cool", cls: "Class 4" },
+  { thai: "เย็น", phonetic: "yēn", english: "Cool", cls: "Class 4" },
   { thai: "เป็น", phonetic: "pēn", english: "Is, am, are, to be", cls: "Class 4" },
   { thai: "มี", phonetic: "mīi", english: "To have, there is, there are", cls: "Class 4" },
-  { thai: "ไหม", phonetic: "mǎy", english: "Does...? (positive question word)", cls: "Class 4" },
+  { thai: "ไหม", phonetic: "máy", english: "Does...? (positive question word)", cls: "Class 4" },
   { thai: "ไม่", phonetic: "mây", english: "Not, no, un-, in-, im-, -less, dis-", cls: "Class 4" },
+  { thai: "ขอ", phonetic: "khɔ̌ɔ", english: "To ask for", cls: "Class 5" },
+  { thai: "ขอ...หน่อย", phonetic: "khɔ̌ɔ...nòy", english: "May I have...please?", cls: "Class 5" },
+  { thai: "นี่", phonetic: "nîi", english: "Here it is", cls: "Class 5" },
+  { thai: "อีก", phonetic: "'ìik", english: "More", cls: "Class 5" },
+  { thai: "เอา", phonetic: "'āw", english: "To want", cls: "Class 5" },
+  { thai: "เอาไหม", phonetic: "'āw máy", english: "Would you like...? / Would you like to have some...?", cls: "Class 5" },
+  { thai: "จาน", phonetic: "cāan", english: "Plate", cls: "Class 5" },
+  { thai: "ชาม", phonetic: "chāam", english: "Bowl", cls: "Class 5" },
+  { thai: "แก้ว", phonetic: "kɛ̂ɛw", english: "Glass", cls: "Class 5" },
+  { thai: "ถ้วย", phonetic: "thûay", english: "Cup", cls: "Class 5" },
+  { thai: "ขวด", phonetic: "khùat", english: "Bottle", cls: "Class 5" },
+  { thai: "กระป๋อง", phonetic: "krapɔ̌ɔŋ", english: "Can", cls: "Class 5" },
+  { thai: "กล่อง", phonetic: "klɔ̀ɔŋ", english: "Box", cls: "Class 5" },
+  { thai: "ช้อน", phonetic: "chɔ́ɔn", english: "Spoon", cls: "Class 5" },
+  { thai: "ส้อม", phonetic: "sɔ̂ɔm", english: "Fork", cls: "Class 5" },
+  { thai: "หลอด", phonetic: "lɔ̀ɔt", english: "Straw", cls: "Class 5" },
+  { thai: "มีด", phonetic: "mîit", english: "Knife", cls: "Class 5" },
+  { thai: "ตะเกียบ", phonetic: "takìap", english: "Chopstick", cls: "Class 5" },
+  { thai: "ทาน (กิน)", phonetic: "thāan (kīn)", english: "To eat, to drink", cls: "Class 5" },
+  { thai: "น้ำ", phonetic: "náam", english: "Water", cls: "Class 5" },
+  { thai: "น้ำส้ม", phonetic: "námsôm", english: "Orange juice", cls: "Class 5" },
+  { thai: "น้ำชา", phonetic: "námchāa", english: "Tea", cls: "Class 5" },
+  { thai: "กาแฟ", phonetic: "kāafɛɛ", english: "Coffee", cls: "Class 5" },
+  { thai: "นม", phonetic: "nōm", english: "Milk", cls: "Class 5" },
+  { thai: "ยังไง", phonetic: "yāŋŋāy", english: "How", cls: "Class 5" },
+  { thai: "เพื่อน", phonetic: "phûan", english: "Friend", cls: "Class 5" },
+  { thai: "แฟน", phonetic: "fɛ̄ɛn", english: "Boyfriend / girlfriend", cls: "Class 5" },
+  { thai: "สามี", phonetic: "sǎamīi", english: "Husband", cls: "Class 5" },
+  { thai: "ภรรยา", phonetic: "phānrayāa", english: "Wife", cls: "Class 5" },
+  { thai: "อร่อย", phonetic: "'aròy", english: "Delicious", cls: "Class 6" },
+  { thai: "เผ็ด", phonetic: "phèt", english: "Hot, spicy", cls: "Class 6" },
+  { thai: "หวาน", phonetic: "wǎan", english: "Sweet", cls: "Class 6" },
+  { thai: "แพง", phonetic: "phɛ̄ɛŋ", english: "Expensive", cls: "Class 6" },
+  { thai: "สตางค์ / ตังค์ / เงิน", phonetic: "satāŋ, tāŋ, ŋɤn", english: "Money", cls: "Class 6" },
+  { thai: "แบงค์", phonetic: "bɛ́ŋ", english: "Banknotes", cls: "Class 6" },
+  { thai: "เหรียญ", phonetic: "rǐan", english: "Coin", cls: "Class 6" },
+  { thai: "บาท", phonetic: "bàat", english: "Baht / Thai currency", cls: "Class 6" },
+  { thai: "สลึง", phonetic: "salǔŋ", english: "A quarter Baht (25 satāng = 1 salueng)", cls: "Class 6" },
+  { thai: "สตางค์", phonetic: "satāŋ", english: "100 satang = 1 Baht", cls: "Class 6" },
+  { thai: "สิบเอ็ด", phonetic: "sìp'èt", english: "Eleven, 11", cls: "Class 6" },
+  { thai: "ยี่สิบ", phonetic: "yîisìp", english: "Twenty, 20", cls: "Class 6" },
+  { thai: "ยี่สิบเอ็ด", phonetic: "yîisìp'èt", english: "Twenty one, 21", cls: "Class 6" },
+  { thai: "ร้อย", phonetic: "róy", english: "Hundred", cls: "Class 6" },
+  { thai: "พัน", phonetic: "phān", english: "Thousand", cls: "Class 6" },
+  { thai: "สั่ง", phonetic: "sàŋ", english: "To order", cls: "Class 6" },
+  { thai: "ใส่", phonetic: "sày", english: "To put in, to put on", cls: "Class 6" },
+  { thai: "น้ำตาล", phonetic: "námtāan", english: "Sugar", cls: "Class 6" },
+  { thai: "น้ำแข็ง", phonetic: "námkhěŋ", english: "Ice", cls: "Class 6" },
+  { thai: "อาหาร", phonetic: "'āahǎan", english: "Food", cls: "Class 6" },
+  { thai: "ข้าว", phonetic: "khâaw", english: "Rice", cls: "Class 6" },
+  { thai: "ข้าวผัด", phonetic: "khâwphàt", english: "Fried rice", cls: "Class 6" },
+  { thai: "ก๋วยเตี๋ยวน้ำ", phonetic: "kúaytǐaw náam", english: "Noodle with soup", cls: "Class 6" },
+  { thai: "ก๋วยเตี๋ยวแห้ง", phonetic: "kúaytǐaw hɛ̂ɛŋ", english: "Noodle without soup", cls: "Class 6" },
+  { thai: "ขนมปัง", phonetic: "khanǒmpāŋ", english: "Bread", cls: "Class 6" },
+  { thai: "ผลไม้", phonetic: "phǒnlamáay", english: "Fruit", cls: "Class 6" },
+  { thai: "ขนม", phonetic: "khanǒm", english: "Confectionary / sweets", cls: "Class 6" },
+  { thai: "ผัก", phonetic: "phàk", english: "Vegetable", cls: "Class 6" },
+  { thai: "หมู", phonetic: "mǔu", english: "Pork", cls: "Class 6" },
+  { thai: "ไก่", phonetic: "kày", english: "Chicken", cls: "Class 6" },
+  { thai: "เนื้อ", phonetic: "núa", english: "Beef", cls: "Class 6" },
+  { thai: "กุ้ง", phonetic: "kûŋ", english: "Shrimp, prawn", cls: "Class 6" },
+  { thai: "ไข่", phonetic: "khày", english: "Egg", cls: "Class 6" },
+  { thai: "ปู", phonetic: "pūu", english: "Crab", cls: "Class 6" },
+  { thai: "ปลา", phonetic: "plāa", english: "Fish", cls: "Class 6" },
+  { thai: "ปลาหมึก", phonetic: "plāamùk", english: "Squid", cls: "Class 6" },
 ];
 
 // Filter chips for the Language Class deck are derived from whatever class
@@ -3206,6 +3272,77 @@ const VOCAB = [
 ];
 
 // ============================================================
+// VOCAB POOL (merges the general VOCAB list above with whatever's in the
+// Language Class deck, so new classes you add there automatically become
+// playable categories here too - no need to duplicate data by hand)
+// ============================================================
+function toSimpleLetters(s) {
+  return s
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '') // strip tone-mark accents
+    .replace(/ɛ/g, 'e')
+    .replace(/ɔ/g, 'o')
+    .replace(/ʉ/g, 'u')
+    .replace(/ɯ/g, 'ue')
+    .replace(/ə/g, 'er')
+    .replace(/ŋ/g, 'ng')
+    .replace(/[’'ʼ]/g, '')
+    .replace(/\.\.\./g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .toLowerCase();
+}
+
+const CLASS_VOCAB = (typeof languageClassData !== 'undefined' ? languageClassData : []).map(p => ({
+  english: p.english,
+  letters: toSimpleLetters(p.phonetic),
+  phonetic: p.phonetic,
+  thai: p.thai,
+  cat: p.cls,
+}));
+
+function dedupeByThai(items) {
+  // some words exist in both the general vocab list and a Language Class
+  // batch (e.g. "ข้าว") - keep the class-tagged one so it's still reachable
+  // by its specific category filter, and drop the plain duplicate
+  const seen = new Set();
+  const result = [];
+  for (const item of items) {
+    if (seen.has(item.thai)) continue;
+    seen.add(item.thai);
+    result.push(item);
+  }
+  return result;
+}
+
+const FULL_POOL = dedupeByThai([...CLASS_VOCAB, ...VOCAB.map(v => ({ ...v, cat: v.cat || 'General Vocab' }))]);
+
+const CATEGORIES = ['All', ...new Set(FULL_POOL.map(v => v.cat))];
+
+let selectedCategory = 'All';
+
+function getPoolForCategory(cat) {
+  const pool = cat === 'All' ? FULL_POOL : FULL_POOL.filter(v => v.cat === cat);
+  // safety net: need at least DECOY_COUNT + 1 words to build a round
+  if (pool.length < DECOY_COUNT + 1) return FULL_POOL;
+  return pool;
+}
+
+function renderCategoryBar() {
+  const el = document.getElementById('wc-category-bar');
+  if (!el) return;
+  el.innerHTML = CATEGORIES.map(c =>
+    `<button class="cat-btn ${c === selectedCategory ? 'active' : ''}" data-cat="${c}">${c === 'All' ? 'All Vocab' : c}</button>`
+  ).join('');
+  el.querySelectorAll('.cat-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      selectedCategory = btn.dataset.cat;
+      renderCategoryBar();
+    });
+  });
+}
+
+// ============================================================
 // CONFIG
 // ============================================================
 const ROUNDS_PER_GAME = 10;
@@ -3234,6 +3371,7 @@ let gameState = {
   rafId: null,
   answered: false,
   usedTargets: [],
+  pool: FULL_POOL,
 };
 
 // ============================================================
@@ -3259,33 +3397,35 @@ function shuffle(arr) {
 }
 
 function pickTarget() {
-  // avoid repeats until we've cycled through most of the vocab
-  if (gameState.usedTargets.length >= VOCAB.length - DECOY_COUNT) {
+  // avoid repeats until we've cycled through most of the selected pool
+  const pool = gameState.pool;
+  if (gameState.usedTargets.length >= pool.length - Math.min(DECOY_COUNT, pool.length - 1)) {
     gameState.usedTargets = [];
   }
-  let candidates = VOCAB.filter((v, i) => !gameState.usedTargets.includes(i));
-  const idx = VOCAB.indexOf(candidates[Math.floor(Math.random() * candidates.length)]);
+  let candidates = pool.filter((v, i) => !gameState.usedTargets.includes(i));
+  const idx = pool.indexOf(candidates[Math.floor(Math.random() * candidates.length)]);
   gameState.usedTargets.push(idx);
   return idx;
 }
 
 function buildRound() {
+  const pool = gameState.pool;
   const targetIdx = pickTarget();
-  const target = VOCAB[targetIdx];
+  const target = pool[targetIdx];
 
-  let pool = VOCAB.filter((v, i) => i !== targetIdx);
+  let candidatePool = pool.filter((v, i) => i !== targetIdx);
   let decoys = [];
 
   // try to pull some sound-alike decoys
   if (Math.random() < SIMILAR_DECOY_CHANCE) {
     const targetSound = firstSound(target.letters);
-    const soundAlikes = pool.filter(v => firstSound(v.letters) === targetSound);
+    const soundAlikes = candidatePool.filter(v => firstSound(v.letters) === targetSound);
     const howMany = Math.min(soundAlikes.length, Math.ceil(DECOY_COUNT / 2));
     decoys = shuffle(soundAlikes).slice(0, howMany);
   }
 
   // fill remaining with random decoys (excluding ones already picked)
-  const remaining = pool.filter(v => !decoys.includes(v));
+  const remaining = candidatePool.filter(v => !decoys.includes(v));
   const stillNeeded = DECOY_COUNT - decoys.length;
   decoys = decoys.concat(shuffle(remaining).slice(0, stillNeeded));
 
@@ -3538,6 +3678,7 @@ function startGame() {
   gameState.round = 0;
   gameState.score = 0;
   gameState.usedTargets = [];
+  gameState.pool = getPoolForCategory(selectedCategory);
   document.getElementById('wc-hud-score').textContent = '0';
   showScreen('wc-screen-game');
   startRound();
@@ -3585,6 +3726,7 @@ return { startGame, quitToHome, nextOrEnd, renderBestScore, init: function() {
   document.getElementById('wc-btn-end-home').addEventListener('click', quitToHome);
   document.getElementById('wc-btn-quit-game').addEventListener('click', quitToHome);
   renderBestScore();
+  renderCategoryBar();
 }};
 })();
 
