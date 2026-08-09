@@ -339,6 +339,26 @@
   .cat-btn:hover { border-color: var(--text); color: var(--text); }
   .cat-btn.active { background: var(--accent); border-color: var(--accent); color: #000; font-weight: 500; }
 
+  .class-filter-chip {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 7px;
+  }
+
+  .class-filter-check {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .class-filter-check input[type="checkbox"] {
+    width: 17px;
+    height: 17px;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+
   .progress-bar-wrap {
     display: flex;
     align-items: center;
@@ -1178,13 +1198,13 @@
       <div class="deck-card" onclick="enterDeck('language')">
         <div class="deck-card-top">
           <div class="deck-thai-label">ห้องเรียน</div>
-          <div class="deck-count-tag" id="home-count-language">126 cards</div>
+          <div class="deck-count-tag" id="home-count-language">288 cards</div>
         </div>
         <div class="deck-title">Language <span>Class</span></div>
         <div class="deck-desc">Vocabulary from class, organized by session</div>
         <div class="deck-progress-row">
           <div class="deck-progress-track"><div class="deck-progress-fill" id="home-progress-language"></div></div>
-          <div class="deck-progress-label" id="home-progress-label-language"><b>0</b> / 126 known</div>
+          <div class="deck-progress-label" id="home-progress-label-language"><b>0</b> / 288 known</div>
         </div>
       </div>
 
@@ -1265,12 +1285,12 @@
   <div class="stats">
     <div class="stat"><div class="stat-num" id="stat-known-language">0</div><div class="stat-label">Known</div></div>
     <div class="stat"><div class="stat-num" id="stat-learning-language">0</div><div class="stat-label">Learning</div></div>
-    <div class="stat"><div class="stat-num" id="stat-remaining-language">126</div><div class="stat-label">Remaining</div></div>
+    <div class="stat"><div class="stat-num" id="stat-remaining-language">288</div><div class="stat-label">Remaining</div></div>
   </div>
 
   <div class="progress-bar-wrap">
     <div class="progress-track"><div class="progress-fill" id="progress-fill-language"></div></div>
-    <div class="progress-label" id="progress-label-language">1 / 126</div>
+    <div class="progress-label" id="progress-label-language">1 / 288</div>
   </div>
 
   <div class="card-scene" id="card-scene-language" onclick="flipCard('language')">
@@ -2181,12 +2201,175 @@ const languageClassData = [
   { thai: "ปู", phonetic: "pūu", english: "Crab", cls: "Class 6" },
   { thai: "ปลา", phonetic: "plāa", english: "Fish", cls: "Class 6" },
   { thai: "ปลาหมึก", phonetic: "plāamùk", english: "Squid", cls: "Class 6" },
+  { thai: "ที่ไหน", phonetic: "thîinăy", english: "Where?", cls: "Class 7" },
+  { thai: "ที่", phonetic: "thîi", english: "At, in, on", cls: "Class 7" },
+  { thai: "เรียน", phonetic: "rian", english: "Study, learn", cls: "Class 7" },
+  { thai: "สอน", phonetic: "sɔ̌ɔn", english: "Teach", cls: "Class 7" },
+  { thai: "ซื้อ", phonetic: "súu", english: "Buy", cls: "Class 7" },
+  { thai: "ทำ", phonetic: "thām", english: "Do, make", cls: "Class 7" },
+  { thai: "ทำงาน", phonetic: "thāmŋaan", english: "Work", cls: "Class 7" },
+  { thai: "พัก", phonetic: "phák", english: "To stay at (temporarily)", cls: "Class 7" },
+  { thai: "อยู่", phonetic: "yùu", english: "Live, stay", cls: "Class 7" },
+  { thai: "ใกล้", phonetic: "klây", english: "To be near", cls: "Class 7" },
+  { thai: "ไป", phonetic: "pāy", english: "Go", cls: "Class 7" },
+  { thai: "ไปธุระ", phonetic: "pāy thúrá", english: "Go for business", cls: "Class 7" },
+  { thai: "ไปเที่ยว", phonetic: "pāy thîaw", english: "Going sightseeing", cls: "Class 7" },
+  { thai: "กลับ", phonetic: "klàp", english: "Return, go back", cls: "Class 7" },
+  { thai: "บ้าน", phonetic: "bâan", english: "House, home", cls: "Class 7" },
+  { thai: "โรงเรียน", phonetic: "rooŋrian", english: "School", cls: "Class 7" },
+  { thai: "ร้าน", phonetic: "ráan", english: "Shop", cls: "Class 7" },
+  { thai: "ร้านอาหาร", phonetic: "ráan'āahăan", english: "Restaurant", cls: "Class 7" },
+  { thai: "ตลาด", phonetic: "talàat", english: "Market", cls: "Class 7" },
+  { thai: "ห้าง", phonetic: "hâaŋ", english: "Department stores", cls: "Class 7" },
+  { thai: "สถานทูต", phonetic: "sathăanthûut", english: "Embassy", cls: "Class 7" },
+  { thai: "โบสถ์", phonetic: "bòot", english: "Church", cls: "Class 7" },
+  { thai: "โรงแรม", phonetic: "rōoŋrɛ̄ɛm", english: "Hotel", cls: "Class 7" },
+  { thai: "เสื้อ (ตัว, ชุด)", phonetic: "sûa (tūa, chút)", english: "Shirt, blouse (unit)", cls: "Class 7" },
+  { thai: "กางเกง (ตัว)", phonetic: "kāaŋkēeŋ (tūa)", english: "Trousers (unit)", cls: "Class 7" },
+  { thai: "กระโปรง (ตัว)", phonetic: "kraprooŋ (tūa)", english: "Skirt (unit)", cls: "Class 7" },
+  { thai: "ถุงเท้า (คู่)", phonetic: "thŭŋtháaw (khûu)", english: "Socks (pair)", cls: "Class 7" },
+  { thai: "รองเท้า (คู่)", phonetic: "rɔ̄ɔŋtháaw (khûu)", english: "Shoes (pair)", cls: "Class 7" },
+  { thai: "นาฬิกา (เรือน)", phonetic: "nāalikāa (rūan)", english: "Clock, watch (unit)", cls: "Class 7" },
+  { thai: "แว่นตา (อัน)", phonetic: "wɛ̂ntāa ('an)", english: "Glasses (unit)", cls: "Class 7" },
+  { thai: "สร้อย (เส้น)", phonetic: "sôy (sên)", english: "Necklace (unit)", cls: "Class 7" },
+  { thai: "เข็มขัด (เส้น)", phonetic: "khěmkhàt (sên)", english: "Belt (unit)", cls: "Class 7" },
+  { thai: "คาดเข็มขัด (เส้น)", phonetic: "khâat khěmkhàt (sên)", english: "Wear belt (unit)", cls: "Class 7" },
+  { thai: "เมื่อวานนี้", phonetic: "mûawāanníi", english: "Yesterday", cls: "Class 7" },
+  { thai: "วันนี้", phonetic: "wānníi", english: "Today", cls: "Class 7" },
+  { thai: "พรุ่งนี้", phonetic: "phrûŋníi", english: "Tomorrow", cls: "Class 7" },
+  { thai: "ใกล้", phonetic: "klây", english: "Near", cls: "Class 8" },
+  { thai: "เท่าไหร่", phonetic: "thâwrày", english: "How much?", cls: "Class 8" },
+  { thai: "เลี้ยว", phonetic: "líaw", english: "Turn", cls: "Class 8" },
+  { thai: "ซ้าย", phonetic: "sáay", english: "Left", cls: "Class 8" },
+  { thai: "ขวา", phonetic: "khwăa", english: "Right", cls: "Class 8" },
+  { thai: "ตรงไป", phonetic: "trōŋpāy", english: "Go straight", cls: "Class 8" },
+  { thai: "จอด", phonetic: "còɔt", english: "Stop, park", cls: "Class 8" },
+  { thai: "ถึง", phonetic: "thŭŋ", english: "Arrive", cls: "Class 8" },
+  { thai: "สี่แยก", phonetic: "sìiyɛ̂ɛk", english: "Cross, intersection", cls: "Class 8" },
+  { thai: "รถ", phonetic: "rót", english: "Car", cls: "Class 8" },
+  { thai: "รถแท็กซี่", phonetic: "róttheksîi", english: "Taxi", cls: "Class 8" },
+  { thai: "รถตุ๊กตุ๊ก", phonetic: "róttúktúk", english: "Motor-tricycle", cls: "Class 8" },
+  { thai: "รถเมล์", phonetic: "rótmēe", english: "Bus", cls: "Class 8" },
+  { thai: "รถแอร์", phonetic: "rót'ɛɛ", english: "Air conditioned car", cls: "Class 8" },
+  { thai: "รู้จัก", phonetic: "rúucàk", english: "To know", cls: "Class 8" },
+  { thai: "อยู่ทางซ้าย", phonetic: "yùu thāaŋ sáay", english: "On the left side", cls: "Class 8" },
+  { thai: "อยู่ทางขวา", phonetic: "yùu thāaŋ khwǎa", english: "On the right side", cls: "Class 8" },
+  { thai: "แล้วก็", phonetic: "lɛ́ɛw kô", english: "Then", cls: "Class 8" },
+  { thai: "ดูทีวี", phonetic: "duu thīiwīi", english: "Watch TV", cls: "Class 8" },
+  { thai: "ฟังวิทยุ", phonetic: "fāŋ wítthayú", english: "Listen to the radio", cls: "Class 8" },
+  { thai: "เล่น", phonetic: "lên", english: "Play", cls: "Class 8" },
+  { thai: "ตีกอล์ฟ", phonetic: "tīi kóɔf", english: "Play golf", cls: "Class 8" },
+  { thai: "ว่ายน้ำ", phonetic: "wâaynáam", english: "Swim", cls: "Class 8" },
+  { thai: "อาบน้ำ", phonetic: "'àapnáam", english: "Shower, bath", cls: "Class 8" },
+  { thai: "นอน", phonetic: "nɔɔn", english: "To sleep, to lay down", cls: "Class 8" },
+  { thai: "ตลาดนัด", phonetic: "talàatnát", english: "A market held at a stated time/place", cls: "Class 8" },
+  { thai: "ตลาดน้ำ", phonetic: "talàatnáam", english: "Floating market", cls: "Class 8" },
+  { thai: "ยังไง", phonetic: "yāŋŋāy", english: "How?", cls: "Class 9" },
+  { thai: "ขึ้น", phonetic: "khûn", english: "Take, embark", cls: "Class 9" },
+  { thai: "ลง", phonetic: "lōŋ", english: "Get down, disembark", cls: "Class 9" },
+  { thai: "เดิน", phonetic: "dēən", english: "Walk", cls: "Class 9" },
+  { thai: "ขับ", phonetic: "khàp", english: "Drive a car", cls: "Class 9" },
+  { thai: "ขี่", phonetic: "khìi", english: "Drive a bicycle/motorcycle", cls: "Class 9" },
+  { thai: "ซ้อน", phonetic: "sɔ́ɔn", english: "Pile up, get on back seat behind", cls: "Class 9" },
+  { thai: "เมืองไทย", phonetic: "mūaŋthāy", english: "Thailand", cls: "Class 9" },
+  { thai: "กรุงเทพ", phonetic: "krūŋthêep", english: "Bangkok", cls: "Class 9" },
+  { thai: "ประเทศ", phonetic: "prathêet", english: "Country", cls: "Class 9" },
+  { thai: "เมือง", phonetic: "mūaŋ", english: "City", cls: "Class 9" },
+  { thai: "เรือ", phonetic: "rūa", english: "Boat, ship", cls: "Class 9" },
+  { thai: "มอเตอร์ไซค์", phonetic: "mɔɔtəəsāy", english: "Motorcycle, motorbike", cls: "Class 9" },
+  { thai: "จักรยาน", phonetic: "càkkrayāan", english: "Bicycle", cls: "Class 9" },
+  { thai: "เครื่องบิน", phonetic: "khrûaŋbīn", english: "Airplane", cls: "Class 9" },
+  { thai: "รถทัวร์", phonetic: "rótthūa", english: "Coach, tourist bus", cls: "Class 9" },
+  { thai: "สนามบิน", phonetic: "sanăambīn", english: "Airport", cls: "Class 9" },
+  { thai: "สถานี", phonetic: "sathăanīi", english: "Station", cls: "Class 9" },
+  { thai: "ป้ายรถเมล์", phonetic: "pâayrótmēe", english: "Bus stop", cls: "Class 9" },
+  { thai: "ท่าเรือ", phonetic: "thâarūa", english: "Port, pier, harbour", cls: "Class 9" },
+  { thai: "รถไฟ", phonetic: "rótfāy", english: "Train", cls: "Class 9" },
+  { thai: "รถไฟฟ้า", phonetic: "rótfāyfáa", english: "Sky train (BTS)", cls: "Class 9" },
+  { thai: "รถไฟฟ้าใต้ดิน", phonetic: "rótfāyfáatâydīn", english: "Subway train", cls: "Class 9" },
+  { thai: "พ่อ", phonetic: "phôɔ", english: "Father", cls: "Class 9" },
+  { thai: "แม่", phonetic: "mɛ̂ɛ", english: "Mother", cls: "Class 9" },
+  { thai: "ลูก", phonetic: "lûuk", english: "Child, children", cls: "Class 9" },
+  { thai: "ลูกสาว", phonetic: "lûuksǎaw", english: "Daughter", cls: "Class 9" },
+  { thai: "ลูกชาย", phonetic: "lûukchāay", english: "Son", cls: "Class 9" },
+  { thai: "เรา", phonetic: "rāw", english: "We, us", cls: "Class 9" },
+  { thai: "ใคร", phonetic: "khrāy", english: "Who?", cls: "Class 9" },
+  { thai: "กับใคร", phonetic: "kàpkhrāy", english: "With whom?", cls: "Class 9" },
+  { thai: "คนเดียว", phonetic: "khōndīaw", english: "Alone", cls: "Class 9" },
+  { thai: "ได้ไหม", phonetic: "dâaymáy", english: "Can you...? Is it ok?", cls: "Class 10" },
+  { thai: "ได้", phonetic: "dâay", english: "Can, be able to", cls: "Class 10" },
+  { thai: "ไม่ได้", phonetic: "mâydâay", english: "Cannot", cls: "Class 10" },
+  { thai: "อยากจะ", phonetic: "yàakca", english: "Would like to", cls: "Class 10" },
+  { thai: "อ่าน", phonetic: "'àan", english: "Read", cls: "Class 10" },
+  { thai: "เขียน", phonetic: "khǐan", english: "Write", cls: "Class 10" },
+  { thai: "ซื้อ", phonetic: "súu", english: "Buy", cls: "Class 10" },
+  { thai: "ขาย", phonetic: "khǎay", english: "Sell", cls: "Class 10" },
+  { thai: "คนขาย", phonetic: "khōnkhǎay", english: "Seller", cls: "Class 10" },
+  { thai: "คนซื้อ", phonetic: "khōnsúu", english: "Buyer", cls: "Class 10" },
+  { thai: "แม่ค้า", phonetic: "mɛ̂ɛkháa", english: "Female seller", cls: "Class 10" },
+  { thai: "พ่อค้า", phonetic: "phôɔkháa", english: "Male seller", cls: "Class 10" },
+  { thai: "รถเข็น", phonetic: "rótkhěn", english: "Push cart", cls: "Class 10" },
+  { thai: "สับปะรด", phonetic: "sàpparót", english: "Pineapple", cls: "Class 10" },
+  { thai: "มะละกอ", phonetic: "malakɔɔ", english: "Papaya", cls: "Class 10" },
+  { thai: "แตงโม", phonetic: "tɛɛŋmōo", english: "Watermelon", cls: "Class 10" },
+  { thai: "มะม่วง", phonetic: "mamûaŋ", english: "Mango", cls: "Class 10" },
+  { thai: "ส้ม", phonetic: "sôm", english: "Orange", cls: "Class 10" },
+  { thai: "ส้มโอ", phonetic: "sôm'ōo", english: "Pomelo", cls: "Class 10" },
+  { thai: "มังคุด", phonetic: "māŋkhút", english: "Mangosteen", cls: "Class 10" },
+  { thai: "ทุเรียน", phonetic: "thúrīan", english: "Durian", cls: "Class 10" },
+  { thai: "กิโล", phonetic: "kilōo", english: "Kilogram", cls: "Class 10" },
+  { thai: "ใบ", phonetic: "bāy", english: "Piece (counter for fruit)", cls: "Class 10" },
+  { thai: "ชิ้น", phonetic: "chín", english: "Piece", cls: "Class 10" },
+  { thai: "หวี", phonetic: "wǐi", english: "Bunch of bananas", cls: "Class 10" },
+  { thai: "ขีด", phonetic: "khìit", english: "100 grams", cls: "Class 10" },
+  { thai: "โหล", phonetic: "lǒo", english: "Dozen", cls: "Class 10" },
+  { thai: "ครึ่ง", phonetic: "khrûŋ", english: "Half", cls: "Class 10" },
+  { thai: "ครึ่งกิโล", phonetic: "khrûŋkilōo", english: "Half a kilogram (500g)", cls: "Class 10" },
+  { thai: "กิโลครึ่ง", phonetic: "kilōokhrûŋ", english: "One and a half kilograms (1,500g)", cls: "Class 10" },
+  { thai: "วันแต่งงาน", phonetic: "wāntɛ̀ŋŋāan", english: "Wedding day", cls: "Class 11" },
+  { thai: "วันที่เท่าไหร่", phonetic: "wanthîi thâwrày", english: "What date is it?", cls: "Class 11" },
+  { thai: "เมื่อไหร่", phonetic: "mûaràay", english: "When?", cls: "Class 11" },
+  { thai: "เมื่อ...ก่อน", phonetic: "mûa...kɔ̀ɔn", english: "Last (time)", cls: "Class 11" },
+  { thai: "จะ...เมื่อไหร่", phonetic: "ca...mûaràay", english: "When...will?", cls: "Class 11" },
+  { thai: "...หน้า", phonetic: "...nâa", english: "Next (time)", cls: "Class 11" },
+  { thai: "อธิษฐาน", phonetic: "'athítthăan", english: "Pray", cls: "Class 11" },
+  { thai: "พระคัมภีร์", phonetic: "phrakhāmphīi", english: "Bible", cls: "Class 11" },
+  { thai: "ร้องเพลง", phonetic: "rɔ́ɔŋ phlēeŋ", english: "Sing", cls: "Class 11" },
+  { thai: "ฟังเพลง", phonetic: "fāŋ phlēeŋ", english: "Listen to songs", cls: "Class 11" },
+  { thai: "ดนตรี", phonetic: "dōntrīi", english: "Music", cls: "Class 11" },
+  { thai: "วันเกิด", phonetic: "wānkèət", english: "Birthday", cls: "Class 11" },
+  { thai: "เกิด", phonetic: "kèət", english: "Born", cls: "Class 11" },
+  { thai: "(เรา)แต่งงาน", phonetic: "(rāw)tɛ̀ŋŋāan", english: "Marry", cls: "Class 11" },
+  { thai: "อยู่กับ", phonetic: "yùu kàp", english: "Stay with", cls: "Class 11" },
+  { thai: "ออกจาก", phonetic: "'òɔk càak", english: "Depart", cls: "Class 11" },
+  { thai: "มาถึง", phonetic: "māathŭŋ", english: "Arrive", cls: "Class 11" },
+  { thai: "ตลอดชีวิต", phonetic: "talòɔt chīiwít", english: "Whole life, all of one's life", cls: "Class 11" },
+  { thai: "วัน", phonetic: "wān", english: "Day", cls: "Class 11" },
+  { thai: "ชั่วโมง", phonetic: "chûamōoŋ", english: "Hour", cls: "Class 11" },
+  { thai: "นาที", phonetic: "nāathīi", english: "Minute", cls: "Class 11" },
+  { thai: "วินาที", phonetic: "wínāathīi", english: "Second", cls: "Class 11" },
+  { thai: "นานเท่าไหร่", phonetic: "nāan thâwrày", english: "How long (time)?", cls: "Class 11" },
+  { thai: "วันอะไร", phonetic: "wān'aráy", english: "Which day?", cls: "Class 11" },
+  { thai: "วันจันทร์", phonetic: "wāncān", english: "Monday", cls: "Class 11" },
+  { thai: "วันอังคาร", phonetic: "wān'āŋkhāan", english: "Tuesday", cls: "Class 11" },
+  { thai: "วันพุธ", phonetic: "wānphút", english: "Wednesday", cls: "Class 11" },
+  { thai: "วันพฤหัสบดี", phonetic: "wānpharúhàt", english: "Thursday", cls: "Class 11" },
+  { thai: "วันศุกร์", phonetic: "wānsùk", english: "Friday", cls: "Class 11" },
+  { thai: "วันเสาร์", phonetic: "wānsăw", english: "Saturday", cls: "Class 11" },
+  { thai: "วันอาทิตย์", phonetic: "wān'āathít", english: "Sunday", cls: "Class 11" },
+  { thai: "ทุกวัน", phonetic: "thúk wān", english: "Everyday", cls: "Class 11" },
+  { thai: "วันปีใหม่", phonetic: "wānpīimày", english: "New Year's day", cls: "Class 11" },
+  { thai: "วันคริสต์มาส", phonetic: "wānkhrítsamâat", english: "Christmas day", cls: "Class 11" },
+  { thai: "ปี", phonetic: "pīi", english: "Year", cls: "Class 11" },
+  { thai: "เดือน", phonetic: "dūan", english: "Month", cls: "Class 11" },
+  { thai: "อาทิตย์", phonetic: "'āathít", english: "Week", cls: "Class 11" },
 ];
 
 // Filter chips for the Language Class deck are derived from whatever class
 // labels exist in the data, so adding a new "Class 4", "Class 5", etc. batch
 // of cards automatically gets its own filter button - no code changes needed.
 const languageClassFilters = ['All', ...new Set(languageClassData.map(p => p.cls))];
+const languageClassNames = languageClassFilters.slice(1); // just the real class labels, no "All"
 
 // ============================================================
 // STORAGE
@@ -2230,17 +2413,22 @@ const savedProgress = loadProgress();
 const decks = {
   language: {
     data: languageClassData,
-    idOf: p => p.thai,
-    filters: languageClassFilters,
-    filterLabel: f => f === 'All' ? 'All Classes' : f,
-    matchesFilter: (p, f) => f === 'All' || p.cls === f,
-    activeFilter: 'All',
+    // scoped by class + thai text: several classes reuse the same word
+    // (e.g. "klây" appears in both Class 7 and Class 8), so plain thai
+    // text alone isn't a safe identity key for known/learning tracking.
+    idOf: p => p.cls + '::' + p.thai,
+    // multi-select: activeFilter is a Set of class labels rather than a single string
+    matchesFilter: (p, activeFilters) => activeFilters.has(p.cls),
+    activeFilter: new Set(languageClassNames),
     filtered: [],
     currentIndex: 0,
     isFlipped: false,
+    initialized: false,
     known: new Set(savedProgress.language ? savedProgress.language.known : []),
     learning: new Set(savedProgress.language ? savedProgress.language.learning : []),
     pronounceWord: p => p.thai,
+    initFilter(deckId) { applyLanguageFilterChange(deckId); },
+    renderFilterBar(deckId) { renderLanguageFilters(deckId); },
     renderCard(p) {
       setText('lc-english-text', p.english);
       setText('lc-romanization', p.phonetic);
@@ -2261,6 +2449,7 @@ const decks = {
     filtered: [],
     currentIndex: 0,
     isFlipped: false,
+    initialized: false,
     known: new Set(savedProgress.vowels ? savedProgress.vowels.known : []),
     learning: new Set(savedProgress.vowels ? savedProgress.vowels.learning : []),
     pronounceWord: v => v.display,
@@ -2301,6 +2490,7 @@ const decks = {
     filtered: [],
     currentIndex: 0,
     isFlipped: false,
+    initialized: false,
     known: new Set(savedProgress.consonants ? savedProgress.consonants.known : []),
     learning: new Set(savedProgress.consonants ? savedProgress.consonants.learning : []),
     pronounceWord: c => c.thai,
@@ -2337,6 +2527,7 @@ const decks = {
     filtered: [],
     currentIndex: 0,
     isFlipped: false,
+    initialized: false,
     known: new Set(savedProgress.phrases ? savedProgress.phrases.known : []),
     learning: new Set(savedProgress.phrases ? savedProgress.phrases.learning : []),
     pronounceWord: p => p.tts || p.thai,
@@ -2391,10 +2582,15 @@ function enterDeck(deckId) {
   }
 
   const deck = decks[deckId];
-  if (deck.filtered.length === 0) {
-    setFilter(deckId, deck.activeFilter);
+  if (!deck.initialized) {
+    deck.initialized = true;
+    if (deck.initFilter) {
+      deck.initFilter(deckId);
+    } else {
+      setFilter(deckId, deck.activeFilter);
+    }
   } else {
-    renderFilters(deckId);
+    if (deck.renderFilterBar) deck.renderFilterBar(deckId); else renderFilters(deckId);
     renderCard(deckId);
     updateStats(deckId);
   }
@@ -2446,6 +2642,74 @@ function renderFilters(deckId) {
   ).join('');
 }
 
+// ============================================================
+// LANGUAGE CLASS MULTI-SELECT FILTER (checkboxes to combine classes)
+// ============================================================
+function renderLanguageFilters(deckId) {
+  const deck = decks[deckId];
+  const el = document.getElementById('filter-bar-' + deckId);
+  if (!el) return;
+  const allSelected = languageClassNames.every(c => deck.activeFilter.has(c));
+  const noneSelected = languageClassNames.every(c => !deck.activeFilter.has(c));
+
+  const allChip =
+    '<div class="class-filter-chip">' +
+      '<button class="cat-btn ' + (allSelected ? 'active' : '') + '" onclick="selectAllLanguageClasses(\'' + deckId + '\')">All Classes</button>' +
+      '<label class="class-filter-check">' +
+        '<input type="checkbox" ' + (allSelected ? 'checked' : '') + ' onchange="toggleAllLanguageClasses(\'' + deckId + '\', this.checked)">' +
+      '</label>' +
+    '</div>';
+
+  const classChips = languageClassNames.map(c =>
+    '<div class="class-filter-chip">' +
+      '<button class="cat-btn ' + (deck.activeFilter.has(c) ? 'active' : '') + '" onclick="selectOnlyLanguageClass(\'' + deckId + '\',\'' + c + '\')">' + c + '</button>' +
+      '<label class="class-filter-check">' +
+        '<input type="checkbox" ' + (deck.activeFilter.has(c) ? 'checked' : '') + ' onchange="toggleLanguageClass(\'' + deckId + '\',\'' + c + '\', this.checked)">' +
+      '</label>' +
+    '</div>'
+  ).join('');
+
+  el.innerHTML = allChip + classChips;
+
+  const allCheckbox = el.querySelector('.class-filter-chip input[type="checkbox"]');
+  if (allCheckbox) allCheckbox.indeterminate = !allSelected && !noneSelected;
+}
+
+function applyLanguageFilterChange(deckId) {
+  const deck = decks[deckId];
+  const categoryMatch = deck.data.filter(item => deck.matchesFilter(item, deck.activeFilter));
+  deck.filtered = categoryMatch.filter(item => !deck.known.has(deck.idOf(item)));
+  shuffleArray(deck.filtered);
+  deck.currentIndex = 0;
+  deck.isFlipped = false;
+  renderLanguageFilters(deckId);
+  snapToFrontInstantly(deckId);
+  renderCard(deckId);
+  updateStats(deckId);
+}
+
+function selectAllLanguageClasses(deckId) {
+  decks[deckId].activeFilter = new Set(languageClassNames);
+  applyLanguageFilterChange(deckId);
+}
+
+function toggleAllLanguageClasses(deckId, checked) {
+  decks[deckId].activeFilter = checked ? new Set(languageClassNames) : new Set();
+  applyLanguageFilterChange(deckId);
+}
+
+function selectOnlyLanguageClass(deckId, cls) {
+  decks[deckId].activeFilter = new Set([cls]);
+  applyLanguageFilterChange(deckId);
+}
+
+function toggleLanguageClass(deckId, cls, checked) {
+  const deck = decks[deckId];
+  if (checked) deck.activeFilter.add(cls);
+  else deck.activeFilter.delete(cls);
+  applyLanguageFilterChange(deckId);
+}
+
 function shuffleArray(arr) {
   for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -2477,16 +2741,25 @@ function renderCard(deckId) {
   const knewBar = document.getElementById('knew-it-bar-' + deckId);
   const hint = document.getElementById('flip-hint-' + deckId);
   const fillEl = document.getElementById('progress-fill-' + deckId);
+  const sceneEl = document.getElementById('card-scene-' + deckId);
+  const pronounceBtn = document.getElementById('pronounce-btn-' + deckId);
 
   if (!item) {
-    // Nothing left to study in this filter - everything has been marked Known
+    // Nothing left to study (everything known, or no classes checked) -
+    // hide the card face instead of leaving stale content from whatever
+    // was showing before the filter/known-state changed
     setText('progress-label-' + deckId, 'All caught up!');
     if (fillEl) fillEl.style.width = '100%';
     if (inner) inner.classList.remove('flipped');
     if (knewBar) knewBar.style.display = 'none';
-    if (hint) hint.textContent = '✓ NOTHING LEFT TO STUDY — TAP RESET TO REVIEW ALL';
+    if (sceneEl) sceneEl.style.visibility = 'hidden';
+    if (pronounceBtn && pronounceBtn.parentElement) pronounceBtn.parentElement.style.display = 'none';
+    if (hint) hint.textContent = '✓ NOTHING TO STUDY — TAP RESET OR ADJUST FILTERS ABOVE';
     return;
   }
+
+  if (sceneEl) sceneEl.style.visibility = 'visible';
+  if (pronounceBtn && pronounceBtn.parentElement) pronounceBtn.parentElement.style.display = 'flex';
 
   deck.renderCard(item);
 
@@ -2562,11 +2835,20 @@ function markCard(deckId, didKnow) {
 
 function updateStats(deckId) {
   const deck = decks[deckId];
-  setText('stat-known-' + deckId, deck.known.size);
-  setText('stat-learning-' + deckId, deck.learning.size);
+  // scope Known/Learning to whatever filter/classes are currently active, not
+  // the whole deck, so the three numbers always add up to what's on screen
+  const inScope = deck.data.filter(item => deck.matchesFilter(item, deck.activeFilter));
+  let knownCount = 0, learningCount = 0;
+  inScope.forEach(item => {
+    const id = deck.idOf(item);
+    if (deck.known.has(id)) knownCount++;
+    else if (deck.learning.has(id)) learningCount++;
+  });
+  setText('stat-known-' + deckId, knownCount);
+  setText('stat-learning-' + deckId, learningCount);
   // known cards are already excluded from deck.filtered, so remaining is just
   // whatever's left in the rotation that isn't currently marked Learning
-  setText('stat-remaining-' + deckId, Math.max(deck.filtered.length - deck.learning.size, 0));
+  setText('stat-remaining-' + deckId, Math.max(deck.filtered.length - learningCount, 0));
 }
 
 function shuffle(deckId) {
