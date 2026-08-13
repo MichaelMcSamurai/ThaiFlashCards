@@ -1263,13 +1263,13 @@
       <div class="deck-card" onclick="enterDeck('phrases')">
         <div class="deck-card-top">
           <div class="deck-thai-label">วลี</div>
-          <div class="deck-count-tag" id="home-count-phrases">175 cards</div>
+          <div class="deck-count-tag" id="home-count-phrases">205 cards</div>
         </div>
         <div class="deck-title">Thai <span>Phrases</span></div>
-        <div class="deck-desc">175 essential words &amp; phrases by category</div>
+        <div class="deck-desc">205 essential words &amp; phrases by category</div>
         <div class="deck-progress-row">
           <div class="deck-progress-track"><div class="deck-progress-fill" id="home-progress-phrases"></div></div>
-          <div class="deck-progress-label" id="home-progress-label-phrases"><b>0</b> / 175 known</div>
+          <div class="deck-progress-label" id="home-progress-label-phrases"><b>0</b> / 205 known</div>
         </div>
       </div>
 
@@ -1551,7 +1551,7 @@
   <header>
     <div class="logo-thai">ภาษาไทย</div>
     <h1>Thai <span>Phrases</span></h1>
-    <div class="subtitle">175 ESSENTIAL PHRASES &amp; WORDS</div>
+    <div class="subtitle">205 ESSENTIAL PHRASES &amp; WORDS</div>
   </header>
 
   <div class="categories" id="filter-bar-phrases"></div>
@@ -1560,12 +1560,12 @@
   <div class="stats">
     <div class="stat"><div class="stat-num" id="stat-known-phrases">0</div><div class="stat-label">Known</div></div>
     <div class="stat"><div class="stat-num" id="stat-learning-phrases">0</div><div class="stat-label">Learning</div></div>
-    <div class="stat"><div class="stat-num" id="stat-remaining-phrases">175</div><div class="stat-label">Remaining</div></div>
+    <div class="stat"><div class="stat-num" id="stat-remaining-phrases">205</div><div class="stat-label">Remaining</div></div>
   </div>
 
   <div class="progress-bar-wrap">
     <div class="progress-track"><div class="progress-fill" id="progress-fill-phrases"></div></div>
-    <div class="progress-label" id="progress-label-phrases">1 / 175</div>
+    <div class="progress-label" id="progress-label-phrases">1 / 205</div>
   </div>
 
   <div class="card-scene" id="card-scene-phrases" onclick="flipCard('phrases')">
@@ -2160,6 +2160,36 @@ const phrasesData = [
   { thai: "เส้นหมี่", phonetic: "sên mìi", english: "Thin vermicelli", usage: "Noodle type when ordering kuaytiaw", category: "Food" },
   { thai: "บะหมี่", phonetic: "bamìi", english: "Egg noodles", usage: "Noodle type when ordering kuaytiaw", category: "Food" },
   { thai: "แห้ง", phonetic: "hɛ̂ɛŋ", english: "Dry (no soup)", usage: "Ask for kuaytiaw hɛ̂ɛŋ if you don't want broth", category: "Food" },
+  { thai: "โรงเรียน RTL อยู่ใกล้อะไรครับ/คะ?", phonetic: "rooŋrian RTL yùu klây 'aray (khráp/khá)?", english: "What is RTL School near?", usage: "Class 8 dialogue - substitution drill", category: "Places", cls: "Class 8" },
+  { thai: "โรงเรียน RTL อยู่ใกล้โรงแรม Novotel ครับ/ค่ะ", phonetic: "rooŋrian RTL yùu klây rooŋrɛ̄ɛm Novotel (khráp/khâ)", english: "RTL School is near the Novotel Hotel.", usage: "Class 8 dialogue", category: "Places", cls: "Class 8" },
+  { thai: "บ้านคุณอยู่ใกล้อะไรครับ/คะ?", phonetic: "bâan khūn yùu klây 'aray (khráp/khá)?", english: "What is your house near?", usage: "Class 8 dialogue", category: "Places", cls: "Class 8" },
+  { thai: "บ้าน(ดิฉัน/ผม)อยู่ใกล้ห้างบิ๊กซีครับ/ค่ะ", phonetic: "bâan (dichán/phŏm) yùu klây hâaŋ bíksīi (khráp/khâ)", english: "My house is near Big C.", usage: "Class 8 dialogue", category: "Places", cls: "Class 8" },
+  { thai: "สถานทูตญี่ปุ่นอยู่ใกล้อะไรครับ/คะ?", phonetic: "sathăanthûut yîipùn yùu klây 'aray (khráp/khá)?", english: "What is the Japanese embassy near?", usage: "Class 8 dialogue", category: "Places", cls: "Class 8" },
+  { thai: "สถานทูตญี่ปุ่นอยู่ใกล้สวนลุมพินีครับ/ค่ะ", phonetic: "sathăanthûut yîipùn yùu klây sǔan lūmphinīi (khráp/khâ)", english: "The Japanese embassy is near Lumphini Park.", usage: "Class 8 dialogue", category: "Places", cls: "Class 8" },
+  { thai: "ไปเท่าไหร่ครับ/คะ?", phonetic: "pāy thâwrày (khráp/khá)?", english: "How much is it to go (there)?", usage: "Class 8 dialogue - simplified from a taxi-fare drill", category: "Transport", cls: "Class 8" },
+  { thai: "เจ็ดสิบบาทครับ/ค่ะ", phonetic: "cèt sìp bàat (khráp/khâ)", english: "It's 70 baht.", usage: "Class 8 dialogue", category: "Transport", cls: "Class 8" },
+  { thai: "ห้าสิบบาทไปไหมครับ/คะ?", phonetic: "hâasìp bàat pāy măi (khráp/khá)?", english: "Fifty baht, will you go?", usage: "Class 8 dialogue - haggling over a taxi/moto fare", category: "Transport", cls: "Class 8" },
+  { thai: "ไปครับ/ค่ะ", phonetic: "pāy (khráp/khâ)", english: "Yes, I'll go.", usage: "Class 8 dialogue", category: "Transport", cls: "Class 8" },
+  { thai: "ไม่ไปครับ/ค่ะ", phonetic: "mâi pāy (khráp/khâ)", english: "No, I won't go.", usage: "Class 8 dialogue", category: "Transport", cls: "Class 8" },
+  { thai: "ตรงไปครับ/ค่ะ", phonetic: "trōŋ pāy (khráp/khâ)", english: "Go straight.", usage: "Class 8 dialogue - direction command", category: "Transport", cls: "Class 8" },
+  { thai: "เลี้ยวซ้ายครับ/ค่ะ", phonetic: "líaw sáay (khráp/khâ)", english: "Turn left.", usage: "Class 8 dialogue - direction command", category: "Transport", cls: "Class 8" },
+  { thai: "เลี้ยวขวาครับ/ค่ะ", phonetic: "líaw khwǎa (khráp/khâ)", english: "Turn right.", usage: "Class 8 dialogue - direction command", category: "Transport", cls: "Class 8" },
+  { thai: "เลี้ยวกลับครับ/ค่ะ", phonetic: "líaw klàp (khráp/khâ)", english: "Turn around, make a U-turn.", usage: "Class 8 dialogue - direction command", category: "Transport", cls: "Class 8" },
+  { thai: "จอดที่นี่ครับ/ค่ะ", phonetic: "còɔt thîinîi (khráp/khâ)", english: "Stop here.", usage: "Class 8 dialogue - direction command", category: "Transport", cls: "Class 8" },
+  { thai: "คุณทราบไหมครับ/คะ?", phonetic: "khun sâap măi (khráp/khá)?", english: "Do you know?", usage: "Class 8 dialogue", category: "Essentials", cls: "Class 8" },
+  { thai: "(ดิฉัน/ผม)ทราบครับ/ค่ะ", phonetic: "(dichán/phŏm) sâap (khráp/khâ)", english: "I know.", usage: "Class 8 dialogue", category: "Essentials", cls: "Class 8" },
+  { thai: "(ดิฉัน/ผม)ไม่ทราบครับ/ค่ะ", phonetic: "(dichán/phŏm) mâi sâap (khráp/khâ)", english: "I don't know.", usage: "Class 8 dialogue", category: "Essentials", cls: "Class 8" },
+  { thai: "คุณรู้จักไหมครับ/คะ?", phonetic: "khun rúucàk măi (khráp/khá)?", english: "Do you know (him/her)?", usage: "Class 8 dialogue", category: "Conversation", cls: "Class 8" },
+  { thai: "(ดิฉัน/ผม)รู้จักครับ/ค่ะ", phonetic: "(dichán/phŏm) rúucàk (khráp/khâ)", english: "I know (him/her).", usage: "Class 8 dialogue", category: "Conversation", cls: "Class 8" },
+  { thai: "(ดิฉัน/ผม)ไม่รู้จักครับ/ค่ะ", phonetic: "(dichán/phŏm) mâi rúucàk (khráp/khâ)", english: "I don't know (him/her).", usage: "Class 8 dialogue", category: "Conversation", cls: "Class 8" },
+  { thai: "ตรงไปถึงสี่แยกแล้วก็เลี้ยวขวาครับ/ค่ะ", phonetic: "trōŋ pāy thŭŋ sìi yɛ̂ɛk lɛ́ɛw kô líaw khwǎa (khráp/khâ)", english: "Go straight until the four-way intersection, then turn right.", usage: "Class 8 dialogue - full direction sentence", category: "Transport", cls: "Class 8" },
+  { thai: "ตรงไปถึงสามแยกแล้วก็เลี้ยวซ้ายครับ/ค่ะ", phonetic: "trōŋ pāy thŭŋ sǎam yɛ̂ɛk lɛ́ɛw kô líaw sáay (khráp/khâ)", english: "Go straight until the three-way intersection, then turn left.", usage: "Class 8 dialogue - full direction sentence", category: "Transport", cls: "Class 8" },
+  { thai: "ตรงไปถึงสามแยกแล้วก็เลี้ยวกลับครับ/ค่ะ", phonetic: "trōŋ pāy thŭŋ sǎam yɛ̂ɛk lɛ́ɛw kô líaw klàp (khráp/khâ)", english: "Go straight until the three-way intersection, then turn around.", usage: "Class 8 dialogue - full direction sentence", category: "Transport", cls: "Class 8" },
+  { thai: "โรงแรม Novotel อยู่ทางซ้ายครับ/ค่ะ", phonetic: "rooŋrɛ̄ɛm Novotel yùu thāaŋ sáay (khráp/khâ)", english: "The Novotel Hotel is on the left side.", usage: "Class 8 dialogue", category: "Places", cls: "Class 8" },
+  { thai: "ห้างโฮมโปรอยู่ทางขวาครับ/ค่ะ", phonetic: "hâaŋ hōomprōo yùu thāaŋ khwǎa (khráp/khâ)", english: "Home Pro is on the right side.", usage: "Class 8 dialogue", category: "Places", cls: "Class 8" },
+  { thai: "เมื่อวานนี้คุณเรียนภาษาไทยแล้วก็ไปไหนครับ/คะ?", phonetic: "mûawāanníi khūn rian phasăa thay lɛ́ɛw kô pāy năy (khráp/khá)?", english: "After you studied Thai yesterday, where did you go?", usage: "Class 8 dialogue", category: "Conversation", cls: "Class 8" },
+  { thai: "เมื่อวานนี้คุณเรียนภาษาไทยแล้วก็ทำอะไรครับ/คะ?", phonetic: "mûawāanníi khūn rian phasăa thay lɛ́ɛw kô thām 'aray (khráp/khá)?", english: "After you studied Thai yesterday, what did you do?", usage: "Class 8 dialogue", category: "Conversation", cls: "Class 8" },
+  { thai: "เมื่อวานนี้(ดิฉัน/ผม)เรียนภาษาไทยแล้วก็กลับบ้านครับ/ค่ะ", phonetic: "mûawāanníi (dichán/phŏm) rian phasăa thay lɛ́ɛw kô klàp bâan (khráp/khâ)", english: "Yesterday I studied Thai, then went back home.", usage: "Class 8 dialogue", category: "Conversation", cls: "Class 8" },
 ];
 
 // Phrase "class" tags are optional - only entries pulled from a specific
