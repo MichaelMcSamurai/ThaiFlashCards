@@ -489,6 +489,16 @@
     margin-bottom: 8px;
   }
 
+  /* Longer dialogue-style phrases (full sentences instead of single words)
+     need to shrink to fit the fixed-height card - the clamp() above is
+     viewport-width based only, so it doesn't know about text length and a
+     long sentence at 48-80px would overflow the card on a wide screen even
+     though it wraps fine on a narrow one. These tiers are applied by JS
+     based on character count. */
+  .thai-text.text-md, .vowel-display.text-md { font-size: clamp(26px, 7vw, 40px); }
+  .thai-text.text-sm, .vowel-display.text-sm { font-size: clamp(20px, 5.5vw, 30px); }
+  .thai-text.text-xs, .vowel-display.text-xs { font-size: clamp(16px, 4.2vw, 23px); }
+
   .vowel-carrier {
     opacity: 0.3;
   }
@@ -500,6 +510,10 @@
     color: var(--muted);
     text-align: center;
   }
+
+  .rtgs-text.text-md, .phonetic-text.text-md { font-size: clamp(14px, 2.8vw, 19px); }
+  .rtgs-text.text-sm, .phonetic-text.text-sm { font-size: clamp(12px, 2.3vw, 16px); }
+  .rtgs-text.text-xs, .phonetic-text.text-xs { font-size: clamp(11px, 2vw, 13px); }
 
   .sara-name {
     font-family: 'IBM Plex Sans Thai', sans-serif;
@@ -566,6 +580,14 @@
     margin-bottom: 10px;
   }
 
+  /* Some classifier/counting-word entries have long English definitions
+     (e.g. "Counting unit for sheet, shapes and other specific things...")
+     that would overflow the fixed-height card at the default size on a
+     wide screen. Tiers applied by JS based on character count. */
+  .lc-english-text.text-md { font-size: clamp(22px, 5.5vw, 30px); }
+  .lc-english-text.text-sm { font-size: clamp(17px, 4.5vw, 23px); }
+  .lc-english-text.text-xs { font-size: clamp(13px, 3.5vw, 17px); }
+
   .lc-caption {
     font-family: 'IBM Plex Mono', monospace;
     font-size: 12px;
@@ -616,6 +638,10 @@
     text-align: center;
     margin-bottom: 10px;
   }
+
+  .english-text.text-md { font-size: clamp(17px, 3.5vw, 23px); }
+  .english-text.text-sm { font-size: clamp(14px, 3vw, 18px); }
+  .english-text.text-xs { font-size: clamp(12px, 2.5vw, 15px); }
 
   .usage-text {
     font-family: 'IBM Plex Sans Thai', sans-serif;
@@ -1237,13 +1263,13 @@
       <div class="deck-card" onclick="enterDeck('phrases')">
         <div class="deck-card-top">
           <div class="deck-thai-label">วลี</div>
-          <div class="deck-count-tag" id="home-count-phrases">114 cards</div>
+          <div class="deck-count-tag" id="home-count-phrases">175 cards</div>
         </div>
         <div class="deck-title">Thai <span>Phrases</span></div>
-        <div class="deck-desc">114 essential words &amp; phrases by category</div>
+        <div class="deck-desc">175 essential words &amp; phrases by category</div>
         <div class="deck-progress-row">
           <div class="deck-progress-track"><div class="deck-progress-fill" id="home-progress-phrases"></div></div>
-          <div class="deck-progress-label" id="home-progress-label-phrases"><b>0</b> / 114 known</div>
+          <div class="deck-progress-label" id="home-progress-label-phrases"><b>0</b> / 175 known</div>
         </div>
       </div>
 
@@ -1525,20 +1551,21 @@
   <header>
     <div class="logo-thai">ภาษาไทย</div>
     <h1>Thai <span>Phrases</span></h1>
-    <div class="subtitle">114 ESSENTIAL PHRASES &amp; WORDS</div>
+    <div class="subtitle">175 ESSENTIAL PHRASES &amp; WORDS</div>
   </header>
 
   <div class="categories" id="filter-bar-phrases"></div>
+  <div class="filter-bar" id="class-filter-bar-phrases"></div>
 
   <div class="stats">
     <div class="stat"><div class="stat-num" id="stat-known-phrases">0</div><div class="stat-label">Known</div></div>
     <div class="stat"><div class="stat-num" id="stat-learning-phrases">0</div><div class="stat-label">Learning</div></div>
-    <div class="stat"><div class="stat-num" id="stat-remaining-phrases">114</div><div class="stat-label">Remaining</div></div>
+    <div class="stat"><div class="stat-num" id="stat-remaining-phrases">175</div><div class="stat-label">Remaining</div></div>
   </div>
 
   <div class="progress-bar-wrap">
     <div class="progress-track"><div class="progress-fill" id="progress-fill-phrases"></div></div>
-    <div class="progress-label" id="progress-label-phrases">1 / 114</div>
+    <div class="progress-label" id="progress-label-phrases">1 / 175</div>
   </div>
 
   <div class="card-scene" id="card-scene-phrases" onclick="flipCard('phrases')">
@@ -2072,7 +2099,78 @@ const phrasesData = [
   { thai: "ดื่ม", phonetic: "Duem", english: "Drink", usage: "Basic verb, to drink", category: "Food" },
   { thai: "เอา", phonetic: "Ao", english: "I take/I want", usage: "Used when selecting or requesting something, e.g. ordering or shopping", category: "Shopping" },
   { thai: "ไม่เอาครับ", phonetic: "Mai ao kap", english: "I don't want", usage: "Polite way to decline something offered", category: "Shopping" },
+  { thai: "ทานอาหาร", phonetic: "thāan 'āahăan", english: "Eat food", usage: "Class 7 substitution drill item", category: "Food", cls: "Class 7" },
+  { thai: "ซื้อผัก", phonetic: "súu phàk", english: "Buy vegetables", usage: "Class 7 substitution drill item", category: "Shopping", cls: "Class 7" },
+  { thai: "คุณเรียนภาษาไทยที่ไหน (ครับ/คะ)?", phonetic: "khūn rian phāsăa thai thîinăy (khráp/khá)?", english: "Where do you study Thai?", usage: "Class 7 dialogue - asking where an activity happens", category: "Conversation", cls: "Class 7" },
+  { thai: "(ดิฉัน/ผม)เรียนภาษาไทยที่โรงเรียน RTL (ครับ/ค่ะ)", phonetic: "(dichán/phŏm) rian phāsăa thai thîi rooŋrian RTL (khráp/khâ)", english: "I study Thai at RTL School.", usage: "Class 7 dialogue - answering with a place", category: "Conversation", cls: "Class 7" },
+  { thai: "คุณทานอาหารที่ไหน (ครับ/คะ)?", phonetic: "khūn thāan 'āahăan thîinăy (khráp/khá)?", english: "Where do you eat?", usage: "Class 7 dialogue", category: "Food", cls: "Class 7" },
+  { thai: "(ดิฉัน/ผม)ทานอาหารที่บ้าน (ครับ/ค่ะ)", phonetic: "(dichán/phŏm) thāan 'āahăan thîi bâan (khráp/khâ)", english: "I eat at home.", usage: "Class 7 dialogue", category: "Food", cls: "Class 7" },
+  { thai: "คุณซื้อผักที่ไหน (ครับ/คะ)?", phonetic: "khūn súu phàk thîinăy (khráp/khá)?", english: "Where do you buy vegetables?", usage: "Class 7 dialogue", category: "Shopping", cls: "Class 7" },
+  { thai: "(ดิฉัน/ผม)ซื้อผักที่ตลาด (ครับ/ค่ะ)", phonetic: "(dichán/phŏm) súu phàk thîi talàat (khráp/khâ)", english: "I buy vegetables at the market.", usage: "Class 7 dialogue", category: "Shopping", cls: "Class 7" },
+  { thai: "โรงเรียน RTL อยู่ที่ไหน (ครับ/คะ)?", phonetic: "rooŋrian RTL yùu thîinăy (khráp/khá)?", english: "Where is RTL School?", usage: "Class 7 dialogue - asking where a place is located", category: "Places", cls: "Class 7" },
+  { thai: "โรงเรียน RTL อยู่ที่ถนนเพลินจิต ใกล้โรงแรม Novotel (ครับ/ค่ะ)", phonetic: "rooŋrian RTL yùu thîi thanŏn phlooncit klây rooŋrɛ̄ɛm Novotel (khráp/khâ)", english: "RTL School is on Ploenchit Road, near the Novotel Hotel.", usage: "Class 7 dialogue - giving a location with street + landmark", category: "Places", cls: "Class 7" },
+  { thai: "บ้านคุณอยู่ที่ไหน (ครับ/คะ)?", phonetic: "bâan khūn yùu thîinăy (khráp/khá)?", english: "Where is your house?", usage: "Class 7 dialogue", category: "Places", cls: "Class 7" },
+  { thai: "ตลาดอยู่ที่ไหน (ครับ/คะ)?", phonetic: "talàat yùu thîinăy (khráp/khá)?", english: "Where is the market?", usage: "Class 7 dialogue", category: "Places", cls: "Class 7" },
+  { thai: "ไปไหน (ครับ/คะ)?", phonetic: "pāy năy (khráp/khá)?", english: "Where are you going?", usage: "Class 7 dialogue - casual question when passing someone", category: "Conversation", cls: "Class 7" },
+  { thai: "ไปธุระ (ครับ/ค่ะ)", phonetic: "pāy thúrá (khráp/khâ)", english: "Going for business / running an errand.", usage: "Class 7 dialogue - common vague reply to 'where are you going'", category: "Conversation", cls: "Class 7" },
+  { thai: "ผมชื่อ Michael", phonetic: "phŏm chûu Michael", english: "My name is Michael.", usage: "From personal notes - swap in any name", category: "Conversation" },
+  { thai: "ไม่เข้าใจ", phonetic: "mâi khâwjai", english: "I don't understand.", usage: "From personal notes", category: "Essentials" },
+  { thai: "ไม่เหมือนกัน", phonetic: "mâi mŭankan", english: "Not the same, different.", usage: "From personal notes", category: "Essentials" },
+  { thai: "เขาชื่ออะไร", phonetic: "khǎw chûu aray", english: "What's his/her name?", usage: "From personal notes", category: "Conversation" },
+  { thai: "นี่ภาษาไทยเรียกว่าอะไร", phonetic: "nîi phasăa thay rîak wâa aray", english: "What is this called in Thai?", usage: "From personal notes - handy for pointing at objects", category: "Conversation" },
+  { thai: "ไม่ทราบ", phonetic: "mâi sâap", english: "I don't know.", usage: "From personal notes - polite/formal register", category: "Essentials" },
+  { thai: "สี", phonetic: "sǐi", english: "Color", usage: "From personal notes", category: "Essentials" },
+  { thai: "คุณชอบ", phonetic: "khun chɔ̂ɔp", english: "You like...", usage: "From personal notes - sentence starter", category: "Conversation" },
+  { thai: "ผมชอบสีแดง", phonetic: "phŏm chɔ̂ɔp sǐi dɛɛŋ", english: "I like the color red.", usage: "From personal notes", category: "Conversation" },
+  { thai: "คุณมียางลบไหมครับ", phonetic: "khun mii yaaŋlóp măi khráp?", english: "Do you have an eraser?", usage: "From personal notes", category: "Essentials" },
+  { thai: "คุณมียางลบสีอะไรครับ", phonetic: "khun mii yaaŋlóp sǐi aray khráp?", english: "What color is your eraser?", usage: "From personal notes", category: "Essentials" },
+  { thai: "ผมมีคำถาม", phonetic: "phŏm mii khamthăam", english: "I have a question.", usage: "From personal notes", category: "Essentials" },
+  { thai: "ที่นี่มีนักเรียนกี่คนครับ", phonetic: "thîinîi mii nákrian kìi khon khráp?", english: "How many students are here?", usage: "From personal notes", category: "Conversation" },
+  { thai: "ที่นี่มีนักเรียนหกคนครับ", phonetic: "thîinîi mii nákrian hòk khon khráp", english: "There are six students here.", usage: "From personal notes", category: "Conversation" },
+  { thai: "ไม่มี", phonetic: "mâi mii", english: "There isn't any, none.", usage: "From personal notes - general negation of 'to have/there is'", category: "Essentials" },
+  { thai: "เอาน้ำส้มไหมครับ", phonetic: "aw námsôm măi khráp?", english: "Would you like some orange juice?", usage: "From personal notes", category: "Food" },
+  { thai: "เอาครับ", phonetic: "aw khráp", english: "Yes, I'd like some.", usage: "From personal notes - accepting an offer", category: "Food" },
+  { thai: "ไม่เอาครับ ขอบคุณ", phonetic: "mâi aw khráp, khɔ̀ɔpkhun", english: "No thanks, thank you.", usage: "From personal notes - politely declining an offer", category: "Food" },
+  { thai: "\"Thirsty\" ภาษาไทยพูดว่ายังไงครับ", phonetic: "\"Thirsty\" phasăa thay phûut wâa yaŋŋay khráp?", english: "How do you say \"thirsty\" in Thai?", usage: "From personal notes - template for asking how to say any word", category: "Conversation" },
+  { thai: "ไปเที่ยว (ครับ/ค่ะ)", phonetic: "pāy thîaw (khráp/khâ)", english: "Going out / sightseeing.", usage: "Class 7 dialogue - another answer to 'where are you going?'", category: "Conversation", cls: "Class 7" },
+  { thai: "กลับบ้าน (ครับ/ค่ะ)", phonetic: "klàp bâan (khráp/khâ)", english: "Going home.", usage: "Class 7 dialogue - another answer to 'where are you going?'", category: "Conversation", cls: "Class 7" },
+  { thai: "เมื่อวานนี้ที่บ้านคุณทำอะไร (ครับ/คะ)?", phonetic: "mûawāanníi thîi bâan khūn thām 'aray (khráp/khá)?", english: "What did you do at home yesterday?", usage: "Class 7 dialogue - asking about a past activity", category: "Conversation", cls: "Class 7" },
+  { thai: "เมื่อวานนี้ที่บ้าน(ดิฉัน/ผม)ดู TV (ครับ/ค่ะ)", phonetic: "mûawāanníi thîi bâan (dichán/phŏm) duu TV (khráp/khâ)", english: "Yesterday at home I watched TV.", usage: "Class 7 dialogue", category: "Conversation", cls: "Class 7" },
+  { thai: "หมู", phonetic: "mǔu", english: "Pork", usage: "Kuaytiaw topping", category: "Food" },
+  { thai: "หมูสับ", phonetic: "mǔu sàp", english: "Minced pork", usage: "Kuaytiaw topping", category: "Food" },
+  { thai: "หมูแดง", phonetic: "mǔu dɛɛŋ", english: "Red roast pork", usage: "Kuaytiaw topping - Chinese-style roasted pork", category: "Food" },
+  { thai: "หมูกรอบ", phonetic: "mǔu krɔ̀ɔp", english: "Crispy pork belly", usage: "Kuaytiaw topping", category: "Food" },
+  { thai: "เนื้อ", phonetic: "núa", english: "Beef", usage: "Kuaytiaw topping", category: "Food" },
+  { thai: "ไก่", phonetic: "kày", english: "Chicken", usage: "Kuaytiaw topping", category: "Food" },
+  { thai: "กุ้ง", phonetic: "kûŋ", english: "Shrimp", usage: "Kuaytiaw topping", category: "Food" },
+  { thai: "ลูกชิ้น", phonetic: "lûukchín", english: "Meatball", usage: "Kuaytiaw topping - often specified as fish or pork balls", category: "Food" },
+  { thai: "เกี๊ยว", phonetic: "kíaw", english: "Wonton", usage: "Kuaytiaw topping", category: "Food" },
+  { thai: "ตับ", phonetic: "tàp", english: "Liver", usage: "Kuaytiaw topping", category: "Food" },
+  { thai: "ถั่วงอก", phonetic: "thùa ŋɔ̂ɔk", english: "Bean sprouts", usage: "Kuaytiaw topping", category: "Food" },
+  { thai: "ผักบุ้ง", phonetic: "phàk bûŋ", english: "Morning glory (water spinach)", usage: "Kuaytiaw topping", category: "Food" },
+  { thai: "ต้นหอม", phonetic: "tônhɔ̌ɔm", english: "Scallion, spring onion", usage: "Kuaytiaw topping", category: "Food" },
+  { thai: "ผักชี", phonetic: "phàkchii", english: "Cilantro", usage: "Kuaytiaw topping", category: "Food" },
+  { thai: "กระเทียมเจียว", phonetic: "krathiam jiaw", english: "Fried garlic", usage: "Kuaytiaw topping", category: "Food" },
+  { thai: "น้ำปลา", phonetic: "nám plaa", english: "Fish sauce", usage: "Table-side seasoning", category: "Food" },
+  { thai: "น้ำตาล", phonetic: "nám taan", english: "Sugar", usage: "Table-side seasoning", category: "Food" },
+  { thai: "พริกป่น", phonetic: "phrík pòn", english: "Dried chili flakes", usage: "Table-side seasoning", category: "Food" },
+  { thai: "พริกน้ำส้ม", phonetic: "phrík námsôm", english: "Chili in vinegar", usage: "Table-side seasoning", category: "Food" },
+  { thai: "เส้นเล็ก", phonetic: "sên lék", english: "Thin rice noodles", usage: "Noodle type when ordering kuaytiaw", category: "Food" },
+  { thai: "เส้นใหญ่", phonetic: "sên yài", english: "Wide rice noodles", usage: "Noodle type when ordering kuaytiaw", category: "Food" },
+  { thai: "เส้นหมี่", phonetic: "sên mìi", english: "Thin vermicelli", usage: "Noodle type when ordering kuaytiaw", category: "Food" },
+  { thai: "บะหมี่", phonetic: "bamìi", english: "Egg noodles", usage: "Noodle type when ordering kuaytiaw", category: "Food" },
+  { thai: "แห้ง", phonetic: "hɛ̂ɛŋ", english: "Dry (no soup)", usage: "Ask for kuaytiaw hɛ̂ɛŋ if you don't want broth", category: "Food" },
 ];
+
+// Phrase "class" tags are optional - only entries pulled from a specific
+// class day (like the Class 7 dialogue set above) carry one. The rest of
+// the original 114 phrases fall into a virtual "General" bucket so the
+// class checkboxes can actually isolate class content (unchecking
+// "General" hides the non-class phrases instead of always showing them).
+// This list is derived from whatever tags exist, so future day additions
+// get their own filter chip automatically, same pattern as the Language
+// Class deck.
+const phraseClassNames = ['General', ...new Set(phrasesData.filter(p => p.cls).map(p => p.cls))];
 
 const languageClassData = [
   { thai: "นี่", phonetic: "nîi", english: "This", cls: "Class 3" },
@@ -2431,6 +2529,7 @@ const decks = {
     renderFilterBar(deckId) { renderLanguageFilters(deckId); },
     renderCard(p) {
       setText('lc-english-text', p.english);
+      applyLongTextScale('lc-english-text', p.english, { md: 25, sm: 45, xs: 70 });
       setText('lc-romanization', p.phonetic);
       setText('lc-thai-script', p.thai);
       setText('lc-caption-language', p.cls);
@@ -2519,11 +2618,17 @@ const decks = {
 
   phrases: {
     data: phrasesData,
-    idOf: p => p.thai,
+    // scoped by class + thai text (like the language deck) so a Class 7
+    // phrase can never collide with an unrelated phrase that happens to
+    // share the same Thai text.
+    idOf: p => (p.cls ? p.cls + '::' : '') + p.thai,
     filters: ['All', 'Greetings', 'Essentials', 'Food', 'Numbers', 'Transport', 'Shopping', 'Places', 'Emotions', 'Safety', 'Conversation'],
     filterLabel: f => f,
-    matchesFilter: (p, f) => f === 'All' || p.category === f,
-    activeFilter: 'All',
+    // two independent axes: topic category (single-select) and class day-tag
+    // (multi-select). Phrases with no cls tag count as the virtual "General"
+    // class, so unchecking it actually hides them instead of always showing.
+    matchesFilter: (p, af) => (af.category === 'All' || p.category === af.category) && af.classes.has(p.cls || 'General'),
+    activeFilter: { category: 'All', classes: new Set(phraseClassNames) },
     filtered: [],
     currentIndex: 0,
     isFlipped: false,
@@ -2531,12 +2636,17 @@ const decks = {
     known: new Set(savedProgress.phrases ? savedProgress.phrases.known : []),
     learning: new Set(savedProgress.phrases ? savedProgress.phrases.learning : []),
     pronounceWord: p => p.tts || p.thai,
+    initFilter(deckId) { applyPhraseFilterChange(deckId); },
+    renderFilterBar(deckId) { renderPhraseFilters(deckId); },
     renderCard(p) {
       setText('thai-text-phrases', p.thai);
+      applyLongTextScale('thai-text-phrases', p.thai, { md: 20, sm: 35, xs: 50 });
       setText('phonetic-text-phrases', p.phonetic);
+      applyLongTextScale('phonetic-text-phrases', p.phonetic, { md: 25, sm: 45, xs: 60 });
       setText('front-category-phrases', p.category);
       setText('back-category-phrases', p.category);
       setText('english-text-phrases', p.english);
+      applyLongTextScale('english-text-phrases', p.english, { md: 20, sm: 35, xs: 50 });
       setText('usage-text-phrases', p.usage);
     },
   },
@@ -2553,6 +2663,22 @@ function setText(id, val) {
 function setTagClass(id, text, className) {
   const el = document.getElementById(id);
   if (el) { el.textContent = text; el.className = className; }
+}
+
+// Some entries (full dialogue sentences, long classifier definitions) are
+// much longer than the short words the card's clamp()-based font sizing
+// was designed for. clamp() only scales with viewport width, so a long
+// string that wraps fine on a narrow screen can still overflow the card's
+// fixed height on a wide one. This measures character count and applies a
+// shrink tier on top of the base class so long text reliably fits.
+function applyLongTextScale(elId, text, tiers) {
+  const el = document.getElementById(elId);
+  if (!el) return;
+  el.classList.remove('text-md', 'text-sm', 'text-xs');
+  const len = text ? text.length : 0;
+  if (len > tiers.xs) el.classList.add('text-xs');
+  else if (len > tiers.sm) el.classList.add('text-sm');
+  else if (len > tiers.md) el.classList.add('text-md');
 }
 
 // ============================================================
@@ -2708,6 +2834,94 @@ function toggleLanguageClass(deckId, cls, checked) {
   if (checked) deck.activeFilter.add(cls);
   else deck.activeFilter.delete(cls);
   applyLanguageFilterChange(deckId);
+}
+
+// ============================================================
+// PHRASES DUAL FILTER (topic category, single-select + class day-tag,
+// multi-select) - the topic row works exactly like it always has; the
+// class row layers on top of it the same way the Language Class deck's
+// checkboxes work, restricted to phrases that carry a cls tag at all.
+// ============================================================
+function renderPhraseFilters(deckId) {
+  const deck = decks[deckId];
+  const catEl = document.getElementById('filter-bar-' + deckId);
+  if (catEl) {
+    catEl.innerHTML = deck.filters.map(f =>
+      `<button class="cat-btn ${f === deck.activeFilter.category ? 'active' : ''}" onclick="setPhraseCategory('${deckId}','${f}')">${deck.filterLabel(f)}</button>`
+    ).join('');
+  }
+
+  const classEl = document.getElementById('class-filter-bar-' + deckId);
+  if (!classEl) return;
+  if (phraseClassNames.length === 0) {
+    classEl.innerHTML = '';
+    classEl.style.display = 'none';
+    return;
+  }
+  classEl.style.display = '';
+  const allSelected = phraseClassNames.every(c => deck.activeFilter.classes.has(c));
+  const noneSelected = phraseClassNames.every(c => !deck.activeFilter.classes.has(c));
+
+  const allChip =
+    '<div class="class-filter-chip">' +
+      '<button class="cat-btn ' + (allSelected ? 'active' : '') + '" onclick="selectAllPhraseClasses(\'' + deckId + '\')">All Classes</button>' +
+      '<label class="class-filter-check">' +
+        '<input type="checkbox" ' + (allSelected ? 'checked' : '') + ' onchange="toggleAllPhraseClasses(\'' + deckId + '\', this.checked)">' +
+      '</label>' +
+    '</div>';
+
+  const classChips = phraseClassNames.map(c =>
+    '<div class="class-filter-chip">' +
+      '<button class="cat-btn ' + (deck.activeFilter.classes.has(c) ? 'active' : '') + '" onclick="selectOnlyPhraseClass(\'' + deckId + '\',\'' + c + '\')">' + c + '</button>' +
+      '<label class="class-filter-check">' +
+        '<input type="checkbox" ' + (deck.activeFilter.classes.has(c) ? 'checked' : '') + ' onchange="togglePhraseClass(\'' + deckId + '\',\'' + c + '\', this.checked)">' +
+      '</label>' +
+    '</div>'
+  ).join('');
+
+  classEl.innerHTML = allChip + classChips;
+  const allCheckbox = classEl.querySelector('.class-filter-chip input[type="checkbox"]');
+  if (allCheckbox) allCheckbox.indeterminate = !allSelected && !noneSelected;
+}
+
+function applyPhraseFilterChange(deckId) {
+  const deck = decks[deckId];
+  const match = deck.data.filter(item => deck.matchesFilter(item, deck.activeFilter));
+  deck.filtered = match.filter(item => !deck.known.has(deck.idOf(item)));
+  shuffleArray(deck.filtered);
+  deck.currentIndex = 0;
+  deck.isFlipped = false;
+  renderPhraseFilters(deckId);
+  snapToFrontInstantly(deckId);
+  renderCard(deckId);
+  updateStats(deckId);
+}
+
+function setPhraseCategory(deckId, category) {
+  decks[deckId].activeFilter.category = category;
+  applyPhraseFilterChange(deckId);
+}
+
+function selectAllPhraseClasses(deckId) {
+  decks[deckId].activeFilter.classes = new Set(phraseClassNames);
+  applyPhraseFilterChange(deckId);
+}
+
+function toggleAllPhraseClasses(deckId, checked) {
+  decks[deckId].activeFilter.classes = checked ? new Set(phraseClassNames) : new Set();
+  applyPhraseFilterChange(deckId);
+}
+
+function selectOnlyPhraseClass(deckId, cls) {
+  decks[deckId].activeFilter.classes = new Set([cls]);
+  applyPhraseFilterChange(deckId);
+}
+
+function togglePhraseClass(deckId, cls, checked) {
+  const deck = decks[deckId];
+  if (checked) deck.activeFilter.classes.add(cls);
+  else deck.activeFilter.classes.delete(cls);
+  applyPhraseFilterChange(deckId);
 }
 
 function shuffleArray(arr) {
