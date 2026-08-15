@@ -338,6 +338,10 @@
   }
   .cat-btn:hover { border-color: var(--text); color: var(--text); }
   .cat-btn.active { background: var(--accent); border-color: var(--accent); color: #000; font-weight: 500; }
+  /* "All Classes" shows a distinct look when some but not all classes are
+     selected, since there's no checkbox anymore to show that indeterminate
+     state natively. */
+  .cat-btn.partial { border-color: var(--accent); border-style: dashed; color: var(--accent); }
 
   .class-filter-chip {
     display: flex;
@@ -1224,13 +1228,13 @@
       <div class="deck-card" onclick="enterDeck('language')">
         <div class="deck-card-top">
           <div class="deck-thai-label">ห้องเรียน</div>
-          <div class="deck-count-tag" id="home-count-language">288 cards</div>
+          <div class="deck-count-tag" id="home-count-language">293 cards</div>
         </div>
         <div class="deck-title">Language <span>Class</span></div>
         <div class="deck-desc">Vocabulary from class, organized by session</div>
         <div class="deck-progress-row">
           <div class="deck-progress-track"><div class="deck-progress-fill" id="home-progress-language"></div></div>
-          <div class="deck-progress-label" id="home-progress-label-language"><b>0</b> / 288 known</div>
+          <div class="deck-progress-label" id="home-progress-label-language"><b>0</b> / 293 known</div>
         </div>
       </div>
 
@@ -1311,12 +1315,12 @@
   <div class="stats">
     <div class="stat"><div class="stat-num" id="stat-known-language">0</div><div class="stat-label">Known</div></div>
     <div class="stat"><div class="stat-num" id="stat-learning-language">0</div><div class="stat-label">Learning</div></div>
-    <div class="stat"><div class="stat-num" id="stat-remaining-language">288</div><div class="stat-label">Remaining</div></div>
+    <div class="stat"><div class="stat-num" id="stat-remaining-language">293</div><div class="stat-label">Remaining</div></div>
   </div>
 
   <div class="progress-bar-wrap">
     <div class="progress-track"><div class="progress-fill" id="progress-fill-language"></div></div>
-    <div class="progress-label" id="progress-label-language">1 / 288</div>
+    <div class="progress-label" id="progress-label-language">1 / 293</div>
   </div>
 
   <div class="card-scene" id="card-scene-language" onclick="flipCard('language')">
@@ -2202,6 +2206,10 @@ const phrasesData = [
 // Class deck.
 const phraseClassNames = ['General', ...new Set(phrasesData.filter(p => p.cls).map(p => p.cls))];
 
+// The topic categories (Greetings, Food, etc.) - "All" isn't a real
+// category, it's the master toggle button for this whole row.
+const phraseCategoryNames = ['Greetings', 'Essentials', 'Food', 'Numbers', 'Transport', 'Shopping', 'Places', 'Emotions', 'Safety', 'Conversation'];
+
 const languageClassData = [
   { thai: "นี่", phonetic: "nîi", english: "This", cls: "Class 3" },
   { thai: "นั่น", phonetic: "nân", english: "That", cls: "Class 3" },
@@ -2386,7 +2394,7 @@ const languageClassData = [
   { thai: "ดูทีวี", phonetic: "duu thīiwīi", english: "Watch TV", cls: "Class 8" },
   { thai: "ฟังวิทยุ", phonetic: "fāŋ wítthayú", english: "Listen to the radio", cls: "Class 8" },
   { thai: "เล่น", phonetic: "lên", english: "Play", cls: "Class 8" },
-  { thai: "ตีกอล์ฟ", phonetic: "tīi kóɔf", english: "Play golf", cls: "Class 8" },
+  { thai: "ตีกอล์ฟ", phonetic: "tīi kɔ́ɔf", english: "Play golf", cls: "Class 8" },
   { thai: "ว่ายน้ำ", phonetic: "wâaynáam", english: "Swim", cls: "Class 8" },
   { thai: "อาบน้ำ", phonetic: "'àapnáam", english: "Shower, bath", cls: "Class 8" },
   { thai: "นอน", phonetic: "nɔɔn", english: "To sleep, to lay down", cls: "Class 8" },
@@ -2424,6 +2432,11 @@ const languageClassData = [
   { thai: "ใคร", phonetic: "khrāy", english: "Who?", cls: "Class 9" },
   { thai: "กับใคร", phonetic: "kàpkhrāy", english: "With whom?", cls: "Class 9" },
   { thai: "คนเดียว", phonetic: "khōndīaw", english: "Alone", cls: "Class 9" },
+  { thai: "สถานีขนส่ง", phonetic: "sathăanii khǒnsòng", english: "Bus station", cls: "Class 9" },
+  { thai: "สถานีรถไฟ", phonetic: "sathăanii rótfāy", english: "Train station", cls: "Class 9" },
+  { thai: "วินมอเตอร์ไซค์", phonetic: "win mɔɔtəəsāy", english: "Motorcycle taxi stand", cls: "Class 9" },
+  { thai: "รถสองแถว", phonetic: "rót sɔ̌ɔŋthɛ̌ɛw", english: "Songthaew (shared pickup-truck taxi)", cls: "Class 9" },
+  { thai: "เรือข้ามฟาก", phonetic: "rūa khâamfâak", english: "Cross-river ferry", cls: "Class 9" },
   { thai: "ได้ไหม", phonetic: "dâaymáy", english: "Can you...? Is it ok?", cls: "Class 10" },
   { thai: "ได้", phonetic: "dâay", english: "Can, be able to", cls: "Class 10" },
   { thai: "ไม่ได้", phonetic: "mâydâay", english: "Cannot", cls: "Class 10" },
@@ -2654,11 +2667,15 @@ const decks = {
     idOf: p => (p.cls ? p.cls + '::' : '') + p.thai,
     filters: ['All', 'Greetings', 'Essentials', 'Food', 'Numbers', 'Transport', 'Shopping', 'Places', 'Emotions', 'Safety', 'Conversation'],
     filterLabel: f => f,
-    // two independent axes: topic category (single-select) and class day-tag
-    // (multi-select). Phrases with no cls tag count as the virtual "General"
-    // class, so unchecking it actually hides them instead of always showing.
-    matchesFilter: (p, af) => (af.category === 'All' || p.category === af.category) && af.classes.has(p.cls || 'General'),
-    activeFilter: { category: 'All', classes: new Set(phraseClassNames) },
+    // two independent axes, both multi-select: topic category and class
+    // day-tag. Phrases with no cls tag count as the virtual "General" class,
+    // so unchecking it actually hides them instead of always showing.
+    // Union (OR), not intersection: a phrase shows if EITHER its category
+    // or its class is selected. That means a fully-selected row always
+    // matches on its own, so narrowing the other row only takes effect
+    // once you've also cleared this one down from "everything".
+    matchesFilter: (p, af) => af.categories.has(p.category) || af.classes.has(p.cls || 'General'),
+    activeFilter: { categories: new Set(phraseCategoryNames), classes: new Set(phraseClassNames) },
     filtered: [],
     currentIndex: 0,
     isFlipped: false,
@@ -2806,29 +2823,23 @@ function renderLanguageFilters(deckId) {
   const el = document.getElementById('filter-bar-' + deckId);
   if (!el) return;
   const allSelected = languageClassNames.every(c => deck.activeFilter.has(c));
-  const noneSelected = languageClassNames.every(c => !deck.activeFilter.has(c));
+  const someSelected = !allSelected && languageClassNames.some(c => deck.activeFilter.has(c));
 
-  const allChip =
-    '<div class="class-filter-chip">' +
-      '<button class="cat-btn ' + (allSelected ? 'active' : '') + '" onclick="selectAllLanguageClasses(\'' + deckId + '\')">All Classes</button>' +
-      '<label class="class-filter-check">' +
-        '<input type="checkbox" ' + (allSelected ? 'checked' : '') + ' onchange="toggleAllLanguageClasses(\'' + deckId + '\', this.checked)">' +
-      '</label>' +
-    '</div>';
+  // "All Classes" is a true on/off toggle, same as the Thai Phrases class
+  // row - active look when everything's selected, dashed/partial when some
+  // (but not all) are, plain when none are.
+  const allBtn =
+    '<button class="cat-btn ' + (allSelected ? 'active' : (someSelected ? 'partial' : '')) + '" onclick="toggleAllLanguageClasses(\'' + deckId + '\')">All Classes</button>';
 
-  const classChips = languageClassNames.map(c =>
-    '<div class="class-filter-chip">' +
-      '<button class="cat-btn ' + (deck.activeFilter.has(c) ? 'active' : '') + '" onclick="selectOnlyLanguageClass(\'' + deckId + '\',\'' + c + '\')">' + c + '</button>' +
-      '<label class="class-filter-check">' +
-        '<input type="checkbox" ' + (deck.activeFilter.has(c) ? 'checked' : '') + ' onchange="toggleLanguageClass(\'' + deckId + '\',\'' + c + '\', this.checked)">' +
-      '</label>' +
-    '</div>'
+  // Each class button directly toggles its own on/off state - click adds
+  // it to the combined selection, click again removes it. Classes are
+  // allowed to reach zero - "show nothing" is a valid state if that's
+  // genuinely what's selected.
+  const classBtns = languageClassNames.map(c =>
+    '<button class="cat-btn ' + (deck.activeFilter.has(c) ? 'active' : '') + '" onclick="toggleLanguageClassButton(\'' + deckId + '\',\'' + c + '\')">' + c + '</button>'
   ).join('');
 
-  el.innerHTML = allChip + classChips;
-
-  const allCheckbox = el.querySelector('.class-filter-chip input[type="checkbox"]');
-  if (allCheckbox) allCheckbox.indeterminate = !allSelected && !noneSelected;
+  el.innerHTML = allBtn + classBtns;
 }
 
 function applyLanguageFilterChange(deckId) {
@@ -2844,41 +2855,38 @@ function applyLanguageFilterChange(deckId) {
   updateStats(deckId);
 }
 
-function selectAllLanguageClasses(deckId) {
-  decks[deckId].activeFilter = new Set(languageClassNames);
-  applyLanguageFilterChange(deckId);
-}
-
-function toggleAllLanguageClasses(deckId, checked) {
-  decks[deckId].activeFilter = checked ? new Set(languageClassNames) : new Set();
-  applyLanguageFilterChange(deckId);
-}
-
-function selectOnlyLanguageClass(deckId, cls) {
-  decks[deckId].activeFilter = new Set([cls]);
-  applyLanguageFilterChange(deckId);
-}
-
-function toggleLanguageClass(deckId, cls, checked) {
+function toggleAllLanguageClasses(deckId) {
   const deck = decks[deckId];
-  if (checked) deck.activeFilter.add(cls);
-  else deck.activeFilter.delete(cls);
+  const allSelected = languageClassNames.every(c => deck.activeFilter.has(c));
+  // true on/off toggle: if everything's already selected, turn it all off;
+  // otherwise turn it all on.
+  deck.activeFilter = allSelected ? new Set() : new Set(languageClassNames);
+  applyLanguageFilterChange(deckId);
+}
+
+function toggleLanguageClassButton(deckId, cls) {
+  const deck = decks[deckId];
+  if (deck.activeFilter.has(cls)) deck.activeFilter.delete(cls);
+  else deck.activeFilter.add(cls);
   applyLanguageFilterChange(deckId);
 }
 
 // ============================================================
-// PHRASES DUAL FILTER (topic category, single-select + class day-tag,
-// multi-select) - the topic row works exactly like it always has; the
-// class row layers on top of it the same way the Language Class deck's
-// checkboxes work, restricted to phrases that carry a cls tag at all.
+// PHRASES DUAL FILTER (topic category + class day-tag, both multi-select
+// toggle groups). "All" and "All Classes" are each the master toggle for
+// their own row, not a real filter value themselves.
 // ============================================================
 function renderPhraseFilters(deckId) {
   const deck = decks[deckId];
   const catEl = document.getElementById('filter-bar-' + deckId);
   if (catEl) {
-    catEl.innerHTML = deck.filters.map(f =>
-      `<button class="cat-btn ${f === deck.activeFilter.category ? 'active' : ''}" onclick="setPhraseCategory('${deckId}','${f}')">${deck.filterLabel(f)}</button>`
+    const allCatsSelected = phraseCategoryNames.every(c => deck.activeFilter.categories.has(c));
+    const someCatsSelected = !allCatsSelected && phraseCategoryNames.some(c => deck.activeFilter.categories.has(c));
+    const allBtn = '<button class="cat-btn ' + (allCatsSelected ? 'active' : (someCatsSelected ? 'partial' : '')) + '" onclick="toggleAllPhraseCategories(\'' + deckId + '\')">All</button>';
+    const catBtns = phraseCategoryNames.map(f =>
+      '<button class="cat-btn ' + (deck.activeFilter.categories.has(f) ? 'active' : '') + '" onclick="togglePhraseCategoryButton(\'' + deckId + '\',\'' + f + '\')">' + f + '</button>'
     ).join('');
+    catEl.innerHTML = allBtn + catBtns;
   }
 
   const classEl = document.getElementById('class-filter-bar-' + deckId);
@@ -2890,28 +2898,23 @@ function renderPhraseFilters(deckId) {
   }
   classEl.style.display = '';
   const allSelected = phraseClassNames.every(c => deck.activeFilter.classes.has(c));
-  const noneSelected = phraseClassNames.every(c => !deck.activeFilter.classes.has(c));
+  const someSelected = !allSelected && phraseClassNames.some(c => deck.activeFilter.classes.has(c));
 
-  const allChip =
-    '<div class="class-filter-chip">' +
-      '<button class="cat-btn ' + (allSelected ? 'active' : '') + '" onclick="selectAllPhraseClasses(\'' + deckId + '\')">All Classes</button>' +
-      '<label class="class-filter-check">' +
-        '<input type="checkbox" ' + (allSelected ? 'checked' : '') + ' onchange="toggleAllPhraseClasses(\'' + deckId + '\', this.checked)">' +
-      '</label>' +
-    '</div>';
+  // "All Classes" is a true on/off toggle, same as "All" above - active
+  // look when everything's selected, dashed/partial when some (but not
+  // all) are active, plain when none are.
+  const allBtn =
+    '<button class="cat-btn ' + (allSelected ? 'active' : (someSelected ? 'partial' : '')) + '" onclick="toggleAllPhraseClasses(\'' + deckId + '\')">All Classes</button>';
 
-  const classChips = phraseClassNames.map(c =>
-    '<div class="class-filter-chip">' +
-      '<button class="cat-btn ' + (deck.activeFilter.classes.has(c) ? 'active' : '') + '" onclick="selectOnlyPhraseClass(\'' + deckId + '\',\'' + c + '\')">' + c + '</button>' +
-      '<label class="class-filter-check">' +
-        '<input type="checkbox" ' + (deck.activeFilter.classes.has(c) ? 'checked' : '') + ' onchange="togglePhraseClass(\'' + deckId + '\',\'' + c + '\', this.checked)">' +
-      '</label>' +
-    '</div>'
+  // Each class button directly toggles its own on/off state (no separate
+  // checkbox) - click adds it to the combined selection, click again
+  // removes it. There's no more one-click "show only this class" shortcut;
+  // use "All Classes" to reset, then click just the one you want.
+  const classBtns = phraseClassNames.map(c =>
+    '<button class="cat-btn ' + (deck.activeFilter.classes.has(c) ? 'active' : '') + '" onclick="togglePhraseClassButton(\'' + deckId + '\',\'' + c + '\')">' + c + '</button>'
   ).join('');
 
-  classEl.innerHTML = allChip + classChips;
-  const allCheckbox = classEl.querySelector('.class-filter-chip input[type="checkbox"]');
-  if (allCheckbox) allCheckbox.indeterminate = !allSelected && !noneSelected;
+  classEl.innerHTML = allBtn + classBtns;
 }
 
 function applyPhraseFilterChange(deckId) {
@@ -2927,30 +2930,40 @@ function applyPhraseFilterChange(deckId) {
   updateStats(deckId);
 }
 
-function setPhraseCategory(deckId, category) {
-  decks[deckId].activeFilter.category = category;
-  applyPhraseFilterChange(deckId);
-}
-
-function selectAllPhraseClasses(deckId) {
-  decks[deckId].activeFilter.classes = new Set(phraseClassNames);
-  applyPhraseFilterChange(deckId);
-}
-
-function toggleAllPhraseClasses(deckId, checked) {
-  decks[deckId].activeFilter.classes = checked ? new Set(phraseClassNames) : new Set();
-  applyPhraseFilterChange(deckId);
-}
-
-function selectOnlyPhraseClass(deckId, cls) {
-  decks[deckId].activeFilter.classes = new Set([cls]);
-  applyPhraseFilterChange(deckId);
-}
-
-function togglePhraseClass(deckId, cls, checked) {
+function toggleAllPhraseCategories(deckId) {
   const deck = decks[deckId];
-  if (checked) deck.activeFilter.classes.add(cls);
-  else deck.activeFilter.classes.delete(cls);
+  const allSelected = phraseCategoryNames.every(c => deck.activeFilter.categories.has(c));
+  // "All" is the master toggle for the whole filter bar - categories and
+  // classes move together and stay in sync with "All Classes". If
+  // everything is already fully on, turn everything off; otherwise turn
+  // everything on. Both rows are allowed to land on zero - "show nothing"
+  // is a valid state if that's genuinely what's selected.
+  const turnOn = !allSelected;
+  deck.activeFilter.categories = turnOn ? new Set(phraseCategoryNames) : new Set();
+  deck.activeFilter.classes = turnOn ? new Set(phraseClassNames) : new Set();
+  applyPhraseFilterChange(deckId);
+}
+
+function togglePhraseCategoryButton(deckId, category) {
+  const deck = decks[deckId];
+  if (deck.activeFilter.categories.has(category)) deck.activeFilter.categories.delete(category);
+  else deck.activeFilter.categories.add(category);
+  applyPhraseFilterChange(deckId);
+}
+
+function toggleAllPhraseClasses(deckId) {
+  const deck = decks[deckId];
+  const allSelected = phraseClassNames.every(c => deck.activeFilter.classes.has(c));
+  // true on/off toggle, same pattern as "All" - if everything's on, turn it
+  // all off; otherwise turn it all on.
+  deck.activeFilter.classes = allSelected ? new Set() : new Set(phraseClassNames);
+  applyPhraseFilterChange(deckId);
+}
+
+function togglePhraseClassButton(deckId, cls) {
+  const deck = decks[deckId];
+  if (deck.activeFilter.classes.has(cls)) deck.activeFilter.classes.delete(cls);
+  else deck.activeFilter.classes.add(cls);
   applyPhraseFilterChange(deckId);
 }
 
