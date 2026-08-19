@@ -1231,7 +1231,7 @@
   <div class="home-wrap">
     <div class="home-header">
       <div class="logo-thai">ศึกษาภาษาไทย</div>
-      <h1>Thai <span>Study</span><span class="version-tag">v0.03b</span></h1>
+      <h1>Thai <span>Study</span><span class="version-tag">v0.04</span></h1>
       <p class="subtitle">Choose a deck to begin</p>
     </div>
 
@@ -2929,6 +2929,22 @@ const languageClassData = [
   { thai: "ได้รับ", phonetic: "dâyráp", english: "Receive", cls: "Class 19" },
   { thai: "เท่านั้น", phonetic: "thâwnán", english: "Only, just, that much", cls: "Class 19" },
   { thai: "อยาก...ให้...", phonetic: "yàak hây s.+v./adj.", english: "To want someone to do/be something", cls: "Class 19" },
+  { thai: "รองเท้า 3 คู่", phonetic: "rɔ̄ɔŋtháaw sǎam khûu", english: "3 pairs of shoes", cls: "Classifiers" },
+  { thai: "แตงโม 1 ชิ้น", phonetic: "tɛɛŋmōo nʉ̀ŋ chín", english: "1 slice of watermelon", cls: "Classifiers" },
+  { thai: "หนังสือ 5 เล่ม", phonetic: "nāŋsʉ̌ʉ hâa lêm", english: "5 books", cls: "Classifiers" },
+  { thai: "ทุเรียน 2 ชิ้น", phonetic: "thúrīan sɔ̌ng chín", english: "2 pieces of durian", cls: "Classifiers" },
+  { thai: "เสื้อ 4 ตัว", phonetic: "sʉ̂a sìi tūa", english: "4 shirts", cls: "Classifiers" },
+  { thai: "แว่นตา 1 อัน", phonetic: "wɛ̂ntāa nʉ̀ŋ 'ān", english: "1 pair of glasses", cls: "Classifiers" },
+  { thai: "นักเรียน 6 คน", phonetic: "nákrīan hòk khōn", english: "6 students", cls: "Classifiers" },
+  { thai: "กระดาษ 7 แผ่น", phonetic: "kradàat jèt phèn", english: "7 sheets of paper", cls: "Classifiers" },
+  { thai: "ดอกไม้ 8 ดอก", phonetic: "dɔ̀ɔkmáay pàet dɔ̀ɔk", english: "8 flowers", cls: "Classifiers" },
+  { thai: "แหวน 9 วง", phonetic: "wɛ̌ɛn kâao wōŋ", english: "9 rings", cls: "Classifiers" },
+  { thai: "จดหมาย 10 ฉบับ", phonetic: "còtmǎay sìp chabàp", english: "10 letters", cls: "Classifiers" },
+  { thai: "เก้าอี้ 11 ตัว", phonetic: "kâw'îi sìp-èt tūa", english: "11 chairs", cls: "Classifiers" },
+  { thai: "โต๊ะ 12 ตัว", phonetic: "tó sìp-sǒng tūa", english: "12 tables", cls: "Classifiers" },
+  { thai: "ปลา 13 ตัว", phonetic: "plāa sìp-sǎam tūa", english: "13 fish", cls: "Classifiers" },
+  { thai: "กล้วย 1 หวี", phonetic: "klûay nʉ̀ŋ wǐi", english: "1 bunch of bananas", cls: "Classifiers" },
+  { thai: "ขนมปัง 3 แผ่น", phonetic: "khanǒmpāŋ sǎam phèn", english: "3 slices of bread", cls: "Classifiers" },
 ];
 
 // Filter chips for the Language Class deck are derived from whatever class
@@ -2936,8 +2952,9 @@ const languageClassData = [
 // of cards automatically gets its own filter button - no code changes needed.
 const languageClassFilters = ['All', ...new Set(languageClassData.map(p => p.cls))].sort((a, b) => {
   const na = parseInt((a || '').replace('Class ', ''), 10), nb = parseInt((b || '').replace('Class ', ''), 10);
-  if (isNaN(na)) return -1;
-  if (isNaN(nb)) return 1;
+  // non-numeric labels (like "Classifiers") sort after all numbered classes
+  if (isNaN(na)) return 1;
+  if (isNaN(nb)) return -1;
   return na - nb;
 });
 const languageClassNames = languageClassFilters.slice(1); // just the real class labels, no "All"
