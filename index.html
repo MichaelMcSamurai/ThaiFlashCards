@@ -1231,7 +1231,7 @@
   <div class="home-wrap">
     <div class="home-header">
       <div class="logo-thai">ศึกษาภาษาไทย</div>
-      <h1>Thai <span>Study</span><span class="version-tag">v0.04d</span></h1>
+      <h1>Thai <span>Study</span><span class="version-tag">v0.05</span></h1>
       <p class="subtitle">Choose a deck to begin</p>
     </div>
 
@@ -2288,8 +2288,8 @@ const phrasesData = [
   { thai: "ไม่ใช่ครับ ครอบครัวดิฉัน/ผมมี 2 คนครับ", phonetic: "mây chây (khráp). khrɔ̂ɔpkhrūa dichán/phǒm mii 2 khon (khráp)", english: "No. My family has 2 people.", usage: "Class 14 dialogue - negative form", category: "Conversation", cls: "Class 14" },
   { thai: "คุณมีพี่น้องกี่คนครับ?", phonetic: "khun mii phîinɔ́ɔŋ kìi khon (khráp)?", english: "How many siblings do you have?", usage: "Class 14 dialogue", category: "Conversation", cls: "Class 14" },
   { thai: "ดิฉัน/ผมมีพี่น้อง 4 คนครับ มีพี่สาว 1 คนพี่ชาย 1 คนกะน้องสาว 1 คนครับ", phonetic: "dichán/phǒm mii phîinɔ́ɔŋ 4 khon (khráp), mii phîisǎaw 1 khon phîichāay 1 khon ka nɔ́ɔŋsǎaw 1 khon (khráp)", english: "I have 4 siblings: 1 older sister, 1 older brother, and 1 younger sister.", usage: "Class 14 dialogue", category: "Conversation", cls: "Class 14" },
-  { thai: "ลูกคนโตอายุเท่าไหร่ครับ?", phonetic: "lûuk khon tôo 'āayú thâwrày (khráp)?", english: "How old is the oldest child?", usage: "Class 14 dialogue", category: "Conversation", cls: "Class 14" },
-  { thai: "ลูกคนโตอายุ 1-12 ขวบครับ", phonetic: "lûuk khon tôo 'āayú 1-12 khùap (khráp)", english: "The oldest child is 1-12 years old.", usage: "Class 14 dialogue", category: "Conversation", cls: "Class 14" },
+  { thai: "ลูกคนโตอายุเท่าไหร่ครับ?", phonetic: "lûuk khon tōo 'āayú thâwrày (khráp)?", english: "How old is the oldest child?", usage: "Class 14 dialogue", category: "Conversation", cls: "Class 14" },
+  { thai: "ลูกคนโตอายุ 1-12 ขวบครับ", phonetic: "lûuk khon tōo 'āayú 1-12 khùap (khráp)", english: "The oldest child is 1-12 years old.", usage: "Class 14 dialogue", category: "Conversation", cls: "Class 14" },
   { thai: "คุณแต่งงานอายุเท่าไหร่ครับ?", phonetic: "khun tɛ̀ŋŋāan 'āayú thâwrày (khráp)?", english: "At what age did you get married?", usage: "Class 14 dialogue", category: "Conversation", cls: "Class 14" },
   { thai: "ดิฉัน/ผมแต่งงานอายุ 28 (ปี)ครับ", phonetic: "dichán/phǒm tɛ̀ŋŋāan 'āayú 28 (pii) (khráp)", english: "I got married at age 28.", usage: "Class 14 dialogue", category: "Conversation", cls: "Class 14" },
   { thai: "พูดอีกทีซิครับ", phonetic: "phûut 'ìik thīi si (khráp)", english: "Please say it again.", usage: "Class 15 dialogue", category: "Conversation", cls: "Class 15" },
@@ -2827,6 +2827,21 @@ const languageClassData = [
   { thai: "ยาย", phonetic: "yāay", english: "Grandmother (mother of mother)", cls: "Class 14" },
   { thai: "อายุ", phonetic: "'āayú", english: "Age", cls: "Class 14" },
   { thai: "ขวบ", phonetic: "khùap", english: "Years (1-12 years old)", cls: "Class 14" },
+  { thai: "ใช่ไหม", phonetic: "chây máy", english: "Right? Isn't it?", cls: "Class 14" },
+  { thai: "ใช่", phonetic: "chây", english: "Yes, right", cls: "Class 14" },
+  { thai: "ครอบครัว", phonetic: "khrɔ̂ɔpkhrūa", english: "Family", cls: "Class 14" },
+  { thai: "ลูกคนโต", phonetic: "lûuk khōn tōo", english: "Eldest child", cls: "Class 14" },
+  { thai: "ลูกคนกลาง", phonetic: "lûuk khōn klāaŋ", english: "Middle child", cls: "Class 14" },
+  { thai: "ลูกคนเล็ก", phonetic: "lûuk khōn lék", english: "Youngest child", cls: "Class 14" },
+  { thai: "หลาน", phonetic: "lǎan", english: "Grandchild, niece, nephew", cls: "Class 14" },
+  { thai: "ลูกคนที่ 1-10", phonetic: "lûuk khōn thîi 1-10", english: "1st, 2nd....9th, 10th child", cls: "Class 14" },
+  { thai: "เสีย, ตาย", phonetic: "sǐa, tāay", english: "Dead, pass away", cls: "Class 14" },
+  { thai: "พี่น้อง", phonetic: "phîinɔ́ɔŋ", english: "Sister, brother (siblings)", cls: "Class 14" },
+  { thai: "พี่ชาย", phonetic: "phîichāay", english: "Elder brother", cls: "Class 14" },
+  { thai: "พี่สาว", phonetic: "phîisǎaw", english: "Elder sister", cls: "Class 14" },
+  { thai: "น้องชาย", phonetic: "nɔ́ɔŋchāay", english: "Younger brother", cls: "Class 14" },
+  { thai: "น้องสาว", phonetic: "nɔ́ɔŋsǎaw", english: "Younger sister", cls: "Class 14" },
+  { thai: "แล้วหรือยัง", phonetic: "lɛ́ɛw rú yāŋ", english: "Already or not? Did....yet?", cls: "Class 14" },
   { thai: "อีกที", phonetic: "'ìik thīi", english: "One more time", cls: "Class 15" },
   { thai: "ซิ", phonetic: "si", english: "Particle to urge someone to do as the speaker has said", cls: "Class 15" },
   { thai: "เบา", phonetic: "bāw", english: "Soft, light", cls: "Class 15" },
