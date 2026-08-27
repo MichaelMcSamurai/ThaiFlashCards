@@ -938,7 +938,7 @@
   .screen.active { display: flex; }
 
   /* ============ START SCREEN ============ */
-  #wc-screen-start, #tc-screen-start {
+  #wc-screen-start {
     justify-content: center;
     padding: 24px;
     text-align: center;
@@ -990,7 +990,7 @@
   .best-score b { color: var(--thai-gold); font-weight: 500; }
 
   /* ============ GAME SCREEN ============ */
-  #wc-screen-game, #tc-screen-game {
+  #wc-screen-game {
     justify-content: flex-start;
   }
 
@@ -1163,7 +1163,7 @@
   }
 
   /* ============ END SCREEN ============ */
-  #wc-screen-end, #tc-screen-end {
+  #wc-screen-end {
     justify-content: center;
     padding: 24px;
     text-align: center;
@@ -1222,129 +1222,6 @@
     .bubble.correct, .fanfare-burst { animation: none; }
   }
 
-  /* ============ THAI CLOCK GAME ============ */
-  .tc-clock-wrap {
-    display: flex;
-    justify-content: center;
-    margin: 6px 0 28px;
-  }
-
-  .tc-choices {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    width: 100%;
-    max-width: 420px;
-    padding: 0 20px;
-  }
-
-  .tc-choice-btn {
-    background: var(--card);
-    border: 1.5px solid var(--border);
-    border-radius: 10px;
-    padding: 16px 10px;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    align-items: center;
-    font-family: 'IBM Plex Sans Thai', sans-serif;
-    transition: border-color 0.15s, box-shadow 0.15s, opacity 0.15s;
-    -webkit-tap-highlight-color: transparent;
-  }
-  .tc-choice-btn:active { transform: scale(0.96); }
-
-  .tc-choice-thai { font-size: 19px; color: var(--text); line-height: 1.2; }
-  .tc-choice-phon { font-size: 12px; color: var(--muted); font-family: 'IBM Plex Mono', monospace; }
-
-  .tc-choice-btn.correct {
-    border-color: var(--success);
-    background: #142914;
-    box-shadow: 0 0 0 3px rgba(76,175,80,0.25);
-  }
-  .tc-choice-btn.correct .tc-choice-thai,
-  .tc-choice-btn.correct .tc-choice-phon { color: var(--success); }
-
-  .tc-choice-btn.wrong {
-    border-color: var(--danger);
-    opacity: 0.35;
-    pointer-events: none;
-  }
-
-  .tc-prompt {
-    text-align: center;
-    margin-bottom: 22px;
-    padding: 0 20px;
-  }
-  .tc-prompt-thai {
-    font-family: 'Libre Baskerville', serif;
-    font-size: clamp(28px, 7vw, 40px);
-    margin-bottom: 6px;
-  }
-  .tc-prompt-phon {
-    font-family: 'IBM Plex Mono', monospace;
-    color: var(--accent);
-    font-size: 16px;
-    margin-bottom: 16px;
-  }
-  .tc-speak-btn {
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--text);
-    padding: 9px 18px;
-    border-radius: 20px;
-    font-size: 13px;
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-  }
-  .tc-speak-btn:active { transform: scale(0.96); }
-
-  .tc-clock-choices {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    width: 100%;
-    max-width: 340px;
-    padding: 0 20px;
-  }
-  .tc-clock-choice {
-    background: var(--card);
-    border: 1.5px solid var(--border);
-    border-radius: 12px;
-    padding: 10px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: border-color 0.15s, opacity 0.15s;
-    -webkit-tap-highlight-color: transparent;
-  }
-  .tc-clock-choice:active { transform: scale(0.96); }
-  .tc-clock-choice.correct {
-    border-color: var(--success);
-    background: #142914;
-    box-shadow: 0 0 0 3px rgba(76,175,80,0.25);
-  }
-  .tc-clock-choice.wrong {
-    border-color: var(--danger);
-    opacity: 0.35;
-    pointer-events: none;
-  }
-
-  .tc-reveal-caption {
-    margin-top: 20px;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 13px;
-    color: var(--thai-gold);
-    text-align: center;
-    letter-spacing: 0.5px;
-  }
-
-  @media (max-width: 420px) {
-    .tc-choice-thai { font-size: 17px; }
-    .tc-choices, .tc-clock-choices { gap: 10px; }
-  }
-
 </style>
 </head>
 <body>
@@ -1354,7 +1231,7 @@
   <div class="home-wrap">
     <div class="home-header">
       <div class="logo-thai">ศึกษาภาษาไทย</div>
-      <h1>Thai <span>Study</span><span class="version-tag">v0.06b</span></h1>
+      <h1>Thai <span>Study</span><span class="version-tag">v0.05f</span></h1>
       <p class="subtitle">Choose a deck to begin</p>
     </div>
 
@@ -1421,19 +1298,6 @@
         <div class="deck-progress-row">
           <div class="deck-progress-track"><div class="deck-progress-fill" id="home-progress-wordgame" style="background: var(--thai-gold);"></div></div>
           <div class="deck-progress-label" id="home-progress-label-wordgame"><b>0</b> best score</div>
-        </div>
-      </div>
-
-      <div class="deck-card" onclick="enterDeck('clockgame')">
-        <div class="deck-card-top">
-          <div class="deck-thai-label">นาฬิกา</div>
-          <div class="deck-count-tag" id="home-count-clockgame">12 rounds</div>
-        </div>
-        <div class="deck-title">Thai <span>Clock</span></div>
-        <div class="deck-desc">Read the traditional 6-hour clock &mdash; tii, mōoŋ, bàay &amp; thûm</div>
-        <div class="deck-progress-row">
-          <div class="deck-progress-track"><div class="deck-progress-fill" id="home-progress-clockgame" style="background: var(--thai-gold);"></div></div>
-          <div class="deck-progress-label" id="home-progress-label-clockgame"><b>0</b> best score</div>
         </div>
       </div>
     </div>
@@ -1814,55 +1678,6 @@
   <div class="end-buttons">
     <button class="btn-secondary" id="wc-btn-end-home">Quit</button>
     <button class="btn-start" id="wc-btn-end-again">Play Again</button>
-  </div>
-</div>
-</div>
-
-<!-- ============ THAI CLOCK GAME ============ -->
-<div class="view" id="view-clockgame">
-<!-- ============ START SCREEN ============ -->
-<div class="screen active" id="tc-screen-start">
-  <button class="btn-back" id="tc-btn-back-home" style="position:absolute; top:16px; left:16px;" onclick="goHome()">&larr; Decks</button>
-  <div class="logo-thai">นาฬิกา</div>
-  <h1 class="title">Thai <span>Clock</span></h1>
-  <p class="start-desc">Thai tells time with a traditional <b>6-hour system</b>: <b>tii</b> for the dead of night, <b>mōoŋ cháaw</b> for morning, <b>bàay</b> / <b>mōoŋ yēn</b> for afternoon &amp; evening, and <b>thûm</b> after dark. Read the clock and pick its Thai name &mdash; or hear the Thai and pick the clock.</p>
-  <button class="btn-start" id="tc-btn-start">Start Game</button>
-  <div class="best-score" id="tc-best-score-display"></div>
-</div>
-
-<!-- ============ GAME SCREEN ============ -->
-<div class="screen" id="tc-screen-game">
-  <div class="game-hud">
-    <div class="hud-stat">
-      Score
-      <b id="tc-hud-score">0</b>
-    </div>
-    <div class="hud-stat right">
-      Round
-      <b id="tc-hud-round">1 / 12</b>
-    </div>
-  </div>
-
-  <div class="target-banner">
-    <button class="btn-quit" id="tc-btn-quit-game">&times; Quit</button>
-    <div class="target-label" id="tc-mode-label">What time is this?</div>
-  </div>
-
-  <div class="tc-round-body" id="tc-round-body"></div>
-
-  <div class="round-footer">
-    <button class="btn-next" id="tc-btn-next">Next &rarr;</button>
-  </div>
-</div>
-
-<!-- ============ END SCREEN ============ -->
-<div class="screen" id="tc-screen-end">
-  <div class="end-label">Game Complete</div>
-  <div class="end-score" id="tc-end-score">0</div>
-  <div class="end-sub">points &middot; best: <b id="tc-end-best">0</b></div>
-  <div class="end-buttons">
-    <button class="btn-secondary" id="tc-btn-end-home">Quit</button>
-    <button class="btn-start" id="tc-btn-end-again">Play Again</button>
   </div>
 </div>
 </div>
@@ -3404,12 +3219,6 @@ function enterDeck(deckId) {
     return;
   }
 
-  if (deckId === 'clockgame') {
-    showView('view-clockgame');
-    window.scrollTo(0, 0);
-    return;
-  }
-
   const deck = decks[deckId];
   if (!deck.initialized) {
     deck.initialized = true;
@@ -3454,17 +3263,6 @@ function renderHomeStats() {
     if (gameFillEl) gameFillEl.style.width = Math.min(best / 2000 * 100, 100) + '%';
     const gameLabelEl = document.getElementById('home-progress-label-wordgame');
     if (gameLabelEl) gameLabelEl.innerHTML = '<b>' + best + '</b> best score';
-  } catch (e) {
-    // localStorage unavailable - game tile just shows static defaults
-  }
-
-  // Thai Clock game also uses a best-score model
-  try {
-    const cbest = parseInt(localStorage.getItem('thai-clock-best') || '0', 10);
-    const clockFillEl = document.getElementById('home-progress-clockgame');
-    if (clockFillEl) clockFillEl.style.width = Math.min(cbest / 1200 * 100, 100) + '%';
-    const clockLabelEl = document.getElementById('home-progress-label-clockgame');
-    if (clockLabelEl) clockLabelEl.innerHTML = '<b>' + cbest + '</b> best score';
   } catch (e) {
     // localStorage unavailable - game tile just shows static defaults
   }
@@ -4751,31 +4549,39 @@ function calcPoints(elapsedSeconds) {
 function speakThai(text) {
   if (!window.speechSynthesis) return;
   window.speechSynthesis.cancel();
-  // Chrome has a well-known bug where calling speak() immediately after
-  // cancel() can corrupt the synthesis queue for the rest of the page's
-  // life (all future speak() calls silently do nothing). A short delay
-  // between cancel() and speak() avoids it - the same pattern pronounce()
-  // and pronounceExample() already use below.
-  setTimeout(() => {
-    const utt = new SpeechSynthesisUtterance(text);
-    utt.lang = 'th-TH';
-    utt.rate = 0.85;
-    const voices = window.speechSynthesis.getVoices();
-    const thaiVoice = voices.find(v => v.lang === 'th-TH' || v.lang.startsWith('th'));
-    if (thaiVoice) utt.voice = thaiVoice;
-    window.speechSynthesis.speak(utt);
-  }, 60);
+  const utt = new SpeechSynthesisUtterance(text);
+  utt.lang = 'th-TH';
+  utt.rate = 0.85;
+  const voices = window.speechSynthesis.getVoices();
+  const thaiVoice = voices.find(v => v.lang === 'th-TH' || v.lang.startsWith('th'));
+  if (thaiVoice) utt.voice = thaiVoice;
+  window.speechSynthesis.speak(utt);
 }
 
-// NOTE: this used to play a celebratory chime via a dedicated Web Audio
-// AudioContext. That pattern has been observed to permanently steal the
-// shared audio output session away from SpeechSynthesis on some browsers -
-// once a game with this chime had been played, the flashcard decks'
-// pronounce buttons would go silent for the rest of the page's life, even
-// though speechSynthesis reported itself as "speaking". There's no
-// reliable way to undo that after the fact, so the chime is intentionally
-// a no-op now; the visual fanfare/animation still provides feedback.
-function playChime() {}
+// simple celebratory chime using Web Audio (no external asset needed)
+let audioCtx = null;
+function playChime() {
+  try {
+    audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+    const now = audioCtx.currentTime;
+    const notes = [660, 880, 1320]; // bright ascending triad
+    notes.forEach((freq, i) => {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0.0001, now + i * 0.08);
+      gain.gain.exponentialRampToValueAtTime(0.18, now + i * 0.08 + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + i * 0.08 + 0.35);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start(now + i * 0.08);
+      osc.stop(now + i * 0.08 + 0.4);
+    });
+  } catch (e) {
+    // audio unavailable - game still works visually
+  }
+}
 
 // ============================================================
 // ROUND FLOW
@@ -4877,7 +4683,7 @@ function nextOrEnd() {
 // SCREEN MANAGEMENT
 // ============================================================
 function showScreen(id) {
-  document.querySelectorAll('#view-wordgame .screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
 
@@ -4938,283 +4744,6 @@ return { startGame, quitToHome, nextOrEnd, renderBestScore, init: function() {
 })();
 
 WordCatch.init();
-
-// ============================================================
-// THAI CLOCK GAME
-// Traditional Thai 6-hour clock system, sourced from class Day12:
-// tii (tīi 1-5, midnight-5am), mōoŋ cháaw (6-11 mōoŋ cháaw, 6am-11am),
-// thîaŋ (noon), bàay (bàay mōoŋ / bàay 2-4 mōoŋ, 1-4pm),
-// mōoŋ yēn (5-6 mōoŋ yēn, 5-6pm), thûm (1-5 thûm, 7-11pm),
-// thîaŋkhʉ̄ʉn (midnight).
-// ============================================================
-const ThaiClock = (function() {
-
-const CLOCK_DATA = [
-  { hour24: 0,  thai: "เที่ยงคืน",      phonetic: "thîaŋkhʉ̄ʉn",   english: "Midnight (12:00 AM)", period: "khuun" },
-  { hour24: 1,  thai: "ตี 1",           phonetic: "tīi 1",         english: "1:00 AM",  period: "tii" },
-  { hour24: 2,  thai: "ตี 2",           phonetic: "tīi 2",         english: "2:00 AM",  period: "tii" },
-  { hour24: 3,  thai: "ตี 3",           phonetic: "tīi 3",         english: "3:00 AM",  period: "tii" },
-  { hour24: 4,  thai: "ตี 4",           phonetic: "tīi 4",         english: "4:00 AM",  period: "tii" },
-  { hour24: 5,  thai: "ตี 5",           phonetic: "tīi 5",         english: "5:00 AM",  period: "tii" },
-  { hour24: 6,  thai: "6 โมงเช้า",      phonetic: "6 mōoŋ cháaw",  english: "6:00 AM",  period: "chaaw" },
-  { hour24: 7,  thai: "7 โมงเช้า",      phonetic: "7 mōoŋ cháaw",  english: "7:00 AM",  period: "chaaw" },
-  { hour24: 8,  thai: "8 โมงเช้า",      phonetic: "8 mōoŋ cháaw",  english: "8:00 AM",  period: "chaaw" },
-  { hour24: 9,  thai: "9 โมงเช้า",      phonetic: "9 mōoŋ cháaw",  english: "9:00 AM",  period: "chaaw" },
-  { hour24: 10, thai: "10 โมงเช้า",     phonetic: "10 mōoŋ cháaw", english: "10:00 AM", period: "chaaw" },
-  { hour24: 11, thai: "11 โมงเช้า",     phonetic: "11 mōoŋ cháaw", english: "11:00 AM", period: "chaaw" },
-  { hour24: 12, thai: "เที่ยง",         phonetic: "thîaŋ",         english: "Noon (12:00 PM)", period: "thiang" },
-  { hour24: 13, thai: "บ่ายโมง",        phonetic: "bàay mōoŋ",     english: "1:00 PM",  period: "baay" },
-  { hour24: 14, thai: "บ่าย 2 โมง",     phonetic: "bàay 2 mōoŋ",   english: "2:00 PM",  period: "baay" },
-  { hour24: 15, thai: "บ่าย 3 โมง",     phonetic: "bàay 3 mōoŋ",   english: "3:00 PM",  period: "baay" },
-  { hour24: 16, thai: "บ่าย 4 โมง",     phonetic: "bàay 4 mōoŋ",   english: "4:00 PM",  period: "baay" },
-  { hour24: 17, thai: "5 โมงเย็น",      phonetic: "5 mōoŋ yēn",    english: "5:00 PM",  period: "yen" },
-  { hour24: 18, thai: "6 โมงเย็น",      phonetic: "6 mōoŋ yēn",    english: "6:00 PM",  period: "yen" },
-  { hour24: 19, thai: "1 ทุ่ม",         phonetic: "1 thûm",        english: "7:00 PM",  period: "thum" },
-  { hour24: 20, thai: "2 ทุ่ม",         phonetic: "2 thûm",        english: "8:00 PM",  period: "thum" },
-  { hour24: 21, thai: "3 ทุ่ม",         phonetic: "3 thûm",        english: "9:00 PM",  period: "thum" },
-  { hour24: 22, thai: "4 ทุ่ม",         phonetic: "4 thûm",        english: "10:00 PM", period: "thum" },
-  { hour24: 23, thai: "5 ทุ่ม",         phonetic: "5 thûm",        english: "11:00 PM", period: "thum" },
-];
-
-const TC_STORAGE_KEY = 'thai-clock-best';
-const TC_ROUNDS_PER_GAME = 12;
-const TC_POINTS = [100, 50, 25]; // 1st try, 2nd try, 3rd+ try
-
-let tcState = {
-  round: 0,
-  score: 0,
-  usedTargets: [],
-  currentRound: null,
-};
-
-function tcShuffle(arr) {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
-
-function tcPickTarget() {
-  if (tcState.usedTargets.length >= CLOCK_DATA.length - 1) tcState.usedTargets = [];
-  const candidates = CLOCK_DATA.filter((v, i) => !tcState.usedTargets.includes(i));
-  const pick = candidates[Math.floor(Math.random() * candidates.length)];
-  const idx = CLOCK_DATA.indexOf(pick);
-  tcState.usedTargets.push(idx);
-  return idx;
-}
-
-// decoys prefer 1-2 entries from the same period (e.g. another "mōoŋ cháaw"
-// hour) so the choice is a genuine discrimination, not a free giveaway
-function tcBuildDecoys(targetIdx) {
-  const target = CLOCK_DATA[targetIdx];
-  const pool = CLOCK_DATA.filter((v, i) => i !== targetIdx);
-  const samePeriod = tcShuffle(pool.filter(v => v.period === target.period));
-  let decoys = samePeriod.slice(0, Math.min(2, samePeriod.length));
-  const remaining = tcShuffle(pool.filter(v => !decoys.includes(v)));
-  while (decoys.length < 3 && remaining.length) decoys.push(remaining.pop());
-  return tcShuffle(decoys).slice(0, 3);
-}
-
-function tcClockFaceSVG(hour24, size) {
-  const hourFor12 = hour24 % 12;
-  const cx = size / 2, cy = size / 2, r = size / 2 - 3;
-  const angle = hourFor12 * 30 - 90;
-  const rad = angle * Math.PI / 180;
-  const handLen = r * 0.5;
-  const hx = (cx + handLen * Math.cos(rad)).toFixed(1);
-  const hy = (cy + handLen * Math.sin(rad)).toFixed(1);
-  const minuteY = (cy - r * 0.72).toFixed(1);
-
-  let ticks = '';
-  for (let i = 0; i < 12; i++) {
-    const a = i * 30 * Math.PI / 180;
-    const x1 = (cx + (r - 4) * Math.sin(a)).toFixed(1), y1 = (cy - (r - 4) * Math.cos(a)).toFixed(1);
-    const x2 = (cx + r * Math.sin(a)).toFixed(1), y2 = (cy - r * Math.cos(a)).toFixed(1);
-    ticks += '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" style="stroke:var(--border);stroke-width:2"/>';
-  }
-
-  return '<svg viewBox="0 0 ' + size + ' ' + size + '" width="' + size + '" height="' + size + '">' +
-    '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" style="fill:var(--card);stroke:var(--border);stroke-width:2"/>' +
-    ticks +
-    '<line x1="' + cx + '" y1="' + cy + '" x2="' + cx + '" y2="' + minuteY + '" style="stroke:var(--text);stroke-width:2;stroke-linecap:round"/>' +
-    '<line x1="' + cx + '" y1="' + cy + '" x2="' + hx + '" y2="' + hy + '" style="stroke:var(--accent);stroke-width:4;stroke-linecap:round"/>' +
-    '<circle cx="' + cx + '" cy="' + cy + '" r="4" style="fill:var(--accent)"/>' +
-    '</svg>';
-}
-
-function tcSpeak(text) {
-  if (!window.speechSynthesis) return;
-  window.speechSynthesis.cancel();
-  // Same Chrome cancel()-then-speak() race condition as speakThai() above -
-  // a short delay avoids corrupting the synthesis queue for the rest of
-  // the page's life.
-  setTimeout(() => {
-    const utt = new SpeechSynthesisUtterance(text);
-    utt.lang = 'th-TH';
-    utt.rate = 0.85;
-    const voices = window.speechSynthesis.getVoices();
-    const thaiVoice = voices.find(v => v.lang === 'th-TH' || v.lang.startsWith('th'));
-    if (thaiVoice) utt.voice = thaiVoice;
-    window.speechSynthesis.speak(utt);
-  }, 60);
-}
-
-// NOTE: the correct-answer chime used to be synthesized with the Web Audio
-// API (a dedicated AudioContext + oscillators). On several browsers that
-// turned out to permanently steal the shared audio output session away
-// from SpeechSynthesis for the rest of the page's life - once the clock
-// game had been played, the flashcard decks' pronounce buttons would go
-// silent even though speechSynthesis reported itself as "speaking". There
-// is no reliable browser-side workaround (suspending/closing the
-// AudioContext after the fact does not undo the damage), so the chime is
-// intentionally left out - tcSpeak() below still gives audible feedback by
-// reading the correct answer aloud, without ever touching AudioContext.
-function tcPlayChime() {}
-
-function tcRenderRound() {
-  const body = document.getElementById('tc-round-body');
-  const r = tcState.currentRound;
-  const modeLabel = document.getElementById('tc-mode-label');
-
-  if (r.mode === 'clockToText') {
-    modeLabel.textContent = 'What time is this?';
-    body.innerHTML = '<div class="tc-clock-wrap">' + tcClockFaceSVG(r.target.hour24, 190) + '</div>' +
-      '<div class="tc-choices" id="tc-choices"></div>';
-    const choicesEl = document.getElementById('tc-choices');
-    r.options.forEach(opt => {
-      const btn = document.createElement('button');
-      btn.className = 'tc-choice-btn';
-      btn.innerHTML = '<span class="tc-choice-thai">' + opt.thai + '</span><span class="tc-choice-phon">' + opt.phonetic + '</span>';
-      btn.addEventListener('click', () => tcHandleChoice(opt, btn));
-      choicesEl.appendChild(btn);
-    });
-  } else {
-    modeLabel.textContent = 'Tap the matching clock';
-    body.innerHTML = '<div class="tc-prompt">' +
-      '<div class="tc-prompt-thai">' + r.target.thai + '</div>' +
-      '<div class="tc-prompt-phon">' + r.target.phonetic + '</div>' +
-      '<button class="tc-speak-btn" id="tc-speak-btn">&#128266; Listen</button>' +
-      '</div>' +
-      '<div class="tc-clock-choices" id="tc-choices"></div>';
-    document.getElementById('tc-speak-btn').addEventListener('click', () => tcSpeak(r.target.thai));
-    const choicesEl = document.getElementById('tc-choices');
-    r.options.forEach(opt => {
-      const btn = document.createElement('button');
-      btn.className = 'tc-clock-choice';
-      btn.innerHTML = tcClockFaceSVG(opt.hour24, 90);
-      btn.addEventListener('click', () => tcHandleChoice(opt, btn));
-      choicesEl.appendChild(btn);
-    });
-  }
-}
-
-function tcHandleChoice(opt, btnEl) {
-  const r = tcState.currentRound;
-  if (r.answered) return;
-
-  if (opt === r.target) {
-    r.answered = true;
-    const points = TC_POINTS[Math.min(r.wrongTries, TC_POINTS.length - 1)];
-    tcState.score += points;
-    document.getElementById('tc-hud-score').textContent = tcState.score;
-
-    btnEl.classList.add('correct');
-    tcPlayChime();
-    tcSpeak(r.target.thai);
-
-    document.querySelectorAll('#tc-choices button').forEach(b => {
-      if (b !== btnEl) b.style.pointerEvents = 'none';
-    });
-
-    const cap = document.createElement('div');
-    cap.className = 'tc-reveal-caption';
-    cap.textContent = r.target.english + ' · +' + points;
-    document.getElementById('tc-round-body').appendChild(cap);
-
-    document.getElementById('tc-btn-next').classList.add('show');
-  } else {
-    r.wrongTries++;
-    btnEl.classList.add('wrong');
-  }
-}
-
-function tcBuildRound() {
-  const targetIdx = tcPickTarget();
-  const target = CLOCK_DATA[targetIdx];
-  const decoys = tcBuildDecoys(targetIdx);
-  const options = tcShuffle([target, ...decoys]);
-  const mode = Math.random() < 0.5 ? 'clockToText' : 'textToClock';
-  return { target, options, mode, wrongTries: 0, answered: false };
-}
-
-function tcStartRound() {
-  tcState.round++;
-  document.getElementById('tc-hud-round').textContent = tcState.round + ' / ' + TC_ROUNDS_PER_GAME;
-  document.getElementById('tc-btn-next').classList.remove('show');
-  tcState.currentRound = tcBuildRound();
-  tcRenderRound();
-}
-
-function tcEndGame() {
-  const best = parseInt(localStorage.getItem(TC_STORAGE_KEY) || '0', 10);
-  const newBest = Math.max(best, tcState.score);
-  try { localStorage.setItem(TC_STORAGE_KEY, newBest); } catch (e) {}
-
-  document.getElementById('tc-end-score').textContent = tcState.score;
-  document.getElementById('tc-end-best').textContent = newBest;
-  tcShowScreen('tc-screen-end');
-}
-
-function tcNextOrEnd() {
-  if (tcState.round >= TC_ROUNDS_PER_GAME) {
-    tcEndGame();
-  } else {
-    tcStartRound();
-  }
-}
-
-function tcShowScreen(id) {
-  document.querySelectorAll('#view-clockgame .screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-}
-
-function tcStartGame() {
-  tcState.round = 0;
-  tcState.score = 0;
-  tcState.usedTargets = [];
-  document.getElementById('tc-hud-score').textContent = '0';
-  tcShowScreen('tc-screen-game');
-  tcStartRound();
-}
-
-function tcQuitToHome() {
-  if (window.speechSynthesis) window.speechSynthesis.cancel();
-  tcShowScreen('tc-screen-start');
-  tcRenderBestScore();
-  if (typeof window.goHome === 'function') {
-    window.goHome();
-  }
-}
-
-function tcRenderBestScore() {
-  const best = parseInt(localStorage.getItem(TC_STORAGE_KEY) || '0', 10);
-  const el = document.getElementById('tc-best-score-display');
-  el.innerHTML = best > 0 ? 'Best score: <b>' + best + '</b>' : '';
-}
-
-return { startGame: tcStartGame, quitToHome: tcQuitToHome, nextOrEnd: tcNextOrEnd, renderBestScore: tcRenderBestScore, init: function() {
-  document.getElementById('tc-btn-start').addEventListener('click', tcStartGame);
-  document.getElementById('tc-btn-next').addEventListener('click', tcNextOrEnd);
-  document.getElementById('tc-btn-end-again').addEventListener('click', tcStartGame);
-  document.getElementById('tc-btn-end-home').addEventListener('click', tcQuitToHome);
-  document.getElementById('tc-btn-quit-game').addEventListener('click', tcQuitToHome);
-  tcRenderBestScore();
-}};
-})();
-
-ThaiClock.init();
 </script>
 </body>
 </html>
