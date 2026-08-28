@@ -3519,14 +3519,21 @@ function renderHomeStats() {
 // shared topic categories). Selections only take effect when Start is
 // pressed - the flashcard view itself has no live filter bar.
 // ============================================================
-function renderSpeakingClassGrid(containerId, level, names, toggleAllFn, toggleOneFn) {
+function renderSpeakingClassGrid(containerId, level, names, toggleAllFn, toggleOneFn, filterKind) {
   const el = document.getElementById(containerId);
   if (!el) return;
   if (names.length === 0) { el.innerHTML = ''; el.parentElement && (el.parentElement.style.display = 'none'); return; }
   if (el.parentElement) el.parentElement.style.display = '';
+  // Vocab classes and phrase classes are independent filters that happen to
+  // share the same class-name labels (e.g. both S1 and S2 have a "Class 7"
+  // or "Class 1"). Each grid must only reflect its own filter set - checking
+  // both here would make a vocab button look "active" just because a
+  // same-named phrase class was still selected (or vice versa), which is
+  // exactly the bug where "All Vocab" appeared to only clear some buttons.
+  const activeSet = filterKind === 'phrase' ? decks.speaking.activeFilter.phraseClasses : decks.speaking.activeFilter.vocabClasses;
   el.innerHTML = names.map(c => {
     const key = classKey(level, c);
-    const active = decks.speaking.activeFilter.vocabClasses.has(key) || decks.speaking.activeFilter.phraseClasses.has(key);
+    const active = activeSet.has(key);
     return '<button class="cat-btn ' + (active ? 'active' : '') + '" onclick="' + toggleOneFn + '(\'' + level + '\',\'' + c + '\')">' + c + '</button>';
   }).join('');
 }
@@ -3564,12 +3571,12 @@ function renderSpeakingSelectionScreen() {
   const s1VocabOn = speakingVocabClassesS1.length > 0 && speakingVocabClassesS1.every(c => af.vocabClasses.has(classKey('S1', c)));
   const s1VocabSome = !s1VocabOn && speakingVocabClassesS1.some(c => af.vocabClasses.has(classKey('S1', c)));
   setBtnState('sp-sel-s1-vocab', s1VocabOn, s1VocabSome);
-  renderSpeakingClassGrid('sp-grid-s1-vocab', 'S1', speakingVocabClassesS1, 'toggleSpeakingVocabLevel', 'toggleSpeakingVocabClass');
+  renderSpeakingClassGrid('sp-grid-s1-vocab', 'S1', speakingVocabClassesS1, 'toggleSpeakingVocabLevel', 'toggleSpeakingVocabClass', 'vocab');
 
   const s2VocabOn = speakingVocabClassesS2.length > 0 && speakingVocabClassesS2.every(c => af.vocabClasses.has(classKey('S2', c)));
   const s2VocabSome = !s2VocabOn && speakingVocabClassesS2.some(c => af.vocabClasses.has(classKey('S2', c)));
   setBtnState('sp-sel-s2-vocab', s2VocabOn, s2VocabSome);
-  renderSpeakingClassGrid('sp-grid-s2-vocab', 'S2', speakingVocabClassesS2, 'toggleSpeakingVocabLevel', 'toggleSpeakingVocabClass');
+  renderSpeakingClassGrid('sp-grid-s2-vocab', 'S2', speakingVocabClassesS2, 'toggleSpeakingVocabLevel', 'toggleSpeakingVocabClass', 'vocab');
 
   // phrases master
   const phraseAllOn = speakingAllPhraseKeysSelected();
@@ -3587,12 +3594,12 @@ function renderSpeakingSelectionScreen() {
   const s1PhraseOn = speakingPhraseClassesS1.length > 0 && speakingPhraseClassesS1.every(c => af.phraseClasses.has(classKey('S1', c)));
   const s1PhraseSome = !s1PhraseOn && speakingPhraseClassesS1.some(c => af.phraseClasses.has(classKey('S1', c)));
   setBtnState('sp-sel-s1-phrases', s1PhraseOn, s1PhraseSome);
-  renderSpeakingClassGrid('sp-grid-s1-phrases', 'S1', speakingPhraseClassesS1, 'toggleSpeakingPhraseLevel', 'toggleSpeakingPhraseClass');
+  renderSpeakingClassGrid('sp-grid-s1-phrases', 'S1', speakingPhraseClassesS1, 'toggleSpeakingPhraseLevel', 'toggleSpeakingPhraseClass', 'phrase');
 
   const s2PhraseOn = speakingPhraseClassesS2.length > 0 && speakingPhraseClassesS2.every(c => af.phraseClasses.has(classKey('S2', c)));
   const s2PhraseSome = !s2PhraseOn && speakingPhraseClassesS2.some(c => af.phraseClasses.has(classKey('S2', c)));
   setBtnState('sp-sel-s2-phrases', s2PhraseOn, s2PhraseSome);
-  renderSpeakingClassGrid('sp-grid-s2-phrases', 'S2', speakingPhraseClassesS2, 'toggleSpeakingPhraseLevel', 'toggleSpeakingPhraseClass');
+  renderSpeakingClassGrid('sp-grid-s2-phrases', 'S2', speakingPhraseClassesS2, 'toggleSpeakingPhraseLevel', 'toggleSpeakingPhraseClass', 'phrase');
 
   updateSpeakingSelectionStats();
 }
