@@ -594,7 +594,12 @@
   .cluster:hover {
     border-color: var(--accent);
     background: rgba(217, 218, 75, 0.1);
-    cursor: default;
+    cursor: pointer;
+  }
+  .cluster.speaking {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: #000;
   }
 
   .rtgs-text, .phonetic-text {
@@ -3591,7 +3596,7 @@ const decks = {
 
       if (isWord) {
         const clusterHtml = (p.clusters && p.clusters.length ? p.clusters : [p.thai])
-          .map(c => '<span class="cluster">' + c + '</span>')
+          .map(c => '<span class="cluster" onclick="event.stopPropagation(); speakCluster(\'' + c.replace(/'/g, "\\'") + '\', this)">' + c + '</span>')
           .join('');
         const wordThaiEl = document.getElementById('word-thai-text-reading');
         if (wordThaiEl) wordThaiEl.innerHTML = clusterHtml;
@@ -4315,6 +4320,23 @@ function pronounceExample(deckId) {
     if (thaiVoice) utt.voice = thaiVoice;
     utt.onstart = () => el && el.classList.add('speaking');
     utt.onend   = () => el && el.classList.remove('speaking');
+    utt.onerror = () => el && el.classList.remove('speaking');
+    window.speechSynthesis.speak(utt);
+  }, 60);
+}
+
+function speakCluster(text, el) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  setTimeout(() => {
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.lang = 'th-TH';
+    utt.rate = 0.8;
+    const voices = window.speechSynthesis.getVoices();
+    const thaiVoice = voices.find(v => v.lang === 'th-TH' || v.lang.startsWith('th'));
+    if (thaiVoice) utt.voice = thaiVoice;
+    utt.onstart = () => el && el.classList.add('speaking');
+    utt.onend = () => el && el.classList.remove('speaking');
     utt.onerror = () => el && el.classList.remove('speaking');
     window.speechSynthesis.speak(utt);
   }, 60);
