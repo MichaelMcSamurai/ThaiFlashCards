@@ -1677,7 +1677,7 @@
           <div class="rtgs-text" id="rtgs-text-reading">"a"</div>
         </div>
         <div id="rw-front-word-reading" style="display:none">
-          <div class="card-label">Quick Brown Fox</div>
+          <div class="card-label" id="word-card-label-reading">Quick Brown Fox</div>
           <div class="thai-text" id="word-thai-text-reading">สี</div>
           <div class="phonetic-text" id="word-phonetic-text-reading">sǐi</div>
         </div>
@@ -3598,6 +3598,7 @@ const decks = {
         applyLongTextScale('word-thai-text-reading', p.thai, { md: 6, sm: 9, xs: 13 });
         setText('word-phonetic-text-reading', p.phonetic);
         setText('word-english-text-reading', p.english);
+        setText('word-card-label-reading', p.group || 'Quick Brown Fox');
       } else if (isCon) {
         const clsLower = p.cls.toLowerCase();
         setText('thai-text-reading', p.thai);
