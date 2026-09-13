@@ -578,6 +578,24 @@
     opacity: 0.3;
   }
 
+  /* Quick Brown Fox: each syllable/cluster chunk gets its own span so it
+     can be outlined on hover - a visual reading aid, no click behavior
+     yet. Padding is em-based so the box scales with the (variable)
+     thai-text font-size instead of needing its own breakpoints. */
+  .cluster {
+    display: inline-block;
+    padding: 0.04em 0.03em;
+    margin: 0 -0.03em;
+    border-radius: 0.12em;
+    border: 1px solid transparent;
+    transition: border-color 0.15s, background-color 0.15s;
+  }
+  .cluster:hover {
+    border-color: var(--accent);
+    background: rgba(217, 218, 75, 0.1);
+    cursor: default;
+  }
+
   .rtgs-text, .phonetic-text {
     font-family: 'Libre Baskerville', serif;
     font-style: italic;
@@ -1414,7 +1432,7 @@
   <div class="home-wrap">
     <div class="home-header">
       <div class="logo-thai">ศึกษาภาษาไทย</div>
-      <h1>Thai <span>Study</span><span class="version-tag">v0.09</span></h1>
+      <h1>Thai <span>Study</span><span class="version-tag">v0.10</span></h1>
       <p class="subtitle">Choose a deck to begin</p>
     </div>
 
@@ -1588,7 +1606,7 @@
   <header>
     <div class="logo-thai">อ่านและเขียน</div>
     <h1>Reading <span>&amp; Writing</span></h1>
-    <p class="subtitle">CONSONANTS &amp; VOWELS</p>
+    <p class="subtitle">CONSONANTS, VOWELS &amp; WORDS</p>
   </header>
 
   <div class="select-top-row">
@@ -1608,6 +1626,13 @@
     <button class="cat-btn select-header-btn" id="rw-sel-all-vowels" onclick="toggleReadingAllVowels()">All Vowels</button>
   </div>
   <div class="filter-bar" id="rw-grid-vowels"></div>
+
+  <div class="select-divider"></div>
+
+  <h2 class="select-section-title">Quick Brown Fox</h2>
+  <div class="select-row">
+    <button class="cat-btn select-header-btn" id="rw-sel-all-words" onclick="toggleReadingAllWords()">All Quick Brown Fox</button>
+  </div>
 
   <div class="stats">
     <div class="stat"><div class="stat-num" id="rw-sel-stat-known">0</div><div class="stat-label">Known</div></div>
@@ -1649,6 +1674,11 @@
           <div class="vowel-display" id="vowel-display-reading">ะ</div>
           <div class="rtgs-text" id="rtgs-text-reading">"a"</div>
         </div>
+        <div id="rw-front-word-reading" style="display:none">
+          <div class="card-label">Quick Brown Fox</div>
+          <div class="thai-text" id="word-thai-text-reading">สี</div>
+          <div class="phonetic-text" id="word-phonetic-text-reading">sǐi</div>
+        </div>
       </div>
       <div class="card-face card-back">
         <div class="card-number" id="card-number-back-reading">01</div>
@@ -1687,6 +1717,10 @@
             <div class="example-rtgs example-rtgs-clickable" id="example-rtgs-reading" onclick="event.stopPropagation(); pronounceExample('reading')" title="Click to hear it">j\u00e0</div>
             <div class="example-eng" id="example-eng-vowel-reading">will / about to</div>
           </div>
+        </div>
+        <div id="rw-back-word-reading" style="display:none">
+          <div class="card-label">Meaning</div>
+          <div class="english-text" id="word-english-text-reading">Yellow colour</div>
         </div>
       </div>
     </div>
@@ -3380,11 +3414,50 @@ const allPhraseClassKeys = [
 ];
 
 // ============================================================
-// READING & WRITING: merged consonants + vowels
+// READING & WRITING: "Quick Brown Fox" word set
+// A small hand-picked set of real vocab words (drawn from the Speaking
+// deck) that collectively touch every consonant and vowel form. The
+// `clusters` array on each entry hand-splits the Thai spelling into
+// reading chunks (roughly syllables) for the hover-highlight UI - it is
+// NOT a generic algorithm, just an authored breakdown for these 18 words.
+// clusters.join('') must reconstruct `thai` exactly.
+//
+// A few of these are genuinely irregular Thai spellings where the
+// written form doesn't map cleanly onto syllable sounds (a shared
+// consonant serves double duty). Best-effort splits, flagged below -
+// worth double-checking against a teacher/reference rather than taking
+// as gospel: จักรยาน, ภรรยา, and กรกฎาคม (left as a single unsplit
+// chunk since it's one of the classic hard-to-read Thai words).
+// ============================================================
+const quickFoxData = [
+  { thai: "สีเหลือง", phonetic: "sǐi lʉ̌aŋ", english: "Yellow colour", clusters: ["สี", "เหลือง"] },
+  { thai: "จักรยาน", phonetic: "càkkrayāan", english: "Bicycle", clusters: ["จัก", "รยาน"] },
+  { thai: "โชคไม่ดี", phonetic: "chôhk mâi dii", english: "Unlucky", clusters: ["โชค", "ไม่", "ดี"] },
+  { thai: "ฟังวิทยุ", phonetic: "fāŋ wítthayú", english: "Listen to the radio", clusters: ["ฟัง", "วิ", "ท", "ยุ"] },
+  { thai: "ประตู", phonetic: "pratūu", english: "Door", clusters: ["ประ", "ตู"] },
+  { thai: "ขอบคุณ", phonetic: "khòp-khun", english: "Thank you", clusters: ["ขอบ", "คุณ"] },
+  { thai: "อธิษฐาน", phonetic: "'athítthăan", english: "Pray", clusters: ["อ", "ธิษ", "ฐาน"] },
+  { thai: "แพง", phonetic: "phɛ̄ɛŋ", english: "Expensive", clusters: ["แพง"] },
+  { thai: "ถึง", phonetic: "thʉ̌ŋ", english: "Arrive", clusters: ["ถึง"] },
+  { thai: "ใหญ่", phonetic: "yày", english: "Big, large", clusters: ["ใหญ่"] },
+  { thai: "ทำผิด", phonetic: "tham phìt", english: "I made a mistake", clusters: ["ทำ", "ผิด"] },
+  { thai: "ซิ", phonetic: "si", english: "Particle to urge someone to do as the speaker has said", clusters: ["ซิ"] },
+  { thai: "ฉี่", phonetic: "chìi", english: "Pee", clusters: ["ฉี่"] },
+  { thai: "กีฬา", phonetic: "kiilaa", english: "Sport", clusters: ["กี", "ฬา"] },
+  { thai: "ฝรั่ง", phonetic: "faràŋ", english: "Occidental, European, Westerner", clusters: ["ฝ", "รั่ง"] },
+  { thai: "ภรรยา", phonetic: "phānrayāa", english: "Wife", clusters: ["ภรร", "ยา"] },
+  { thai: "อากาศ", phonetic: "'āakàat", english: "Weather", clusters: ["อา", "กาศ"] },
+  { thai: "กรกฎาคม", phonetic: "gà-rá-gà-daa-khom", english: "July", clusters: ["กรกฎาคม"] },
+];
+const readingWordGroups = ['Quick Brown Fox'];
+
+// ============================================================
+// READING & WRITING: merged consonants + vowels + words
 // ============================================================
 const readingData = [
   ...consonantsData.map(c => ({ ...c, _kind: 'consonant' })),
   ...vowelsData.map(v => ({ ...v, _kind: 'vowel' })),
+  ...quickFoxData.map(w => ({ ...w, _kind: 'word', group: 'Quick Brown Fox' })),
 ];
 const readingConsonantClasses = ['High', 'Mid', 'Low'];
 const readingVowelTypes = ['Short', 'Long', 'Special'];
@@ -3464,11 +3537,16 @@ const decks = {
 
   reading: {
     data: readingData,
-    idOf: p => p._kind + '::' + (p._kind === 'consonant' ? p.thai : p.id),
-    matchesFilter: (p, af) => p._kind === 'consonant' ? af.consonantClasses.has(p.cls) : af.vowelTypes.has(p.type),
+    idOf: p => p._kind + '::' + (p._kind === 'vowel' ? p.id : p.thai),
+    matchesFilter: (p, af) => {
+      if (p._kind === 'consonant') return af.consonantClasses.has(p.cls);
+      if (p._kind === 'vowel') return af.vowelTypes.has(p.type);
+      return af.wordGroups.has(p.group);
+    },
     activeFilter: {
       consonantClasses: new Set(readingConsonantClasses),
       vowelTypes: new Set(readingVowelTypes),
+      wordGroups: new Set(readingWordGroups),
     },
     filtered: [],
     currentIndex: 0,
@@ -3476,24 +3554,39 @@ const decks = {
     initialized: true,
     known: new Set(savedProgress.reading ? savedProgress.reading.known : []),
     learning: new Set(savedProgress.reading ? savedProgress.reading.learning : []),
-    pronounceWord: p => p._kind === 'consonant' ? p.thai : p.display,
-    exampleWord: p => p._kind === 'consonant' ? p.example : p.exThai,
+    pronounceWord: p => p._kind === 'consonant' ? p.thai : (p._kind === 'word' ? p.thai : p.display),
+    exampleWord: p => p._kind === 'consonant' ? p.example : (p._kind === 'word' ? p.thai : p.exThai),
     renderCard(p) {
       const isCon = p._kind === 'consonant';
+      const isVow = p._kind === 'vowel';
+      const isWord = p._kind === 'word';
       const conFront = document.getElementById('rw-front-consonant-reading');
       const vowFront = document.getElementById('rw-front-vowel-reading');
+      const wordFront = document.getElementById('rw-front-word-reading');
       const conBack = document.getElementById('rw-back-consonant-reading');
       const vowBack = document.getElementById('rw-back-vowel-reading');
+      const wordBack = document.getElementById('rw-back-word-reading');
       if (conFront) conFront.style.display = isCon ? '' : 'none';
-      if (vowFront) vowFront.style.display = isCon ? 'none' : '';
+      if (vowFront) vowFront.style.display = isVow ? '' : 'none';
+      if (wordFront) wordFront.style.display = isWord ? '' : 'none';
       if (conBack) conBack.style.display = isCon ? '' : 'none';
-      if (vowBack) vowBack.style.display = isCon ? 'none' : '';
+      if (vowBack) vowBack.style.display = isVow ? '' : 'none';
+      if (wordBack) wordBack.style.display = isWord ? '' : 'none';
 
-      const num = String((isCon ? consonantsData.indexOf(p) : vowelsData.indexOf(p)) + 1).padStart(2, '0');
+      const num = String((isCon ? consonantsData.indexOf(p) : isVow ? vowelsData.indexOf(p) : quickFoxData.indexOf(p)) + 1).padStart(2, '0');
       setText('card-number-reading', num);
       setText('card-number-back-reading', num);
 
-      if (isCon) {
+      if (isWord) {
+        const clusterHtml = (p.clusters && p.clusters.length ? p.clusters : [p.thai])
+          .map(c => '<span class="cluster">' + c + '</span>')
+          .join('');
+        const wordThaiEl = document.getElementById('word-thai-text-reading');
+        if (wordThaiEl) wordThaiEl.innerHTML = clusterHtml;
+        applyLongTextScale('word-thai-text-reading', p.thai, { md: 6, sm: 9, xs: 13 });
+        setText('word-phonetic-text-reading', p.phonetic);
+        setText('word-english-text-reading', p.english);
+      } else if (isCon) {
         const clsLower = p.cls.toLowerCase();
         setText('thai-text-reading', p.thai);
         setTagClass('card-class-tag-back-reading', p.cls + ' class', 'card-class-tag ' + clsLower);
@@ -3891,10 +3984,15 @@ function renderReadingSelectionScreen() {
   const conAllSome = !conAllOn && readingConsonantClasses.some(c => af.consonantClasses.has(c));
   const vowAllOn = readingVowelTypes.every(t => af.vowelTypes.has(t));
   const vowAllSome = !vowAllOn && readingVowelTypes.some(t => af.vowelTypes.has(t));
+  const wordAllOn = readingWordGroups.every(g => af.wordGroups.has(g));
+  const wordAllSome = !wordAllOn && readingWordGroups.some(g => af.wordGroups.has(g));
 
-  setBtnState('rw-sel-all', conAllOn && vowAllOn, (conAllOn || vowAllOn || conAllSome || vowAllSome) && !(conAllOn && vowAllOn));
+  const allOn = conAllOn && vowAllOn && wordAllOn;
+  const anySome = conAllOn || vowAllOn || wordAllOn || conAllSome || vowAllSome || wordAllSome;
+  setBtnState('rw-sel-all', allOn, anySome && !allOn);
   setBtnState('rw-sel-all-consonants', conAllOn, conAllSome);
   setBtnState('rw-sel-all-vowels', vowAllOn, vowAllSome);
+  setBtnState('rw-sel-all-words', wordAllOn, wordAllSome);
 
   const conEl = document.getElementById('rw-grid-consonants');
   if (conEl) {
@@ -3930,9 +4028,12 @@ function updateReadingSelectionStats() {
 
 function toggleReadingAll() {
   const af = decks.reading.activeFilter;
-  const allOn = readingConsonantClasses.every(c => af.consonantClasses.has(c)) && readingVowelTypes.every(t => af.vowelTypes.has(t));
+  const allOn = readingConsonantClasses.every(c => af.consonantClasses.has(c))
+    && readingVowelTypes.every(t => af.vowelTypes.has(t))
+    && readingWordGroups.every(g => af.wordGroups.has(g));
   af.consonantClasses = allOn ? new Set() : new Set(readingConsonantClasses);
   af.vowelTypes = allOn ? new Set() : new Set(readingVowelTypes);
+  af.wordGroups = allOn ? new Set() : new Set(readingWordGroups);
   renderReadingSelectionScreen();
 }
 
@@ -3959,6 +4060,13 @@ function toggleReadingAllVowels() {
 function toggleReadingVowelType(type) {
   const af = decks.reading.activeFilter;
   if (af.vowelTypes.has(type)) af.vowelTypes.delete(type); else af.vowelTypes.add(type);
+  renderReadingSelectionScreen();
+}
+
+function toggleReadingAllWords() {
+  const af = decks.reading.activeFilter;
+  const allOn = readingWordGroups.every(g => af.wordGroups.has(g));
+  af.wordGroups = allOn ? new Set() : new Set(readingWordGroups);
   renderReadingSelectionScreen();
 }
 
