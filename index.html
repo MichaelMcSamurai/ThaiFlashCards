@@ -1433,7 +1433,7 @@
   <div class="home-wrap">
     <div class="home-header">
       <div class="logo-thai">ศึกษาภาษาไทย</div>
-      <h1>Thai <span>Study</span><span class="version-tag">v0.10</span></h1>
+      <h1>Thai <span>Study</span><span class="version-tag">v0.11</span></h1>
       <p class="subtitle">Choose a deck to begin</p>
     </div>
 
@@ -1630,10 +1630,11 @@
 
   <div class="select-divider"></div>
 
-  <h2 class="select-section-title">Quick Brown Fox</h2>
+  <h2 class="select-section-title">Words</h2>
   <div class="select-row">
-    <button class="cat-btn select-header-btn" id="rw-sel-all-words" onclick="toggleReadingAllWords()">All Quick Brown Fox</button>
+    <button class="cat-btn select-header-btn" id="rw-sel-all-words" onclick="toggleReadingAllWords()">All Words</button>
   </div>
+  <div class="filter-bar" id="rw-grid-words"></div>
 
   <div class="stats">
     <div class="stat"><div class="stat-num" id="rw-sel-stat-known">0</div><div class="stat-label">Known</div></div>
@@ -3455,7 +3456,11 @@ const quickFoxData = [
   { thai: "ฌาปนกิจ", phonetic: "chaa-bpà-ná-gìt", english: "Cremation", clusters: ["ฌา", "ป", "น", "กิจ"] },
   { thai: "ฮา", phonetic: "haa", english: "Funny, hilarious", clusters: ["ฮา"] },
 ];
-const readingWordGroups = ['Quick Brown Fox'];
+const classMnemonicsData = [
+  { thai: "ไก่จิกเด็กตายบนปากโอ่ง", phonetic: "gài jìk dèk taai bon bpàak 'òhng", english: "Mnemonic for the 9 mid-class consonants (ก จ ฎ ฏ ด ต บ ป อ). Literally: \"a chicken pecked a child to death at the mouth of a jar.\"", clusters: ["ไก่", "จิก", "เด็ก", "ตาย", "บน", "ปาก", "โอ่ง"] },
+  { thai: "ผีฝากถุงข้าวสารให้ฉันศึกษา", phonetic: "phǐi fàak thǔng khâao sǎan hâi chǎn sʉ̀k-sǎa", english: "Mnemonic for 8 of the 11 high-class consonants (ผ ฝ ถ ข ส ห ฉ ศ). Literally: \"a ghost entrusted a sack of rice for me to study.\"", clusters: ["ผี", "ฝาก", "ถุง", "ข้าว", "สาร", "ให้", "ฉัน", "ศึก", "ษา"] },
+];
+const readingWordGroups = ['Quick Brown Fox', 'Class Mnemonics'];
 
 // ============================================================
 // READING & WRITING: merged consonants + vowels + words
@@ -3464,6 +3469,7 @@ const readingData = [
   ...consonantsData.map(c => ({ ...c, _kind: 'consonant' })),
   ...vowelsData.map(v => ({ ...v, _kind: 'vowel' })),
   ...quickFoxData.map(w => ({ ...w, _kind: 'word', group: 'Quick Brown Fox' })),
+  ...classMnemonicsData.map(w => ({ ...w, _kind: 'word', group: 'Class Mnemonics' })),
 ];
 const readingConsonantClasses = ['High', 'Mid', 'Low'];
 const readingVowelTypes = ['Short', 'Long', 'Special'];
@@ -4012,6 +4018,12 @@ function renderReadingSelectionScreen() {
       '<button class="cat-btn ' + (af.vowelTypes.has(t) ? 'active' : '') + '" onclick="toggleReadingVowelType(\'' + t + '\')">' + t + '</button>'
     ).join('');
   }
+  const wordEl = document.getElementById('rw-grid-words');
+  if (wordEl) {
+    wordEl.innerHTML = readingWordGroups.map(g =>
+      '<button class="cat-btn ' + (af.wordGroups.has(g) ? 'active' : '') + '" onclick="toggleReadingWordGroup(\'' + g + '\')">' + g + '</button>'
+    ).join('');
+  }
 
   updateReadingSelectionStats();
 }
@@ -4066,6 +4078,12 @@ function toggleReadingAllVowels() {
 function toggleReadingVowelType(type) {
   const af = decks.reading.activeFilter;
   if (af.vowelTypes.has(type)) af.vowelTypes.delete(type); else af.vowelTypes.add(type);
+  renderReadingSelectionScreen();
+}
+
+function toggleReadingWordGroup(group) {
+  const af = decks.reading.activeFilter;
+  if (af.wordGroups.has(group)) af.wordGroups.delete(group); else af.wordGroups.add(group);
   renderReadingSelectionScreen();
 }
 
