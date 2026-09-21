@@ -609,6 +609,22 @@
   .thai-text.text-sm + .thai-alt { font-size: clamp(13px, 3vw, 18px); }
   .thai-text.text-xs + .thai-alt { font-size: clamp(12px, 2.6vw, 15px); }
   body.no-loopless .thai-alt { display: none !important; }
+
+  /* Card backs: looped and loopless side by side, with a thin divider like the game's cards */
+  .back-thai-alt, .example-thai-alt {
+    font-family: 'Noto Sans Thai', 'IBM Plex Sans Thai', sans-serif;
+    font-weight: 400;
+    color: var(--thai-gold);
+    opacity: 0.6;
+    line-height: 1;
+    border-left: 1px solid rgba(255, 255, 255, 0.18);
+  }
+  .back-thai-alt { font-size: clamp(20px, 4vw, 28px); padding-left: 14px; }
+  .example-thai-alt { font-size: 14px; padding-left: 10px; }
+  .example-thai-row { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 2px; }
+  .example-thai-row .example-thai { margin-bottom: 0; }
+  .back-thai-alt:empty, .example-thai-alt:empty { display: none; }
+  body.no-loopless .back-thai-alt, body.no-loopless .example-thai-alt { display: none !important; }
   .btn-back.btn-alt-font.on { color: var(--accent); border-color: var(--accent); }
 
   /* Quick Brown Fox: each syllable/cluster chunk gets its own span so it
@@ -1471,7 +1487,7 @@
   <div class="home-wrap">
     <div class="home-header">
       <div class="logo-thai">ศึกษาภาษาไทย</div>
-      <h1>Thai <span>Study</span><span class="version-tag">v0.14</span></h1>
+      <h1>Thai <span>Study</span><span class="version-tag">v0.15</span></h1>
       <p class="subtitle">Choose a deck to begin</p>
     </div>
 
@@ -1734,6 +1750,7 @@
           <div class="card-label">Details</div>
           <div class="back-top-row">
             <div class="back-thai-text" id="back-thai-text-reading">ก</div>
+            <div class="back-thai-alt" id="back-thai-alt-reading"></div>
             <div class="letter-name" id="letter-name-reading">gaaw gài</div>
             <div class="back-emoji" id="back-emoji-reading">&#129296;</div>
           </div>
@@ -1743,7 +1760,7 @@
             <div class="detail-item"><div class="detail-label">Final</div><div class="detail-value" id="detail-final-reading">k</div></div>
           </div>
           <div class="example-word">
-            <div class="example-thai" id="example-thai-reading">ไก่</div>
+            <div class="example-thai-row"><div class="example-thai" id="example-thai-reading">ไก่</div><div class="example-thai-alt" id="example-thai-alt-reading"></div></div>
             <div class="example-eng" id="example-eng-reading">chicken</div>
             <div class="example-rtgs example-rtgs-clickable" id="example-rom-reading" onclick="event.stopPropagation(); pronounceExample('reading')" title="Click to hear it">gài</div>
           </div>
@@ -1760,7 +1777,7 @@
           </div>
           <div class="position-tag" id="position-tag-reading">position: after consonant</div>
           <div class="example-word">
-            <div class="example-thai" id="example-thai-vowel-reading">จะ</div>
+            <div class="example-thai-row"><div class="example-thai" id="example-thai-vowel-reading">จะ</div><div class="example-thai-alt" id="example-thai-alt-vowel-reading"></div></div>
             <div class="example-rtgs example-rtgs-clickable" id="example-rtgs-reading" onclick="event.stopPropagation(); pronounceExample('reading')" title="Click to hear it">j\u00e0</div>
             <div class="example-eng" id="example-eng-vowel-reading">will / about to</div>
           </div>
@@ -3863,12 +3880,14 @@ const decks = {
         setAlt('thai-alt-reading', p.thai);
         setTagClass('card-class-tag-back-reading', p.cls + ' class', 'card-class-tag ' + clsLower);
         setText('back-thai-text-reading', p.thai);
+        setAlt('back-thai-alt-reading', p.thai);
         setText('letter-name-reading', p.letterName);
         setText('back-emoji-reading', p.emoji);
         setText('detail-class-reading', p.cls);
         setText('detail-initial-reading', p.initial);
         setText('detail-final-reading', p.final);
         setText('example-thai-reading', p.example);
+        setAlt('example-thai-alt-reading', p.example);
         setText('example-eng-reading', p.exEng);
         setText('example-rom-reading', p.exRom);
       } else {
@@ -3888,6 +3907,7 @@ const decks = {
         setText('detail-sound-reading', p.rtgs);
         setText('detail-ipa-reading', p.ipa);
         setText('example-thai-vowel-reading', p.exThai);
+        setAlt('example-thai-alt-vowel-reading', p.exThai);
         setText('example-rtgs-reading', p.exRtgs);
         setText('example-eng-vowel-reading', p.exEng);
       }
