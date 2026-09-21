@@ -11,7 +11,7 @@
 <link rel="apple-touch-icon" href="travelaroi-icon-512.png">
 <link rel="icon" href="travelaroi-icon-512.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Thai:wght@300;400;500&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Niramit:wght@300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Thai:wght@300;400;500&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Niramit:wght@300;400&family=Noto+Sans+Thai:wght@400;500&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -590,6 +590,26 @@
   .vowel-carrier {
     opacity: 0.3;
   }
+
+  /* ---------- LOOPLESS SECOND LINE ----------
+     The looped (textbook) font is the primary line. The same text in a loopless
+     font sits under it, smaller and quieter, like the game's letter cards. */
+  .thai-alt {
+    font-family: 'Noto Sans Thai', 'IBM Plex Sans Thai', sans-serif;
+    font-weight: 400;
+    font-size: clamp(22px, 4.6vw, 34px);
+    line-height: 1.25;
+    color: var(--thai-gold);
+    opacity: 0.6;
+    text-align: center;
+    margin-bottom: 6px;
+  }
+  .thai-alt:empty { display: none; }
+  .thai-text.text-md + .thai-alt { font-size: clamp(15px, 3.6vw, 22px); }
+  .thai-text.text-sm + .thai-alt { font-size: clamp(13px, 3vw, 18px); }
+  .thai-text.text-xs + .thai-alt { font-size: clamp(12px, 2.6vw, 15px); }
+  body.no-loopless .thai-alt { display: none !important; }
+  .btn-back.btn-alt-font.on { color: var(--accent); border-color: var(--accent); }
 
   /* Quick Brown Fox: each syllable/cluster chunk gets its own span so it
      can be outlined on hover - a visual reading aid, no click behavior
@@ -1451,7 +1471,7 @@
   <div class="home-wrap">
     <div class="home-header">
       <div class="logo-thai">ศึกษาภาษาไทย</div>
-      <h1>Thai <span>Study</span><span class="version-tag">v0.13</span></h1>
+      <h1>Thai <span>Study</span><span class="version-tag">v0.14</span></h1>
       <p class="subtitle">Choose a deck to begin</p>
     </div>
 
@@ -1553,7 +1573,7 @@
 <div class="container view" id="view-speaking">
   <div class="deck-topbar">
     <button class="btn-back" onclick="backToSpeakingSelect()">&larr; Selection</button>
-    <div class="deck-topbar-spacer"></div>
+    <button class="btn-back btn-alt-font" onclick="toggleLoopless()" title="Show the loopless letter shapes as a smaller second line">Loopless</button>
   </div>
   <header>
     <div class="logo-thai">ภาษาไทย</div>
@@ -1577,6 +1597,7 @@
         <div class="card-category-tag" id="front-category-speaking">Vocabulary</div>
         <div class="card-label">Thai</div>
         <div class="thai-text" id="thai-text-speaking">สวัสดี</div>
+        <div class="thai-alt" id="thai-alt-speaking"></div>
         <div class="phonetic-text" id="phonetic-text-speaking">sà-wàt-dii</div>
       </div>
       <div class="card-face card-back">
@@ -1671,7 +1692,7 @@
 <div class="container view" id="view-reading">
   <div class="deck-topbar">
     <button class="btn-back" onclick="backToReadingSelect()">&larr; Selection</button>
-    <div class="deck-topbar-spacer"></div>
+    <button class="btn-back btn-alt-font" onclick="toggleLoopless()" title="Show the loopless letter shapes as a smaller second line">Loopless</button>
   </div>
   <header>
     <div class="logo-thai">อ่านและเขียน</div>
@@ -1690,16 +1711,19 @@
         <div id="rw-front-consonant-reading">
           <div class="card-label">Consonant</div>
           <div class="thai-text" id="thai-text-reading">ก</div>
+          <div class="thai-alt" id="thai-alt-reading"></div>
         </div>
         <div id="rw-front-vowel-reading" style="display:none">
           <div class="card-type-tag" id="card-type-tag-reading">Short</div>
           <div class="card-label">Vowel Form</div>
           <div class="vowel-display" id="vowel-display-reading">ะ</div>
+          <div class="thai-alt" id="vowel-alt-reading"></div>
           <div class="rtgs-text" id="rtgs-text-reading">"a"</div>
         </div>
         <div id="rw-front-word-reading" style="display:none">
           <div class="card-label" id="word-card-label-reading">Quick Brown Fox</div>
           <div class="thai-text" id="word-thai-text-reading">สี</div>
+          <div class="thai-alt" id="word-thai-alt-reading"></div>
           <div class="phonetic-text" id="word-phonetic-text-reading">sǐi</div>
         </div>
       </div>
@@ -3769,6 +3793,7 @@ const decks = {
       setText('front-category-speaking', tag);
       setText('back-category-speaking', tag);
       setText('thai-text-speaking', p.thai);
+      setAlt('thai-alt-speaking', p.thai);
       applyLongTextScale('thai-text-speaking', p.thai, { md: 20, sm: 35, xs: 50 });
       setText('phonetic-text-speaking', p.phonetic);
       applyLongTextScale('phonetic-text-speaking', p.phonetic, { md: 25, sm: 45, xs: 60 });
@@ -3827,6 +3852,7 @@ const decks = {
           .join('');
         const wordThaiEl = document.getElementById('word-thai-text-reading');
         if (wordThaiEl) wordThaiEl.innerHTML = clusterHtml;
+        setAlt('word-thai-alt-reading', p.thai);
         applyLongTextScale('word-thai-text-reading', p.thai, { md: 6, sm: 9, xs: 13 });
         setText('word-phonetic-text-reading', p.phonetic);
         setText('word-english-text-reading', p.english);
@@ -3834,6 +3860,7 @@ const decks = {
       } else if (isCon) {
         const clsLower = p.cls.toLowerCase();
         setText('thai-text-reading', p.thai);
+        setAlt('thai-alt-reading', p.thai);
         setTagClass('card-class-tag-back-reading', p.cls + ' class', 'card-class-tag ' + clsLower);
         setText('back-thai-text-reading', p.thai);
         setText('letter-name-reading', p.letterName);
@@ -3849,6 +3876,8 @@ const decks = {
         const carrierHtml = p.noCarrier ? '' : '<span class="vowel-carrier">' + C + '</span>';
         const vowelDisplayEl = document.getElementById('vowel-display-reading');
         if (vowelDisplayEl) vowelDisplayEl.innerHTML = p.pre + carrierHtml + p.post;
+        // the loopless line is one unbroken text run (the dimmed-carrier trick above doesn't compose inside Noto Sans Thai)
+        setAlt('vowel-alt-reading', p.pre + (p.noCarrier ? '' : C) + p.post);
         setText('sara-name-reading', p.saraName + ' \u00b7 ' + p.saraRom);
         setText('rtgs-text-reading', '"' + p.rtgs + '"');
         setTagClass('card-type-tag-reading', p.type, 'card-type-tag ' + typeLower);
@@ -3903,6 +3932,27 @@ function setText(id, val) {
   const el = document.getElementById(id);
   if (el) el.textContent = val;
 }
+
+// ---------- Loopless second line: on by default, remembered between visits ----------
+const LOOPLESS_KEY = 'thai-study-show-loopless';
+const LOOPLESS_MAX_CHARS = 35;   // longer sentences are already shrunk to fit the card; a second line would not fit
+let showLoopless = true;
+try { showLoopless = localStorage.getItem(LOOPLESS_KEY) !== 'off'; } catch (e) {}
+function applyLooplessSetting() {
+  document.body.classList.toggle('no-loopless', !showLoopless);
+  document.querySelectorAll('.btn-alt-font').forEach(b => b.classList.toggle('on', showLoopless));
+}
+function toggleLoopless() {
+  showLoopless = !showLoopless;
+  try { localStorage.setItem(LOOPLESS_KEY, showLoopless ? 'on' : 'off'); } catch (e) {}
+  applyLooplessSetting();
+}
+function setAlt(id, text) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = (text && text.length <= LOOPLESS_MAX_CHARS) ? text : '';
+}
+applyLooplessSetting();
 
 function setTagClass(id, text, className) {
   const el = document.getElementById(id);
