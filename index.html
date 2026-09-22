@@ -1507,7 +1507,7 @@
   <div class="home-wrap">
     <div class="home-header">
       <div class="logo-thai">ศึกษาภาษาไทย</div>
-      <h1>Thai <span>Study</span><span class="version-tag">v0.17</span></h1>
+      <h1>Thai <span>Study</span><span class="version-tag">v0.18</span></h1>
       <p class="subtitle">Choose a deck to begin</p>
     </div>
 
@@ -4001,20 +4001,14 @@ function maskCarrier(textEl, maskId, carrierIndex, show) {
     const r = range.getBoundingClientRect();
     const wrap = mask.parentElement.getBoundingClientRect();
     if (r.width === 0 && r.height === 0) { mask.style.display = 'none'; return; }
-    // Cap the mask's height defensively at ~62% of the text's own font-size, anchored
-    // to the bottom of the measured box (the consonant's own baseline area). In this
-    // font a plain consonant occupies about 60% of the em above the baseline, and every
-    // vowel mark (above or below) sits past that with a comfortable margin either way —
-    // so this cap keeps the darken effect on the consonant even if a browser's measured
-    // box for the character ever turns out taller than expected, without needing that
-    // measurement to be pixel-perfect.
-    const fontSize = parseFloat(getComputedStyle(textEl).fontSize) || r.height;
-    const maxH = fontSize * 0.62;
-    const h = Math.min(r.height, maxH);
+    // v0.17 capped this box's height as a defensive guess, which turned out to cut it
+    // short (the measured box for one character already excludes the following mark;
+    // it did not need trimming, and the cap only cropped the consonant's own top).
+    // Use the measured box as-is.
     mask.style.left = (r.left - wrap.left) + 'px';
-    mask.style.top = (r.top - wrap.top + (r.height - h)) + 'px';
+    mask.style.top = (r.top - wrap.top) + 'px';
     mask.style.width = r.width + 'px';
-    mask.style.height = h + 'px';
+    mask.style.height = r.height + 'px';
     mask.style.display = 'block';
   } catch (e) { mask.style.display = 'none'; }
 }
