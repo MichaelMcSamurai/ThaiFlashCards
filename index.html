@@ -1527,7 +1527,7 @@
   <div class="home-wrap">
     <div class="home-header">
       <div class="logo-thai">ศึกษาภาษาไทย</div>
-      <h1>Thai <span>Study</span><span class="version-tag">v0.21</span></h1>
+      <h1>Thai <span>Study</span><span class="version-tag">v0.22</span></h1>
       <p class="subtitle">Choose a deck to begin</p>
     </div>
 
@@ -5871,7 +5871,32 @@ function dedupeByThai(items) {
   return result;
 }
 
-const FULL_POOL = dedupeByThai([...CLASS_VOCAB, ...VOCAB.map(v => ({ ...v, cat: v.cat || 'General Vocab' }))]);
+// Word Catch draws from the same lists as the flashcards (class vocab + the
+// Phrases deck), so it uses the same romanization. Long sentences are left
+// out because they don't fit in a bubble. EXTRA_VOCAB holds the few words
+// from the old Word Catch-only list that aren't in the flashcards yet.
+const EXTRA_VOCAB = [
+  { thai: "ชื่อ", phonetic: "chʉ̂ʉ", english: "Name" },
+  { thai: "สถานี", phonetic: "sà-thăa-nii", english: "Station" },
+  { thai: "ถนน", phonetic: "thà-nŏn", english: "Road" },
+  { thai: "มาก", phonetic: "mâak", english: "Very" },
+  { thai: "ทำอาหาร", phonetic: "tham aa-hăan", english: "To cook" },
+  { thai: "หาด", phonetic: "hàat", english: "Beach" },
+  { thai: "เจอ", phonetic: "jəə", english: "To meet" },
+  { thai: "กระจก", phonetic: "grà-jòk", english: "Mirror / glass pane" },
+  { thai: "อยาก", phonetic: "yàak", english: "To want" },
+  { thai: "มอเตอร์ไซค์รับจ้าง", phonetic: "mɔɔ-dtəə-sai ráp-jâaŋ", english: "Motorbike taxi" },
+  { thai: "กับ", phonetic: "gàp", english: "And / with" },
+  { thai: "วันหยุด", phonetic: "wan-yùt", english: "Holiday / day off" },
+  { thai: "ฝึก", phonetic: "fʉ̀k", english: "To practice" },
+];
+const toPoolItem = (p, cat) => ({ english: p.english, letters: toSimpleLetters(p.phonetic), phonetic: p.phonetic, thai: p.thai, cat });
+const fitsBubble = p => p.phonetic && p.phonetic.length <= 24 && !/[\/()≠=…]/.test(p.thai + p.phonetic);
+const FULL_POOL = dedupeByThai([
+  ...CLASS_VOCAB.filter(fitsBubble),
+  ...(typeof phrasesData !== 'undefined' ? phrasesData : []).filter(fitsBubble).map(p => toPoolItem(p, p.category)),
+  ...EXTRA_VOCAB.map(p => toPoolItem(p, 'Everyday Nouns')),
+]);
 
 const CATEGORIES = ['All', ...new Set(FULL_POOL.map(v => v.cat))];
 
@@ -6002,7 +6027,7 @@ function spawnBubbles(options, target) {
   options.forEach((opt, i) => {
     const el = document.createElement('div');
     el.className = 'bubble';
-    el.textContent = opt.letters;
+    el.textContent = opt.phonetic; // same romanization as the flashcards
     el.dataset.isCorrect = (opt === target) ? '1' : '0';
     field.appendChild(el);
 
@@ -6181,7 +6206,8 @@ function startRound() {
   const round = buildRound();
   gameState.currentRound = round;
 
-  document.getElementById('wc-target-word').textContent = round.target.english;
+  // drop notes in brackets, e.g. "Eagle (ทร sounds like ซ)" -> "Eagle" (they can give the answer away)
+  document.getElementById('wc-target-word').textContent = round.target.english.replace(/\s*\([^)]*\)/g, '').trim() || round.target.english;
 
   spawnBubbles(round.options, round.target);
   startTimer();
