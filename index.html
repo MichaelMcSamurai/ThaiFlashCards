@@ -4477,6 +4477,40 @@ function setTagClass(id, text, className) {
 // string that wraps fine on a narrow screen can still overflow the card's
 // fixed height on a wide one. This measures character count and applies a
 // shrink tier on top of the base class so long text reliably fits.
+// Safety net on top of the character-count tiers: if a card face's content
+// is still taller than the card (e.g. a medium-length phrase that wraps onto
+// two big lines), shrink its text step by step until it fits, so nothing
+// spills out over the buttons below the card.
+function fitCardText(sceneEl) {
+  if (!sceneEl) return;
+  sceneEl.querySelectorAll('.card-face').forEach(face => {
+    const els = [...face.querySelectorAll('.thai-text, .thai-alt, .phonetic-text, .english-text, .usage-text, .rtgs-text, .vowel-display')];
+    els.forEach(el => { el.style.fontSize = ''; });
+    const overflowing = () => {
+      const kids = [...face.children].filter(k => getComputedStyle(k).position !== 'absolute');
+      const cs = getComputedStyle(face);
+      const room = face.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+      const used = kids.reduce((sum, k) => {
+        const ks = getComputedStyle(k);
+        return sum + k.offsetHeight + parseFloat(ks.marginTop) + parseFloat(ks.marginBottom);
+      }, 0);
+      return used > room;
+    };
+    for (let i = 0; i < 15 && overflowing(); i++) {
+      els.forEach(el => {
+        const px = parseFloat(getComputedStyle(el).fontSize);
+        if (px > 12) el.style.fontSize = (px * 0.9) + 'px';
+      });
+    }
+  });
+}
+
+function refitVisibleCards() {
+  document.querySelectorAll('.view.active .card-scene').forEach(fitCardText);
+}
+window.addEventListener('resize', refitVisibleCards);
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(refitVisibleCards);
+
 function applyLongTextScale(elId, text, tiers) {
   const el = document.getElementById(elId);
   if (!el) return;
@@ -4965,6 +4999,7 @@ function renderCard(deckId) {
   if (pronounceBtn && pronounceBtn.parentElement) pronounceBtn.parentElement.style.display = 'flex';
 
   deck.renderCard(item);
+  fitCardText(sceneEl);
 
   setText('progress-label-' + deckId, (deck.currentIndex + 1) + ' / ' + deck.filtered.length);
   if (fillEl) fillEl.style.width = ((deck.currentIndex + 1) / deck.filtered.length * 100) + '%';
