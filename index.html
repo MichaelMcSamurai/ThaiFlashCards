@@ -1559,7 +1559,8 @@
   .vc-word { font-size: clamp(84px, 16vw, 120px); line-height: 1.35; color: var(--thai-gold); margin: 22px 0 14px; }
   .vc-sound { font-family: 'IBM Plex Mono', monospace; font-size: 30px; line-height: 1.3; color: var(--text); padding: 6px 0; }
   .la-choice.correct .vc-sound { color: var(--success); }
-  .vc-frame-row { display: flex; justify-content: center; align-items: baseline; gap: 14px; cursor: pointer; }
+  .vc-frame-row { display: flex; width: fit-content; margin: 6px auto 0; justify-content: center; align-items: baseline; gap: 14px; cursor: pointer; border-radius: 8px; padding: 0 10px; }
+  .vc-frame-row:hover { background: rgba(255,255,255,0.05); }
   .vc-frame-looped { font-family: 'Niramit', serif; font-weight: 300; font-size: 52px; line-height: 1.3; color: var(--accent); }
   .vc-frame-loopless { font-size: 52px; line-height: 1.3; color: var(--thai-gold); border-left: 1px solid rgba(255,255,255,0.18); padding-left: 14px; }
   .vc-frame-sound { font-family: 'IBM Plex Mono', monospace; font-size: 20px; color: var(--accent); padding-left: 6px; }
