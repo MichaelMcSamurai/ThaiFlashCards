@@ -1534,7 +1534,8 @@
   .la-choice.correct { border-color: var(--success); background: #142914; box-shadow: 0 0 0 3px rgba(76,175,80,0.25); }
   .la-choice.correct .la-c-thai, .la-choice.correct .la-c-name { color: var(--success); }
   .la-choice.wrong { border-color: var(--danger); opacity: 0.45; }
-  .la-choices.answered .la-choice { cursor: default; pointer-events: none; }
+  .la-choices.answered .la-choice.wrong:hover { opacity: 0.7; }
+  .la-reveal-letter { cursor: pointer; }
   .la-reveal { margin-top: 20px; min-height: 150px; }
   .la-reveal-pair { display: flex; justify-content: center; gap: 28px; }
   .la-reveal-letter { display: flex; flex-direction: column; align-items: center; }
@@ -5447,7 +5448,9 @@ function laRenderQuestion() {
 }
 
 function laAnswer(i) {
-  if (!laQ || laQ.answered) return;
+  if (!laQ) return;
+  // After answering, clicking either button just says that letter again.
+  if (laQ.answered) { laSpeak(laQ.order[i]); return; }
   laQ.answered = true;
   const picked = laQ.order[i];
   const ok = picked === laQ.answer;
@@ -5468,7 +5471,7 @@ function laAnswer(i) {
   rv.innerHTML =
     '<div class="la-verdict ' + (ok ? 'ok' : 'no') + '">' + (ok ? 'Correct' : 'Not quite, it’s ' + laLetter(laQ.answer).letterName) + '</div>' +
     '<div class="la-reveal-pair">' + [pr.a, pr.b].map(t =>
-      '<div class="la-reveal-letter' + (t === laQ.answer ? ' is-answer' : '') + '"><div class="la-reveal-row">' +
+      '<div class="la-reveal-letter' + (t === laQ.answer ? ' is-answer' : '') + '" onclick="laSpeak(\'' + t + '\')" title="Click to hear it"><div class="la-reveal-row">' +
       '<span class="la-reveal-looped">' + t + '</span><span class="la-reveal-loopless" style="' + laFontCss(laQ.font) + '">' + t + '</span></div>' +
       '<div class="la-reveal-name">' + laLetter(t).letterName + '</div></div>').join('') + '</div>' +
     (pr.cue ? '<div class="la-cue">' + pr.cue + '</div>' : '') +
@@ -5478,9 +5481,9 @@ function laAnswer(i) {
   laSpeak();
 }
 
-function laSpeak() {
+function laSpeak(letter) {
   if (!laQ || !window.speechSynthesis) return;
-  const L = laLetter(laQ.answer);
+  const L = laLetter(letter || laQ.answer);
   window.speechSynthesis.cancel();
   setTimeout(() => {
     const utt = new SpeechSynthesisUtterance(L.thai + ' ' + (L.name || ''));
