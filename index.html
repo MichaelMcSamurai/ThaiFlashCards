@@ -11,7 +11,7 @@
 <link rel="apple-touch-icon" href="travelaroi-icon-512.png">
 <link rel="icon" href="travelaroi-icon-512.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Thai:wght@300;400;500&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Niramit:wght@300;400&family=Noto+Sans+Thai:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Thai:wght@300;400;500&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Niramit:wght@300;400&family=Noto+Sans+Thai:wght@400;500&family=Kanit:wght@400&family=Prompt:wght@400&family=Mitr:wght@400&family=Chakra+Petch:wght@400&family=Bai+Jamjuree:wght@400&family=Athiti:wght@500&family=K2D:wght@400&family=Pattaya&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -1538,11 +1538,12 @@
   .la-reveal { margin-top: 20px; min-height: 150px; }
   .la-reveal-pair { display: flex; justify-content: center; gap: 28px; }
   .la-reveal-letter { display: flex; flex-direction: column; align-items: center; }
-  .la-reveal-row { display: flex; align-items: center; gap: 12px; }
+  .la-reveal-row { display: flex; align-items: baseline; gap: 12px; }
   .la-reveal-looped { font-family: 'Niramit', serif; font-weight: 300; font-size: 48px; line-height: 1.2; color: var(--text); }
   .la-reveal-loopless { font-family: 'Noto Sans Thai', sans-serif; font-size: 48px; line-height: 1.2; color: var(--thai-gold); border-left: 1px solid rgba(255,255,255,0.18); padding-left: 12px; }
   .la-reveal-letter.is-answer .la-reveal-looped { color: var(--accent); }
   .la-reveal-name { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .la-font { margin-top: 10px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 1px; color: var(--muted); }
   .la-cue { margin-top: 12px; font-size: 14px; color: var(--thai-gold); }
   .la-verdict { font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; }
   .la-verdict.ok { color: var(--success); }
@@ -1560,7 +1561,7 @@
   <div class="home-wrap">
     <div class="home-header">
       <div class="logo-thai">ศึกษาภาษาไทย</div>
-      <h1>Thai <span>Study</span><span class="version-tag">v0.23</span></h1>
+      <h1>Thai <span>Study</span><span class="version-tag">v0.24</span></h1>
       <p class="subtitle">Choose a deck to begin</p>
     </div>
 
@@ -1919,7 +1920,7 @@
   <header>
     <div class="logo-thai">ตัวคล้าย</div>
     <h1>Look<span>alikes</span></h1>
-    <p class="subtitle">LOOPLESS SHAPES, ONE PAIR AT A TIME</p>
+    <p class="subtitle">LOOPLESS SHAPES IN STREET FONTS</p>
   </header>
 
   <div class="la-filters" id="la-filters"></div>
@@ -1936,14 +1937,13 @@
   </div>
 
   <div class="stats">
-    <div class="stat"><div class="stat-num" id="la-stat-right">0</div><div class="stat-label">Right</div></div>
+    <div class="stat"><div class="stat-num" id="la-stat-right">0</div><div class="stat-label">Correct</div></div>
     <div class="stat"><div class="stat-num" id="la-stat-wrong">0</div><div class="stat-label">Wrong</div></div>
     <div class="stat"><div class="stat-num" id="la-stat-streak">0</div><div class="stat-label">Streak</div></div>
   </div>
 
   <div class="kbd-hints">
-    <div class="kbd-hint"><kbd>1</kbd> Left</div>
-    <div class="kbd-hint"><kbd>2</kbd> Right</div>
+    <div class="kbd-hint"><kbd>1</kbd> <kbd>2</kbd> Choose</div>
     <div class="kbd-hint"><kbd>Space</kbd> Next</div>
     <div class="kbd-hint"><kbd>P</kbd> Pronounce</div>
   </div>
@@ -5330,6 +5330,26 @@ const lookalikePairs = [
   { a: 'ร', b: 'ว', cue: '' },
   { a: 'อ', b: 'ฮ', cue: 'ฮ has a flick on top' },
 ];
+// Loopless fonts you'd meet on real signs, menus and packaging. Each question
+// picks one at random (never the same twice in a row), like the street does.
+const laFonts = [
+  { name: 'Noto Sans Thai', weight: 400 },
+  { name: 'Kanit', weight: 400 },
+  { name: 'Prompt', weight: 400 },
+  { name: 'Mitr', weight: 400 },
+  { name: 'Chakra Petch', weight: 400 },
+  { name: 'Bai Jamjuree', weight: 400 },
+  { name: 'Athiti', weight: 500 },
+  { name: 'K2D', weight: 400 },
+  { name: 'Pattaya', weight: 400 },
+];
+let laLastFont = '';
+function laFontCss(f) { return "font-family:'" + f.name + "',sans-serif;font-weight:" + f.weight; }
+function laPreloadFonts() {
+  if (!document.fonts || !document.fonts.load) return;
+  const sample = laAllLetters().join('');
+  laFonts.forEach(f => { document.fonts.load(f.weight + " 48px '" + f.name + "'", sample).catch(() => {}); });
+}
 const LA_STATS_KEY = 'thai-lookalikes-stats';
 const LA_FILTER_KEY = 'thai-lookalikes-filter';
 const laPairId = pr => pr.a + pr.b;
@@ -5402,18 +5422,24 @@ function laNext() {
   for (const c of cands) { r -= c.w; if (r <= 0) { pick = c; break; } }
   laLastKey = laPairId(pick.pair) + pick.answer;
   const order = Math.random() < 0.5 ? [pick.pair.a, pick.pair.b] : [pick.pair.b, pick.pair.a];
-  laQ = { pair: pick.pair, answer: pick.answer, order, answered: false };
+  const fonts = laFonts.filter(f => f.name !== laLastFont);
+  const font = fonts[Math.floor(Math.random() * fonts.length)];
+  laLastFont = font.name;
+  laQ = { pair: pick.pair, answer: pick.answer, order, font, answered: false };
   laRenderQuestion();
 }
 
 function laRenderQuestion() {
-  document.getElementById('la-glyph').textContent = laQ.answer;
+  const gl = document.getElementById('la-glyph');
+  gl.textContent = laQ.answer;
+  gl.style.fontFamily = "'" + laQ.font.name + "', sans-serif";
+  gl.style.fontWeight = laQ.font.weight;
   const ch = document.getElementById('la-choices');
   ch.classList.remove('answered');
   ch.innerHTML = laQ.order.map((t, i) => {
     const L = laLetter(t);
     return '<button class="la-choice" data-letter="' + t + '" onclick="laAnswer(' + i + ')">' +
-      '<span class="la-c-thai">' + t + '</span><span class="la-c-name">' + L.letterName + '</span><span class="la-c-key">' + (i + 1) + '</span></button>';
+      '<span class="la-c-thai">' + t + '</span><span class="la-c-name">' + L.letterName + '</span></button>';
   }).join('');
   const rv = document.getElementById('la-reveal');
   rv.classList.add('hidden');
@@ -5440,12 +5466,13 @@ function laAnswer(i) {
   const pr = laQ.pair;
   const rv = document.getElementById('la-reveal');
   rv.innerHTML =
-    '<div class="la-verdict ' + (ok ? 'ok' : 'no') + '">' + (ok ? 'Right' : 'Not quite, it’s ' + laLetter(laQ.answer).letterName) + '</div>' +
+    '<div class="la-verdict ' + (ok ? 'ok' : 'no') + '">' + (ok ? 'Correct' : 'Not quite, it’s ' + laLetter(laQ.answer).letterName) + '</div>' +
     '<div class="la-reveal-pair">' + [pr.a, pr.b].map(t =>
       '<div class="la-reveal-letter' + (t === laQ.answer ? ' is-answer' : '') + '"><div class="la-reveal-row">' +
-      '<span class="la-reveal-looped">' + t + '</span><span class="la-reveal-loopless">' + t + '</span></div>' +
+      '<span class="la-reveal-looped">' + t + '</span><span class="la-reveal-loopless" style="' + laFontCss(laQ.font) + '">' + t + '</span></div>' +
       '<div class="la-reveal-name">' + laLetter(t).letterName + '</div></div>').join('') + '</div>' +
-    (pr.cue ? '<div class="la-cue">' + pr.cue + '</div>' : '');
+    (pr.cue ? '<div class="la-cue">' + pr.cue + '</div>' : '') +
+    '<div class="la-font">Font: ' + laQ.font.name + '</div>';
   rv.classList.remove('hidden');
   laRenderSession();
   laSpeak();
@@ -5479,6 +5506,7 @@ function laResetStats() {
 }
 
 function laEnter() {
+  laPreloadFonts();
   laRenderFilters();
   laRenderSession();
   laNext();
