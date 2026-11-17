@@ -1518,6 +1518,39 @@
     .tc-choices, .tc-clock-choices { gap: 10px; }
   }
 
+  /* ============ LOOKALIKES (confusable letter pairs, loopless drill) ============ */
+  .la-filters { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 24px; }
+  .la-filters .cat-btn { font-family: 'Niramit', 'IBM Plex Mono', sans-serif; font-size: 15px; letter-spacing: 2px; padding: 6px 14px; }
+  .la-filters .cat-btn.la-all { font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 1px; }
+  .la-card { background: var(--card-front); border: 1px solid var(--border); border-radius: 4px; padding: 22px 20px 26px; text-align: center; max-width: 520px; margin: 0 auto; }
+  .la-prompt { font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; }
+  .la-glyph { font-family: 'Noto Sans Thai', sans-serif; font-weight: 400; font-size: clamp(110px, 22vw, 160px); line-height: 1.25; color: var(--thai-gold); margin: 4px 0 10px; }
+  .la-choices { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 420px; margin: 0 auto; }
+  .la-choice { background: var(--card); border: 1.5px solid var(--border); border-radius: 10px; padding: 12px 8px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 2px; color: var(--text); transition: border-color 0.15s, opacity 0.15s; -webkit-tap-highlight-color: transparent; }
+  .la-choice:hover { border-color: var(--accent); }
+  .la-choice .la-c-thai { font-family: 'Niramit', serif; font-weight: 300; font-size: 46px; line-height: 1.2; color: var(--text); }
+  .la-choice .la-c-name { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--muted); }
+  .la-choice .la-c-key { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--muted); opacity: 0.6; }
+  .la-choice.correct { border-color: var(--success); background: #142914; box-shadow: 0 0 0 3px rgba(76,175,80,0.25); }
+  .la-choice.correct .la-c-thai, .la-choice.correct .la-c-name { color: var(--success); }
+  .la-choice.wrong { border-color: var(--danger); opacity: 0.45; }
+  .la-choices.answered .la-choice { cursor: default; pointer-events: none; }
+  .la-reveal { margin-top: 20px; min-height: 150px; }
+  .la-reveal-pair { display: flex; justify-content: center; gap: 28px; }
+  .la-reveal-letter { display: flex; flex-direction: column; align-items: center; }
+  .la-reveal-row { display: flex; align-items: center; gap: 12px; }
+  .la-reveal-looped { font-family: 'Niramit', serif; font-weight: 300; font-size: 48px; line-height: 1.2; color: var(--text); }
+  .la-reveal-loopless { font-family: 'Noto Sans Thai', sans-serif; font-size: 48px; line-height: 1.2; color: var(--thai-gold); border-left: 1px solid rgba(255,255,255,0.18); padding-left: 12px; }
+  .la-reveal-letter.is-answer .la-reveal-looped { color: var(--accent); }
+  .la-reveal-name { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .la-cue { margin-top: 12px; font-size: 14px; color: var(--thai-gold); }
+  .la-verdict { font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; }
+  .la-verdict.ok { color: var(--success); }
+  .la-verdict.no { color: var(--danger); }
+  .la-next-wrap { text-align: center; margin-top: 18px; }
+  .la-reveal.hidden { visibility: hidden; }
+  .la-reset { display: block; margin: 18px auto 0; background: none; border: none; color: var(--muted); font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; text-decoration: underline; }
+
 </style>
 </head>
 <body>
@@ -1527,7 +1560,7 @@
   <div class="home-wrap">
     <div class="home-header">
       <div class="logo-thai">ศึกษาภาษาไทย</div>
-      <h1>Thai <span>Study</span><span class="version-tag">v0.22</span></h1>
+      <h1>Thai <span>Study</span><span class="version-tag">v0.23</span></h1>
       <p class="subtitle">Choose a deck to begin</p>
     </div>
 
@@ -1555,6 +1588,18 @@
         <div class="deck-progress-row">
           <div class="deck-progress-track"><div class="deck-progress-fill" id="home-progress-reading"></div></div>
           <div class="deck-progress-label" id="home-progress-label-reading"><b>0</b> known</div>
+        </div>
+      </div>
+      <div class="deck-card" onclick="enterDeck('lookalikes')">
+        <div class="deck-card-top">
+          <div class="deck-thai-label">ตัวคล้าย</div>
+          <div class="deck-count-tag" id="home-count-lookalikes">12 pairs</div>
+        </div>
+        <div class="deck-title">Look<span>alikes</span></div>
+        <div class="deck-desc">Confusable letter pairs &mdash; read the loopless shape, pick the letter</div>
+        <div class="deck-progress-row">
+          <div class="deck-progress-track"><div class="deck-progress-fill" id="home-progress-lookalikes"></div></div>
+          <div class="deck-progress-label" id="home-progress-label-lookalikes"><b>0</b> mastered</div>
         </div>
       </div>
     </div>
@@ -1863,6 +1908,47 @@
     <div class="kbd-hint"><kbd>N</kbd> Learning</div>
     <div class="kbd-hint"><kbd>P</kbd> Pronounce</div>
   </div>
+</div>
+
+<!-- ============ LOOKALIKES (confusable pairs, loopless) ============ -->
+<div class="container view" id="view-lookalikes">
+  <div class="deck-topbar">
+    <button class="btn-back" onclick="goHome()">&larr; Decks</button>
+    <div class="deck-topbar-spacer"></div>
+  </div>
+  <header>
+    <div class="logo-thai">ตัวคล้าย</div>
+    <h1>Look<span>alikes</span></h1>
+    <p class="subtitle">LOOPLESS SHAPES, ONE PAIR AT A TIME</p>
+  </header>
+
+  <div class="la-filters" id="la-filters"></div>
+
+  <div class="la-card">
+    <div class="la-prompt">Which letter is this?</div>
+    <div class="la-glyph" id="la-glyph">ด</div>
+    <div class="la-choices" id="la-choices"></div>
+    <div class="la-reveal hidden" id="la-reveal"></div>
+  </div>
+
+  <div class="la-next-wrap">
+    <button class="btn primary" id="la-next" onclick="laNext()">NEXT &rarr;</button>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-num" id="la-stat-right">0</div><div class="stat-label">Right</div></div>
+    <div class="stat"><div class="stat-num" id="la-stat-wrong">0</div><div class="stat-label">Wrong</div></div>
+    <div class="stat"><div class="stat-num" id="la-stat-streak">0</div><div class="stat-label">Streak</div></div>
+  </div>
+
+  <div class="kbd-hints">
+    <div class="kbd-hint"><kbd>1</kbd> Left</div>
+    <div class="kbd-hint"><kbd>2</kbd> Right</div>
+    <div class="kbd-hint"><kbd>Space</kbd> Next</div>
+    <div class="kbd-hint"><kbd>P</kbd> Pronounce</div>
+  </div>
+
+  <button class="la-reset" onclick="laResetStats()">Reset lookalike progress</button>
 </div>
 
 <div class="view" id="view-wordgame">
@@ -4556,6 +4642,11 @@ function enterDeck(deckId) {
     backToReadingSelect();
     return;
   }
+
+  if (deckId === 'lookalikes') {
+    laEnter();
+    return;
+  }
 }
 
 // ============================================================
@@ -4588,6 +4679,8 @@ function renderHomeStats() {
   } catch (e) {
     // localStorage unavailable - game tile just shows static defaults
   }
+
+  if (typeof laRenderHome === 'function') laRenderHome();
 
 }
 
@@ -5201,6 +5294,7 @@ if (window.speechSynthesis) {
 // ============================================================
 document.addEventListener('keydown', e => {
   if (!currentDeck) return;
+  if (currentDeck === 'lookalikes') return; // has its own key handler (LOOKALIKES section)
   if (currentDeck === 'wordgame' || currentDeck === 'speaking-select' || currentDeck === 'reading-select') {
     if (e.key === 'Escape') goHome();
     return;
@@ -5213,6 +5307,194 @@ document.addEventListener('keydown', e => {
   if ((e.key === 'n' || e.key === 'N') && deck.isFlipped) markCard(currentDeck, false);
   if (e.key === 'p' || e.key === 'P') pronounce(currentDeck);
   if (e.key === 'Escape') goHome();
+});
+
+
+// ============================================================
+// LOOKALIKES: confusable consonant pairs, drilled in the loopless font.
+// Shows one letter in loopless (Noto Sans Thai); you pick which of the
+// pair it is from buttons showing the looped (Niramit) shapes you know.
+// To add a pair: one line below. Letter names come from consonantsData.
+// ============================================================
+const lookalikePairs = [
+  { a: 'ด', b: 'ค', cue: '' },
+  { a: 'ด', b: 'ต', cue: 'ต has a notch on top' },
+  { a: 'บ', b: 'ป', cue: 'ป has a tall tail' },
+  { a: 'ผ', b: 'พ', cue: '' },
+  { a: 'ผ', b: 'ฝ', cue: 'ฝ has a tall tail' },
+  { a: 'พ', b: 'ฟ', cue: 'ฟ has a tall tail' },
+  { a: 'ข', b: 'ช', cue: 'ช has a hook top right' },
+  { a: 'ค', b: 'ศ', cue: 'ศ has a tail top right' },
+  { a: 'ถ', b: 'ภ', cue: '' },
+  { a: 'ม', b: 'น', cue: '' },
+  { a: 'ร', b: 'ว', cue: '' },
+  { a: 'อ', b: 'ฮ', cue: 'ฮ has a flick on top' },
+];
+const LA_STATS_KEY = 'thai-lookalikes-stats';
+const LA_FILTER_KEY = 'thai-lookalikes-filter';
+const laPairId = pr => pr.a + pr.b;
+const laLetter = t => consonantsData.find(c => c.thai === t) || { thai: t, name: '', letterName: t };
+let laStats = {};       // { letter: { right, wrong } } across sessions
+let laActive = new Set(lookalikePairs.map(laPairId));
+let laQ = null;         // current question { pair, answer, order, answered }
+let laLastKey = '';
+let laSession = { right: 0, wrong: 0, streak: 0 };
+try { laStats = JSON.parse(localStorage.getItem(LA_STATS_KEY) || '{}') || {}; } catch (e) { laStats = {}; }
+try {
+  const f = JSON.parse(localStorage.getItem(LA_FILTER_KEY) || 'null');
+  if (Array.isArray(f) && f.length) laActive = new Set(f.filter(id => lookalikePairs.some(pr => laPairId(pr) === id)));
+  if (!laActive.size) laActive = new Set(lookalikePairs.map(laPairId));
+} catch (e) {}
+
+function laSave() {
+  try {
+    localStorage.setItem(LA_STATS_KEY, JSON.stringify(laStats));
+    localStorage.setItem(LA_FILTER_KEY, JSON.stringify([...laActive]));
+  } catch (e) {}
+}
+function laAllLetters() { return [...new Set(lookalikePairs.flatMap(pr => [pr.a, pr.b]))]; }
+function laIsMastered(t) { const s = laStats[t]; return !!s && s.right >= 3 && s.right >= 3 * s.wrong; }
+
+function laRenderHome() {
+  const letters = laAllLetters();
+  const m = letters.filter(laIsMastered).length;
+  const fill = document.getElementById('home-progress-lookalikes');
+  if (fill) fill.style.width = (m / letters.length * 100) + '%';
+  const lbl = document.getElementById('home-progress-label-lookalikes');
+  if (lbl) lbl.innerHTML = '<b>' + m + '</b> / ' + letters.length + ' letters mastered';
+  const cnt = document.getElementById('home-count-lookalikes');
+  if (cnt) cnt.textContent = lookalikePairs.length + ' pairs';
+}
+
+function laRenderFilters() {
+  const wrap = document.getElementById('la-filters');
+  const all = laActive.size === lookalikePairs.length;
+  wrap.innerHTML = '<button class="cat-btn la-all' + (all ? ' active' : '') + '" onclick="laToggleAll()">All</button>' +
+    lookalikePairs.map(pr => {
+      const id = laPairId(pr);
+      return '<button class="cat-btn' + (laActive.has(id) && !all ? ' active' : '') + '" onclick="laTogglePair(\'' + id + '\')">' + pr.a + ' ' + pr.b + '</button>';
+    }).join('');
+}
+// Clicking a pair while "All" is on narrows to just that pair; further clicks add/remove pairs.
+function laTogglePair(id) {
+  if (laActive.size === lookalikePairs.length) laActive = new Set([id]);
+  else if (laActive.has(id)) { laActive.delete(id); if (!laActive.size) laActive = new Set(lookalikePairs.map(laPairId)); }
+  else laActive.add(id);
+  laSave(); laRenderFilters(); laNext();
+}
+function laToggleAll() {
+  laActive = new Set(lookalikePairs.map(laPairId));
+  laSave(); laRenderFilters(); laNext();
+}
+
+// Letters you get wrong more often come up more often.
+function laWeight(t) { const s = laStats[t] || { right: 0, wrong: 0 }; return 1 + Math.max(0, s.wrong * 2 - s.right * 0.5); }
+
+function laNext() {
+  const pool = [];
+  lookalikePairs.filter(pr => laActive.has(laPairId(pr))).forEach(pr => {
+    [pr.a, pr.b].forEach(t => pool.push({ pair: pr, answer: t, w: laWeight(t) }));
+  });
+  let cands = pool.filter(c => laPairId(c.pair) + c.answer !== laLastKey);
+  if (!cands.length) cands = pool;
+  const total = cands.reduce((s, c) => s + c.w, 0);
+  let r = Math.random() * total, pick = cands[0];
+  for (const c of cands) { r -= c.w; if (r <= 0) { pick = c; break; } }
+  laLastKey = laPairId(pick.pair) + pick.answer;
+  const order = Math.random() < 0.5 ? [pick.pair.a, pick.pair.b] : [pick.pair.b, pick.pair.a];
+  laQ = { pair: pick.pair, answer: pick.answer, order, answered: false };
+  laRenderQuestion();
+}
+
+function laRenderQuestion() {
+  document.getElementById('la-glyph').textContent = laQ.answer;
+  const ch = document.getElementById('la-choices');
+  ch.classList.remove('answered');
+  ch.innerHTML = laQ.order.map((t, i) => {
+    const L = laLetter(t);
+    return '<button class="la-choice" data-letter="' + t + '" onclick="laAnswer(' + i + ')">' +
+      '<span class="la-c-thai">' + t + '</span><span class="la-c-name">' + L.letterName + '</span><span class="la-c-key">' + (i + 1) + '</span></button>';
+  }).join('');
+  const rv = document.getElementById('la-reveal');
+  rv.classList.add('hidden');
+  rv.innerHTML = '';
+}
+
+function laAnswer(i) {
+  if (!laQ || laQ.answered) return;
+  laQ.answered = true;
+  const picked = laQ.order[i];
+  const ok = picked === laQ.answer;
+  const s = laStats[laQ.answer] || (laStats[laQ.answer] = { right: 0, wrong: 0 });
+  if (ok) { s.right++; laSession.right++; laSession.streak++; }
+  else { s.wrong++; laSession.wrong++; laSession.streak = 0; }
+  laSave();
+
+  const ch = document.getElementById('la-choices');
+  ch.classList.add('answered');
+  ch.querySelectorAll('.la-choice').forEach(b => {
+    if (b.dataset.letter === laQ.answer) b.classList.add('correct');
+    else if (b.dataset.letter === picked) b.classList.add('wrong');
+  });
+
+  const pr = laQ.pair;
+  const rv = document.getElementById('la-reveal');
+  rv.innerHTML =
+    '<div class="la-verdict ' + (ok ? 'ok' : 'no') + '">' + (ok ? 'Right' : 'Not quite, it’s ' + laLetter(laQ.answer).letterName) + '</div>' +
+    '<div class="la-reveal-pair">' + [pr.a, pr.b].map(t =>
+      '<div class="la-reveal-letter' + (t === laQ.answer ? ' is-answer' : '') + '"><div class="la-reveal-row">' +
+      '<span class="la-reveal-looped">' + t + '</span><span class="la-reveal-loopless">' + t + '</span></div>' +
+      '<div class="la-reveal-name">' + laLetter(t).letterName + '</div></div>').join('') + '</div>' +
+    (pr.cue ? '<div class="la-cue">' + pr.cue + '</div>' : '');
+  rv.classList.remove('hidden');
+  laRenderSession();
+  laSpeak();
+}
+
+function laSpeak() {
+  if (!laQ || !window.speechSynthesis) return;
+  const L = laLetter(laQ.answer);
+  window.speechSynthesis.cancel();
+  setTimeout(() => {
+    const utt = new SpeechSynthesisUtterance(L.thai + ' ' + (L.name || ''));
+    utt.lang = 'th-TH';
+    utt.rate = 0.8;
+    const v = window.speechSynthesis.getVoices().find(v => v.lang === 'th-TH' || v.lang.startsWith('th'));
+    if (v) utt.voice = v;
+    window.speechSynthesis.speak(utt);
+  }, 60);
+}
+
+function laRenderSession() {
+  document.getElementById('la-stat-right').textContent = laSession.right;
+  document.getElementById('la-stat-wrong').textContent = laSession.wrong;
+  document.getElementById('la-stat-streak').textContent = laSession.streak;
+}
+
+function laResetStats() {
+  if (!window.confirm('Reset all Lookalikes progress?')) return;
+  laStats = {};
+  laSession = { right: 0, wrong: 0, streak: 0 };
+  laSave(); laRenderSession(); laRenderHome();
+}
+
+function laEnter() {
+  laRenderFilters();
+  laRenderSession();
+  laNext();
+  showView('view-lookalikes');
+  window.scrollTo(0, 0);
+}
+
+document.addEventListener('keydown', e => {
+  if (currentDeck !== 'lookalikes') return;
+  if (e.key === 'Escape') { goHome(); return; }
+  if (e.key === '1' || e.key === '2') { laAnswer(Number(e.key) - 1); return; }
+  if (e.key === 'p' || e.key === 'P') { laSpeak(); return; }
+  if (e.key === ' ' || e.key === 'Enter' || e.key === 'ArrowRight') {
+    e.preventDefault();
+    if (laQ && laQ.answered) laNext();
+  }
 });
 
 // ============================================================
