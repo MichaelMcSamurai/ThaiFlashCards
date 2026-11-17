@@ -1553,8 +1553,10 @@
   .la-reveal.hidden { visibility: hidden; }
   .la-reset { display: block; margin: 18px auto 0; background: none; border: none; color: var(--muted); font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; text-decoration: underline; }
 
+  /* Thai inside English explanation text: always the looped (textbook) font */
+  .th-loop { font-family: 'Niramit', serif; font-weight: 400; font-size: 1.2em; letter-spacing: 0; }
   /* ============ VOWEL COMBOS (reuses the Lookalikes layout) ============ */
-  .vc-word { font-size: clamp(84px, 16vw, 120px); line-height: 1.35; color: var(--thai-gold); margin: 4px 0 14px; }
+  .vc-word { font-size: clamp(84px, 16vw, 120px); line-height: 1.35; color: var(--thai-gold); margin: 22px 0 14px; }
   .vc-sound { font-family: 'IBM Plex Mono', monospace; font-size: 30px; line-height: 1.3; color: var(--text); padding: 6px 0; }
   .la-choice.correct .vc-sound { color: var(--success); }
   .vc-frame-row { display: flex; justify-content: center; align-items: baseline; gap: 14px; cursor: pointer; }
@@ -5544,7 +5546,7 @@ function laAnswer(i) {
       '<div class="la-reveal-letter' + (t === laQ.answer ? ' is-answer' : '') + '" onclick="laSpeak(\'' + t + '\')" title="Click to hear it"><div class="la-reveal-row">' +
       '<span class="la-reveal-looped">' + t + '</span><span class="la-reveal-loopless" style="' + laFontCss(laQ.font) + '">' + t + '</span></div>' +
       '<div class="la-reveal-name">' + laLetter(t).letterName + '</div></div>').join('') + '</div>' +
-    (pr.cue ? '<div class="la-cue">' + pr.cue + '</div>' : '') +
+    (pr.cue ? '<div class="la-cue">' + thLoop(pr.cue) + '</div>' : '') +
     '<div class="la-font">Font: ' + laQ.font.name + '</div>';
   rv.classList.remove('hidden');
   laRenderSession();
@@ -5604,7 +5606,7 @@ document.addEventListener('keydown', e => {
 // sound from two choices. The wrong choice is always the combo it's
 // easiest to mix up with, and the answer shows the pattern behind it.
 // Words and sounds come from Michael's Thai_Vowels_v5 sheet.
-// ◌ (dotted circle) marks where the consonant sits in a frame.
+// Frames use ก (and น as a final) as stand-in consonants, the textbook way.
 // ============================================================
 const vcPatterns = [
   { id: 'short', label: 'Short with ะ', rule: 'Pattern 1: add ะ and the vowel turns short.' },
@@ -5617,38 +5619,41 @@ const vcPatterns = [
 const vcCarrier = { ia: 'เอีย', 'ʉa': 'เอือ', ua: 'อัว', 'ʉʉ': 'อือ', 'ʉ': 'อึ', a: 'อะ', aa: 'อา', e: 'เอะ', ee: 'เอ',
   'ɛ': 'แอะ', 'ɛɛ': 'แอ', o: 'โอะ', oo: 'โอ', 'ɔ': 'เอาะ', 'ɔɔ': 'ออ', 'ə': 'เออะ', 'əə': 'เออ', ao: 'เอา', i: 'อิ', ii: 'อี', u: 'อุ', uu: 'อู' };
 const vcItems = [
-  { w: 'แนะ', rom: 'nɛ́', eng: 'suggest', frame: 'แ◌ะ', sound: 'ɛ', trap: 'ɛɛ', tags: ['short'], br: 'แ (ɛɛ) + ะ → short ɛ' },
-  { w: 'เลอะ', rom: 'lə́', eng: 'messy', frame: 'เ◌อะ', sound: 'ə', trap: 'əə', tags: ['short', 'frame'], br: 'เ◌อ (əə) + ะ → short ə' },
-  { w: 'โต๊ะ', rom: 'dtó', eng: 'table', frame: 'โ◌ะ', sound: 'o', trap: 'oo', tags: ['short'], br: 'โ (oo) + ะ → short o' },
-  { w: 'เงาะ', rom: 'ŋɔ́', eng: 'rambutan', frame: 'เ◌าะ', sound: 'ɔ', trap: 'ao', tags: ['memo', 'frame'], br: 'เ◌าะ = short ɔ. It’s not ao + ะ.' },
-  { w: 'เอา', rom: 'ao', eng: 'want / take', frame: 'เ◌า', sound: 'ao', trap: 'ɔ', tags: ['memo', 'frame'], br: 'เ◌า = ao. The อ here is only a silent carrier.' },
-  { w: 'เต่า', rom: 'dtào', eng: 'turtle', frame: 'เ◌า', sound: 'ao', trap: 'ee', tags: ['memo', 'frame'], br: 'เ◌า = ao, not ee + aa.' },
-  { w: 'สอง', rom: 'sɔ̆ɔŋ', eng: 'two', frame: '◌อ', sound: 'ɔɔ', trap: 'oo', tags: ['memo'], br: 'อ after a consonant is the vowel ɔɔ.' },
-  { w: 'ชอบ', rom: 'chɔ̂ɔp', eng: 'like', frame: '◌อ', sound: 'ɔɔ', trap: 'oo', tags: ['memo'], br: 'อ after a consonant is the vowel ɔɔ.' },
-  { w: 'ทุเรียน', rom: 'thú-rian', eng: 'durian', frame: 'เ◌ีย', sound: 'ia', trap: 'ʉa', tags: ['glide', 'frame'], br: 'ี (i) + ย → ia. เ belongs to the frame.' },
-  { w: 'เบียร์', rom: 'bia', eng: 'beer', frame: 'เ◌ีย', sound: 'ia', trap: 'ii', tags: ['glide', 'frame'], br: 'ี (i) + ย → ia. (ร์ is silent.)' },
-  { w: 'เรือ', rom: 'rʉa', eng: 'boat', frame: 'เ◌ือ', sound: 'ʉa', trap: 'ʉʉ', tags: ['glide', 'frame'], br: 'ื (ʉ) + อ → ʉa. เ belongs to the frame.' },
-  { w: 'เสือ', rom: 'sʉ̆a', eng: 'tiger', frame: 'เ◌ือ', sound: 'ʉa', trap: 'ia', tags: ['glide', 'frame'], br: 'ื (ʉ) + อ → ʉa. ี would make it ia.' },
-  { w: 'ซื้อ', rom: 'sʉ́ʉ', eng: 'buy', frame: '◌ือ', sound: 'ʉʉ', trap: 'ʉa', tags: ['glide', 'frame'], br: 'No เ in front, so ◌ือ is plain long ʉʉ, not ʉa.' },
-  { w: 'วัว', rom: 'wua', eng: 'cow', frame: '◌ัว', sound: 'ua', trap: 'a', tags: ['glide'], br: 'ั + ว → ua.' },
-  { w: 'กลัว', rom: 'glua', eng: 'scared', frame: '◌ัว', sound: 'ua', trap: 'a', tags: ['glide'], br: 'ั + ว → ua.' },
-  { w: 'ครับ', rom: 'khráp', eng: 'polite particle', frame: '◌ั◌', sound: 'a', trap: 'aa', tags: ['drop'], br: 'ะ becomes ั when a final consonant follows: short a.' },
-  { w: 'รัก', rom: 'rák', eng: 'love', frame: '◌ั◌', sound: 'a', trap: 'aa', tags: ['drop'], br: 'ะ becomes ั when a final consonant follows: short a.' },
-  { w: 'เด็ก', rom: 'dèk', eng: 'child', frame: 'เ◌็◌', sound: 'e', trap: 'ee', tags: ['drop'], br: 'เ◌ะ becomes เ◌็ before a final consonant: short e.' },
-  { w: 'เผ็ด', rom: 'phèt', eng: 'spicy', frame: 'เ◌็◌', sound: 'e', trap: 'ee', tags: ['drop'], br: 'เ◌ะ becomes เ◌็ before a final consonant: short e.' },
-  { w: 'เล็ก', rom: 'lék', eng: 'small', frame: 'เ◌็◌', sound: 'e', trap: 'ee', tags: ['drop'], br: 'เ◌ะ becomes เ◌็ before a final consonant: short e.' },
-  { w: 'แท็กซี่', rom: 'thɛ́k-sîi', eng: 'taxi', frame: 'แ◌็◌', sound: 'ɛ', trap: 'ɛɛ', tags: ['drop'], br: 'แ◌ะ becomes แ◌็ before a final consonant: short ɛ. (First syllable.)' },
-  { w: 'ดื่ม', rom: 'dʉ̀ʉm', eng: 'to drink', frame: '◌ื◌', sound: 'ʉʉ', trap: 'ʉ', tags: ['drop'], br: '◌ือ drops its อ when a final consonant follows: still long ʉʉ.' },
-  { w: 'ยืน', rom: 'yʉʉn', eng: 'stand', frame: '◌ื◌', sound: 'ʉʉ', trap: 'ʉa', tags: ['drop'], br: '◌ือ drops its อ before a final consonant. No เ, so not ʉa.' },
-  { w: 'เงิน', rom: 'ŋəən', eng: 'money', frame: 'เ◌ิ◌', sound: 'əə', trap: 'i', tags: ['drop', 'frame'], br: 'เ◌อ swaps อ for ิ before a final consonant: still əə.' },
-  { w: 'เดิน', rom: 'dəən', eng: 'walk', frame: 'เ◌ิ◌', sound: 'əə', trap: 'ee', tags: ['drop', 'frame'], br: 'เ◌อ swaps อ for ิ before a final consonant: still əə.' },
-  { w: 'เชิญ', rom: 'chəən', eng: 'please / welcome', frame: 'เ◌ิ◌', sound: 'əə', trap: 'i', tags: ['drop', 'frame'], br: 'เ◌อ swaps อ for ิ before a final consonant: still əə.' },
-  { w: 'สวย', rom: 'sŭay', eng: 'beautiful', frame: '◌ว◌', sound: 'ua', trap: 'a', tags: ['drop'], br: '◌ัว drops ั before a final consonant, so ว alone means ua.' },
-  { w: 'ปวด', rom: 'bpùat', eng: 'ache', frame: '◌ว◌', sound: 'ua', trap: 'a', tags: ['drop'], br: '◌ัว drops ั before a final consonant, so ว alone means ua.' },
-  { w: 'คน', rom: 'khon', eng: 'person', frame: '◌◌', sound: 'o', trap: 'a', tags: ['drop'], br: 'Nothing written between two consonants: a hidden short o.' },
-  { w: 'ต้ม', rom: 'dtôm', eng: 'boiled', frame: '◌◌', sound: 'o', trap: 'a', tags: ['drop'], br: 'Nothing written between two consonants: a hidden short o.' },
-  { w: 'เจอ', rom: 'jəə', eng: 'meet', frame: 'เ◌อ', sound: 'əə', trap: 'ee', tags: ['frame'], br: 'เ◌อ = əə. Read the frame together, don’t sound out เ first.' },
+  { w: 'แนะ', rom: 'nɛ́', eng: 'suggest', frame: 'แกะ', sound: 'ɛ', trap: 'ɛɛ', tags: ['short'], br: 'แก (ɛɛ) + ะ → แกะ, short ɛ' },
+  { w: 'เลอะ', rom: 'lə́', eng: 'messy', frame: 'เกอะ', sound: 'ə', trap: 'əə', tags: ['short', 'frame'], br: 'เกอ (əə) + ะ → เกอะ, short ə' },
+  { w: 'โต๊ะ', rom: 'dtó', eng: 'table', frame: 'โกะ', sound: 'o', trap: 'oo', tags: ['short'], br: 'โก (oo) + ะ → โกะ, short o' },
+  { w: 'เงาะ', rom: 'ŋɔ́', eng: 'rambutan', frame: 'เกาะ', sound: 'ɔ', trap: 'ao', tags: ['memo', 'frame'], br: 'เกาะ = short ɔ. It\u2019s not เกา (ao) + ะ.' },
+  { w: 'เอา', rom: 'ao', eng: 'want / take', frame: 'เกา', sound: 'ao', trap: 'ɔ', tags: ['memo', 'frame'], br: 'เกา = ao. In เอา the อ is only a silent carrier.' },
+  { w: 'เต่า', rom: 'dtào', eng: 'turtle', frame: 'เกา', sound: 'ao', trap: 'ee', tags: ['memo', 'frame'], br: 'เกา = ao, not ee + aa.' },
+  { w: 'สอง', rom: 'sɔ̆ɔŋ', eng: 'two', frame: 'กอ', sound: 'ɔɔ', trap: 'oo', tags: ['memo'], br: 'กอ: อ after a consonant is the vowel ɔɔ.' },
+  { w: 'ชอบ', rom: 'chɔ̂ɔp', eng: 'like', frame: 'กอ', sound: 'ɔɔ', trap: 'oo', tags: ['memo'], br: 'กอ: อ after a consonant is the vowel ɔɔ.' },
+  { w: 'ทุเรียน', rom: 'thú-rian', eng: 'durian', frame: 'เกีย', sound: 'ia', trap: 'ʉa', tags: ['glide', 'frame'], br: 'กี (i) + ย → เกีย, ia. เ belongs to the frame.' },
+  { w: 'เบียร์', rom: 'bia', eng: 'beer', frame: 'เกีย', sound: 'ia', trap: 'ii', tags: ['glide', 'frame'], br: 'กี (i) + ย → เกีย, ia. (ร์ is silent.)' },
+  { w: 'เรือ', rom: 'rʉa', eng: 'boat', frame: 'เกือ', sound: 'ʉa', trap: 'ʉʉ', tags: ['glide', 'frame'], br: 'กื (ʉ) + อ → เกือ, ʉa. เ belongs to the frame.' },
+  { w: 'เสือ', rom: 'sʉ̆a', eng: 'tiger', frame: 'เกือ', sound: 'ʉa', trap: 'ia', tags: ['glide', 'frame'], br: 'กื (ʉ) + อ → เกือ, ʉa. With กี it would be เกีย, ia.' },
+  { w: 'ซื้อ', rom: 'sʉ́ʉ', eng: 'buy', frame: 'กือ', sound: 'ʉʉ', trap: 'ʉa', tags: ['glide', 'frame'], br: 'No เ in front, so กือ is plain long ʉʉ, not เกือ (ʉa).' },
+  { w: 'วัว', rom: 'wua', eng: 'cow', frame: 'กัว', sound: 'ua', trap: 'a', tags: ['glide'], br: 'กั + ว → กัว, ua.' },
+  { w: 'กลัว', rom: 'glua', eng: 'scared', frame: 'กัว', sound: 'ua', trap: 'a', tags: ['glide'], br: 'กั + ว → กัว, ua.' },
+  { w: 'ครับ', rom: 'khráp', eng: 'polite particle', frame: 'กัน', sound: 'a', trap: 'aa', tags: ['drop'], br: 'กะ becomes กัน when a final consonant follows: still short a.' },
+  { w: 'รัก', rom: 'rák', eng: 'love', frame: 'กัน', sound: 'a', trap: 'aa', tags: ['drop'], br: 'กะ becomes กัน when a final consonant follows: still short a.' },
+  { w: 'เด็ก', rom: 'dèk', eng: 'child', frame: 'เก็น', sound: 'e', trap: 'ee', tags: ['drop'], br: 'เกะ becomes เก็น before a final consonant: still short e.' },
+  { w: 'เผ็ด', rom: 'phèt', eng: 'spicy', frame: 'เก็น', sound: 'e', trap: 'ee', tags: ['drop'], br: 'เกะ becomes เก็น before a final consonant: still short e.' },
+  { w: 'เล็ก', rom: 'lék', eng: 'small', frame: 'เก็น', sound: 'e', trap: 'ee', tags: ['drop'], br: 'เกะ becomes เก็น before a final consonant: still short e.' },
+  { w: 'แท็กซี่', rom: 'thɛ́k-sîi', eng: 'taxi', frame: 'แก็น', sound: 'ɛ', trap: 'ɛɛ', tags: ['drop'], br: 'แกะ becomes แก็น before a final consonant: short ɛ (first syllable).' },
+  { w: 'ดื่ม', rom: 'dʉ̀ʉm', eng: 'to drink', frame: 'กืน', sound: 'ʉʉ', trap: 'ʉ', tags: ['drop'], br: 'กือ drops its อ before a final consonant (กืน): still long ʉʉ.' },
+  { w: 'ยืน', rom: 'yʉʉn', eng: 'stand', frame: 'กืน', sound: 'ʉʉ', trap: 'ʉa', tags: ['drop'], br: 'กือ drops its อ before a final consonant (กืน). No เ, so not ʉa.' },
+  { w: 'เงิน', rom: 'ŋəən', eng: 'money', frame: 'เกิน', sound: 'əə', trap: 'i', tags: ['drop', 'frame'], br: 'เกอ becomes เกิน before a final consonant: still əə.' },
+  { w: 'เดิน', rom: 'dəən', eng: 'walk', frame: 'เกิน', sound: 'əə', trap: 'ee', tags: ['drop', 'frame'], br: 'เกอ becomes เกิน before a final consonant: still əə.' },
+  { w: 'เชิญ', rom: 'chəən', eng: 'please / welcome', frame: 'เกิน', sound: 'əə', trap: 'i', tags: ['drop', 'frame'], br: 'เกอ becomes เกิน before a final consonant: still əə.' },
+  { w: 'สวย', rom: 'sŭay', eng: 'beautiful', frame: 'กวน', sound: 'ua', trap: 'a', tags: ['drop'], br: 'กัว loses its top mark before a final consonant (กวน), so ว alone means ua.' },
+  { w: 'ปวด', rom: 'bpùat', eng: 'ache', frame: 'กวน', sound: 'ua', trap: 'a', tags: ['drop'], br: 'กัว loses its top mark before a final consonant (กวน), so ว alone means ua.' },
+  { w: 'คน', rom: 'khon', eng: 'person', frame: 'กน', sound: 'o', trap: 'a', tags: ['drop'], br: 'Nothing written between two consonants (กน): a hidden short o.' },
+  { w: 'ต้ม', rom: 'dtôm', eng: 'boiled', frame: 'กน', sound: 'o', trap: 'a', tags: ['drop'], br: 'Nothing written between two consonants (กน): a hidden short o.' },
+  { w: 'เจอ', rom: 'jəə', eng: 'meet', frame: 'เกอ', sound: 'əə', trap: 'ee', tags: ['frame'], br: 'เกอ = əə. Read the frame together, don\u2019t sound out เ first.' },
 ];
+// Wraps each run of Thai letters in the looped font (whole runs only, so
+// marks never get split from their consonant).
+function thLoop(text) { return String(text).replace(/[\u0E00-\u0E7F]+/g, m => '<span class="th-loop">' + m + '</span>'); }
 const VC_STATS_KEY = 'thai-combos-stats';
 const VC_FILTER_KEY = 'thai-combos-filter';
 let vcStats = {};
@@ -5686,7 +5691,7 @@ function vcRenderFilters() {
   const all = vcActive.size === vcPatterns.length;
   document.getElementById('vc-filters').innerHTML =
     '<button class="cat-btn la-all' + (all ? ' active' : '') + '" onclick="vcToggleAll()">All</button>' +
-    vcPatterns.map(p => '<button class="cat-btn la-all' + (vcActive.has(p.id) && !all ? ' active' : '') + '" onclick="vcTogglePattern(\'' + p.id + '\')">' + p.label + '</button>').join('');
+    vcPatterns.map(p => '<button class="cat-btn la-all' + (vcActive.has(p.id) && !all ? ' active' : '') + '" onclick="vcTogglePattern(\'' + p.id + '\')">' + thLoop(p.label) + '</button>').join('');
 }
 function vcTogglePattern(id) {
   if (vcActive.size === vcPatterns.length) vcActive = new Set([id]);
@@ -5755,8 +5760,9 @@ function vcAnswer(i) {
       '<span class="vc-frame-looped">' + it.frame + '</span>' +
       '<span class="vc-frame-loopless" style="' + laFontCss(vcQ.font) + '">' + it.frame + '</span>' +
       '<span class="vc-frame-sound">' + it.sound + '</span></div>' +
-    '<div class="vc-break">' + it.br + '</div>' +
-    '<div class="la-cue">' + (pat ? pat.rule : '') + '</div>' +
+    '<div class="la-font" style="margin-top:2px">' + thLoop('ก and น stand in for any consonant') + '</div>' +
+    '<div class="vc-break">' + thLoop(it.br) + '</div>' +
+    '<div class="la-cue">' + (pat ? thLoop(pat.rule) : '') + '</div>' +
     '<div class="vc-word-line" onclick="vcSpeak(vcQ.item.w)" title="Click to hear the word"><b>' + it.w + '</b>' + it.rom + ' · ' + it.eng + '</div>' +
     '<div class="la-font">Font: ' + vcQ.font.name + '</div>';
   rv.classList.remove('hidden');
