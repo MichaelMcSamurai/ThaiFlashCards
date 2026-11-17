@@ -1560,6 +1560,7 @@
   .vc-sound { font-family: 'IBM Plex Mono', monospace; font-size: 30px; line-height: 1.3; color: var(--text); padding: 6px 0; }
   .la-choice.correct .vc-sound { color: var(--success); }
   .vc-frame-row { display: flex; width: fit-content; margin: 6px auto 0; justify-content: center; align-items: baseline; gap: 14px; cursor: pointer; border-radius: 8px; padding: 0 10px; }
+  .la-card.said .vc-word, .la-card.said .la-glyph { cursor: pointer; }
   .vc-frame-row:hover { background: rgba(255,255,255,0.05); }
   .vc-frame-looped { font-family: 'Niramit', serif; font-weight: 300; font-size: 52px; line-height: 1.3; color: var(--accent); }
   .vc-frame-loopless { font-size: 52px; line-height: 1.3; color: var(--thai-gold); border-left: 1px solid rgba(255,255,255,0.18); padding-left: 14px; }
@@ -1622,7 +1623,7 @@
       <div class="deck-card" onclick="enterDeck('combos')">
         <div class="deck-card-top">
           <div class="deck-thai-label">สระผสม</div>
-          <div class="deck-count-tag" id="home-count-combos">31 words</div>
+          <div class="deck-count-tag" id="home-count-combos">30 words</div>
         </div>
         <div class="deck-title">Vowel <span>Combos</span></div>
         <div class="deck-desc">Spot the vowel combo inside a real word &mdash; and the pattern behind it</div>
@@ -1955,7 +1956,7 @@
 
   <div class="la-card">
     <div class="la-prompt">What's the vowel sound?</div>
-    <div class="vc-word" id="vc-word">เรือ</div>
+    <div class="vc-word" id="vc-word" onclick="if (vcQ && vcQ.answered) vcSpeak(vcQ.item.w)">เรือ</div>
     <div class="la-choices" id="vc-choices"></div>
     <div class="la-reveal hidden" id="vc-reveal"></div>
   </div>
@@ -1995,7 +1996,7 @@
 
   <div class="la-card">
     <div class="la-prompt">Which letter is this?</div>
-    <div class="la-glyph" id="la-glyph">ด</div>
+    <div class="la-glyph" id="la-glyph" onclick="if (laQ && laQ.answered) laSpeak()">ด</div>
     <div class="la-choices" id="la-choices"></div>
     <div class="la-reveal hidden" id="la-reveal"></div>
   </div>
@@ -5516,6 +5517,7 @@ function laRenderQuestion() {
       '<span class="la-c-thai">' + t + '</span><span class="la-c-name">' + L.letterName + '</span></button>';
   }).join('');
   const rv = document.getElementById('la-reveal');
+  rv.closest('.la-card').classList.remove('said');
   rv.classList.add('hidden');
   rv.innerHTML = '';
 }
@@ -5550,6 +5552,7 @@ function laAnswer(i) {
     (pr.cue ? '<div class="la-cue">' + thLoop(pr.cue) + '</div>' : '') +
     '<div class="la-font">Font: ' + laQ.font.name + '</div>';
   rv.classList.remove('hidden');
+  rv.closest('.la-card').classList.add('said');
   laRenderSession();
   laSpeak();
 }
@@ -5621,7 +5624,6 @@ const vcCarrier = { ia: 'เอีย', 'ʉa': 'เอือ', ua: 'อัว', 
   'ɛ': 'แอะ', 'ɛɛ': 'แอ', o: 'โอะ', oo: 'โอ', 'ɔ': 'เอาะ', 'ɔɔ': 'ออ', 'ə': 'เออะ', 'əə': 'เออ', ao: 'เอา', i: 'อิ', ii: 'อี', u: 'อุ', uu: 'อู' };
 const vcItems = [
   { w: 'แนะ', rom: 'nɛ́', eng: 'suggest', frame: 'แกะ', sound: 'ɛ', trap: 'ɛɛ', tags: ['short'], br: 'แก (ɛɛ) + ะ → แกะ, short ɛ' },
-  { w: 'เลอะ', rom: 'lə́', eng: 'messy', frame: 'เกอะ', sound: 'ə', trap: 'əə', tags: ['short', 'frame'], br: 'เกอ (əə) + ะ → เกอะ, short ə' },
   { w: 'โต๊ะ', rom: 'dtó', eng: 'table', frame: 'โกะ', sound: 'o', trap: 'oo', tags: ['short'], br: 'โก (oo) + ะ → โกะ, short o' },
   { w: 'เงาะ', rom: 'ŋɔ́', eng: 'rambutan', frame: 'เกาะ', sound: 'ɔ', trap: 'ao', tags: ['memo', 'frame'], br: 'เกาะ = short ɔ. It\u2019s not เกา (ao) + ะ.' },
   { w: 'เอา', rom: 'ao', eng: 'want / take', frame: 'เกา', sound: 'ao', trap: 'ɔ', tags: ['memo', 'frame'], br: 'เกา = ao. In เอา the อ is only a silent carrier.' },
@@ -5730,6 +5732,7 @@ function vcNext() {
   ch.innerHTML = order.map((snd, i) =>
     '<button class="la-choice" data-sound="' + snd + '" onclick="vcAnswer(' + i + ')"><span class="vc-sound">' + snd + '</span></button>').join('');
   const rv = document.getElementById('vc-reveal');
+  rv.closest('.la-card').classList.remove('said');
   rv.classList.add('hidden');
   rv.innerHTML = '';
 }
@@ -5767,6 +5770,7 @@ function vcAnswer(i) {
     '<div class="vc-word-line" onclick="vcSpeak(vcQ.item.w)" title="Click to hear the word"><b>' + it.w + '</b>' + it.rom + ' · ' + it.eng + '</div>' +
     '<div class="la-font">Font: ' + vcQ.font.name + '</div>';
   rv.classList.remove('hidden');
+  rv.closest('.la-card').classList.add('said');
   vcRenderSession();
   vcSpeak(it.w);
 }
