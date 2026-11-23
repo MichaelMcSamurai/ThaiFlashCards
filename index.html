@@ -1569,6 +1569,90 @@
   .vc-word-line { margin-top: 10px; font-size: 14px; color: var(--muted); cursor: pointer; }
   .vc-word-line b { font-family: 'Niramit', serif; font-weight: 400; font-size: 20px; color: var(--text); margin-right: 6px; }
 
+
+  /* ---------- STUDY SESSION (v0.26) ---------- */
+  .study-panel {
+    position: relative;
+    background: var(--card-front);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 20px 22px;
+    margin-bottom: 22px;
+  }
+  .study-panel-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; gap: 12px; flex-wrap: wrap; }
+  .study-kicker { font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; }
+  .study-kicker .thai { color: var(--thai-gold); letter-spacing: 3px; margin-right: 8px; font-family: 'IBM Plex Sans Thai', sans-serif; }
+  .study-streak { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--thai-gold); letter-spacing: 1px; }
+  .study-today { font-family: 'Libre Baskerville', serif; font-size: 30px; font-weight: 700; margin-bottom: 10px; }
+  .study-today span { color: var(--accent); font-style: italic; }
+  .study-today small { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 400; color: var(--muted); margin-left: 6px; }
+  .study-goal-track { height: 8px; background: var(--surface); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; margin-bottom: 16px; }
+  .study-goal-fill { height: 100%; background: var(--accent); transition: width 0.4s; }
+  .study-goal-fill.done { background: var(--success); }
+  .study-week { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; margin-bottom: 18px; }
+  .study-day { text-align: center; }
+  .study-day-bar { height: 34px; background: var(--surface); border: 1px solid var(--border); border-radius: 2px; position: relative; overflow: hidden; }
+  .study-day-bar i { position: absolute; left: 0; right: 0; bottom: 0; background: rgba(217,218,74,0.55); }
+  .study-day-bar.met i { background: var(--accent); }
+  .study-day.today .study-day-bar { border-color: var(--accent); }
+  .study-day-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--muted); margin-top: 4px; letter-spacing: 1px; }
+  .study-day-min { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--text); opacity: 0.8; }
+  .study-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+  .study-btn {
+    font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase;
+    background: transparent; color: var(--text); border: 1px solid var(--border); border-radius: 3px;
+    padding: 10px 14px; cursor: pointer; transition: all 0.15s;
+  }
+  .study-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .study-btn.primary { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 500; }
+  .study-btn.primary:hover { background: var(--accent-bright); color: #000; }
+  .study-btn.danger:hover { border-color: var(--danger); color: var(--danger); }
+
+  .session-bar {
+    position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%);
+    z-index: 900; display: none; align-items: center; gap: 14px;
+    background: rgba(12,12,12,0.96); border: 1px solid var(--accent); border-radius: 999px;
+    padding: 8px 10px 8px 18px; box-shadow: 0 6px 30px rgba(0,0,0,0.6);
+    font-family: 'IBM Plex Mono', monospace; font-size: 13px; white-space: nowrap;
+  }
+  .session-bar.show { display: flex; }
+  .session-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--success); box-shadow: 0 0 8px var(--success); }
+  .session-bar.paused .session-dot { background: var(--muted); box-shadow: none; }
+  .session-time { font-size: 17px; color: var(--accent); letter-spacing: 1px; min-width: 64px; }
+  .session-status { color: var(--muted); font-size: 11px; letter-spacing: 1px; text-transform: uppercase; }
+  .session-bar .study-btn { padding: 6px 12px; border-radius: 999px; font-size: 11px; }
+
+  .study-modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px; }
+  .study-modal-bg.show { display: flex; }
+  .study-modal {
+    width: 100%; max-width: 520px; max-height: 86vh; overflow-y: auto;
+    background: #101010; border: 1px solid var(--accent); border-radius: 4px; padding: 26px 26px 22px; text-align: left;
+  }
+  .study-modal h2 { font-family: 'Libre Baskerville', serif; font-size: 24px; margin-bottom: 4px; }
+  .study-modal h2 span { color: var(--accent); font-style: italic; }
+  .study-modal .study-kicker { margin-bottom: 18px; display: block; }
+  .study-big { font-family: 'Libre Baskerville', serif; font-size: 40px; font-weight: 700; color: var(--accent); }
+  .study-rows { margin: 14px 0 18px; border-top: 1px solid var(--border); }
+  .study-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+  .study-row b { font-family: 'IBM Plex Mono', monospace; font-weight: 400; color: var(--accent); }
+  .study-field { margin-bottom: 14px; }
+  .study-field label { display: block; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 1.5px; color: var(--muted); text-transform: uppercase; margin-bottom: 6px; }
+  .study-field input, .study-field select {
+    width: 100%; background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: 3px;
+    padding: 10px 12px; font-family: 'IBM Plex Sans Thai', sans-serif; font-size: 15px;
+  }
+  .study-field input:focus, .study-field select:focus { outline: none; border-color: var(--accent); }
+  .study-modal-actions { display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap; margin-top: 18px; }
+  .study-hist-day { margin-bottom: 14px; }
+  .study-hist-head { display: flex; justify-content: space-between; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 1px; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .study-hist-head b { color: var(--accent); font-weight: 500; }
+  .study-hist-head b.met { color: var(--success); }
+  .study-hist-entry { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: 13px; color: var(--text); padding: 6px 0 6px 10px; opacity: 0.9; }
+  .study-hist-entry .meta { color: var(--muted); font-size: 12px; }
+  .study-x { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 15px; padding: 2px 6px; }
+  .study-x:hover { color: var(--danger); }
+  .study-empty { color: var(--muted); font-size: 14px; padding: 10px 0; }
+  .study-toast { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--success); letter-spacing: 1px; margin-right: auto; align-self: center; }
 </style>
 </head>
 <body>
@@ -1578,8 +1662,24 @@
   <div class="home-wrap">
     <div class="home-header">
       <div class="logo-thai">ศึกษาภาษาไทย</div>
-      <h1>Thai <span>Study</span><span class="version-tag">v0.25</span></h1>
+      <h1>Thai <span>Study</span><span class="version-tag">v0.26</span></h1>
       <p class="subtitle">Choose a deck to begin</p>
+    </div>
+
+    <!-- ============ TODAY'S STUDY PANEL (v0.26) ============ -->
+    <div class="study-panel" id="study-panel">
+      <div class="study-panel-top">
+        <div class="study-kicker"><span class="thai">วันนี้</span>Today's study</div>
+        <div class="study-streak" id="study-streak"></div>
+      </div>
+      <div class="study-today" id="study-today">0 <span>/ 60</span><small>min</small></div>
+      <div class="study-goal-track"><div class="study-goal-fill" id="study-goal-fill"></div></div>
+      <div class="study-week" id="study-week"></div>
+      <div class="study-actions">
+        <button class="study-btn primary" id="study-start-btn" onclick="studyStartOrOpen()">&#9654; Start session</button>
+        <button class="study-btn" onclick="studyOpenManual()">+ Log tutor / other</button>
+        <button class="study-btn" onclick="studyOpenHistory()">History</button>
+      </div>
     </div>
 
     <div class="deck-list">
@@ -8241,6 +8341,368 @@ return { startGame, quitToHome, nextOrEnd, renderBestScore, setPool, toSimpleLet
 
 WordCatch.init();
 
+
+// ============================================================
+// STUDY SESSIONS (v0.26)
+// Timer that counts only while you're actually studying (tab visible and
+// not idle for 3+ min), split by which deck you were in. Sessions, plus
+// manually logged tutor/class time, are saved to localStorage.
+// ============================================================
+const STUDY_LOG_KEY = 'thai-study-log';
+const STUDY_ACTIVE_KEY = 'thai-study-active';
+const STUDY_GOAL_KEY = 'thai-study-goal';
+const STUDY_IDLE_MS = 3 * 60 * 1000;
+const STUDY_AREAS = {
+  'view-speaking': 'Speaking', 'view-speaking-select': 'Speaking',
+  'view-reading': 'Reading & Writing', 'view-reading-select': 'Reading & Writing',
+  'view-lookalikes': 'Lookalikes', 'view-combos': 'Vowel Combos',
+  'view-wordgame': 'Word Catch', 'view-home': 'Home screen'
+};
+
+let studyLog = [];
+let studySession = null;   // { start, seconds, areas:{}, cards, paused }
+let studyLastActivity = Date.now();
+let studyModalOpen = false;
+
+function studyLoad() {
+  try { studyLog = JSON.parse(localStorage.getItem(STUDY_LOG_KEY)) || []; } catch (e) { studyLog = []; }
+  try { studySession = JSON.parse(localStorage.getItem(STUDY_ACTIVE_KEY)) || null; } catch (e) { studySession = null; }
+}
+function studySaveLog() { try { localStorage.setItem(STUDY_LOG_KEY, JSON.stringify(studyLog)); } catch (e) {} }
+function studySaveActive() {
+  try {
+    if (studySession) localStorage.setItem(STUDY_ACTIVE_KEY, JSON.stringify(studySession));
+    else localStorage.removeItem(STUDY_ACTIVE_KEY);
+  } catch (e) {}
+}
+function studyGoal() {
+  const g = parseInt(localStorage.getItem(STUDY_GOAL_KEY), 10);
+  return g > 0 ? g : 60;
+}
+
+// --- dates (local time) ---
+function studyDateKey(d) {
+  d = d || new Date();
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+}
+function studyDaysAgo(n) { const d = new Date(); d.setHours(12, 0, 0, 0); d.setDate(d.getDate() - n); return d; }
+function studyPrettyDate(key) {
+  const [y, m, d] = key.split('-').map(Number);
+  return new Date(y, m - 1, d).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
+}
+
+// --- totals ---
+function studyMinutesOn(key) {
+  let s = 0;
+  studyLog.forEach(e => { if (e.date === key) s += e.seconds; });
+  if (studySession && studyDateKey(new Date(studySession.start)) === key) s += studySession.seconds;
+  return s / 60;
+}
+function studyStreak() {
+  const goal = studyGoal();
+  let n = 0;
+  // today counts if already met; otherwise the streak runs through yesterday
+  let i = studyMinutesOn(studyDateKey(studyDaysAgo(0))) >= goal ? 0 : 1;
+  for (; i < 400; i++) {
+    if (studyMinutesOn(studyDateKey(studyDaysAgo(i))) >= goal) n++; else break;
+  }
+  return n;
+}
+function studyFmtClock(sec) {
+  sec = Math.floor(sec);
+  const h = Math.floor(sec / 3600), m = Math.floor((sec % 3600) / 60), s = sec % 60;
+  return h ? h + ':' + String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0') : m + ':' + String(s).padStart(2, '0');
+}
+function studyFmtMin(min) {
+  min = Math.round(min);
+  return min >= 60 ? Math.floor(min / 60) + 'h ' + String(min % 60).padStart(2, '0') + 'm' : min + ' min';
+}
+function studyEsc(s) { return String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
+
+// --- home panel ---
+function studyRenderPanel() {
+  const goal = studyGoal();
+  const today = studyMinutesOn(studyDateKey());
+  const el = document.getElementById('study-today');
+  if (!el) return;
+  el.innerHTML = Math.floor(today) + ' <span>/ ' + goal + '</span><small>min today</small>';
+  const fill = document.getElementById('study-goal-fill');
+  fill.style.width = Math.min(100, today / goal * 100) + '%';
+  fill.classList.toggle('done', today >= goal);
+
+  const streak = studyStreak();
+  document.getElementById('study-streak').textContent = streak ? '🔥 ' + streak + '-day streak' : '';
+
+  const letters = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+  let html = '';
+  for (let i = 6; i >= 0; i--) {
+    const d = studyDaysAgo(i), m = studyMinutesOn(studyDateKey(d));
+    const h = Math.min(100, m / goal * 100);
+    html += '<div class="study-day' + (i === 0 ? ' today' : '') + '">' +
+      '<div class="study-day-bar' + (m >= goal ? ' met' : '') + '"><i style="height:' + h + '%"></i></div>' +
+      '<div class="study-day-label">' + letters[d.getDay()] + '</div>' +
+      '<div class="study-day-min">' + (m >= 1 ? Math.floor(m) : '–') + '</div></div>';
+  }
+  document.getElementById('study-week').innerHTML = html;
+
+  const btn = document.getElementById('study-start-btn');
+  btn.innerHTML = studySession ? '&#9632; End session' : '&#9654; Start session';
+}
+
+// --- session bar ---
+function studyRenderBar() {
+  const bar = document.getElementById('session-bar');
+  if (!studySession) { bar.classList.remove('show'); return; }
+  bar.classList.add('show');
+  const idle = Date.now() - studyLastActivity > STUDY_IDLE_MS;
+  const hidden = document.visibilityState !== 'visible';
+  const paused = studySession.paused || idle || hidden;
+  bar.classList.toggle('paused', paused);
+  document.getElementById('session-time').textContent = studyFmtClock(studySession.seconds);
+  document.getElementById('session-status').textContent = studySession.paused ? 'paused'
+    : idle ? 'idle – paused' : 'today ' + Math.floor(studyMinutesOn(studyDateKey())) + ' / ' + studyGoal();
+  document.getElementById('session-pause-btn').textContent = studySession.paused ? 'Resume' : 'Pause';
+}
+
+function studyCurrentArea() {
+  const v = document.querySelector('.view.active');
+  return (v && STUDY_AREAS[v.id]) || 'Other';
+}
+
+function studyTick() {
+  if (studySession && !studySession.paused && document.visibilityState === 'visible'
+      && Date.now() - studyLastActivity <= STUDY_IDLE_MS) {
+    studySession.seconds += 1;
+    const a = studyCurrentArea();
+    studySession.areas[a] = (studySession.areas[a] || 0) + 1;
+    if (studySession.seconds % 10 === 0) studySaveActive();
+  }
+  studyRenderBar();
+  const home = document.getElementById('view-home');
+  if (studySession && home && home.classList.contains('active')) studyRenderPanel();
+}
+
+function studyStart() {
+  studySession = { start: new Date().toISOString(), seconds: 0, areas: {}, cards: 0, paused: false };
+  studyLastActivity = Date.now();
+  studySaveActive();
+  studyRenderBar();
+  studyRenderPanel();
+}
+function studyStartOrOpen() { if (studySession) studyEnd(); else studyStart(); }
+function studyTogglePause() {
+  if (!studySession) return;
+  studySession.paused = !studySession.paused;
+  studyLastActivity = Date.now();
+  studySaveActive();
+  studyRenderBar();
+}
+
+function studyEnd() {
+  if (!studySession) return;
+  const s = studySession;
+  studySession = null;
+  studySaveActive();
+  let entry = null;
+  if (s.seconds >= 30) {
+    entry = { id: Date.now(), date: studyDateKey(new Date(s.start)), start: s.start, seconds: s.seconds,
+              areas: s.areas, cards: s.cards, kind: 'App session', note: '' };
+    studyLog.push(entry);
+    studySaveLog();
+  }
+  studyRenderBar();
+  studyRenderPanel();
+  studyShowSummary(entry);
+}
+
+// --- modals ---
+function studyOpenModal(html) {
+  document.getElementById('study-modal').innerHTML = html;
+  document.getElementById('study-modal-bg').classList.add('show');
+  studyModalOpen = true;
+}
+function studyCloseModal() {
+  document.getElementById('study-modal-bg').classList.remove('show');
+  studyModalOpen = false;
+}
+
+function studyAreaRows(areas) {
+  return Object.entries(areas || {}).filter(([, s]) => s >= 30).sort((a, b) => b[1] - a[1])
+    .map(([a, s]) => '<div class="study-row"><span>' + studyEsc(a) + '</span><b>' + studyFmtMin(s / 60) + '</b></div>').join('');
+}
+
+function studySummaryText(entry) {
+  const today = studyDateKey();
+  const parts = Object.entries(entry.areas || {}).filter(([, s]) => s >= 30).sort((a, b) => b[1] - a[1])
+    .map(([a, s]) => a + ' ' + Math.round(s / 60) + 'm').join(', ');
+  return 'Thai study ' + entry.date + ': ' + studyFmtMin(entry.seconds / 60) + ' session' +
+    (parts ? ' (' + parts + ')' : '') + (entry.cards ? ', ' + entry.cards + ' cards answered' : '') +
+    '. Today total: ' + Math.floor(studyMinutesOn(today)) + ' / ' + studyGoal() + ' min.';
+}
+
+function studyShowSummary(entry) {
+  if (!entry) {
+    studyOpenModal('<h2>Session <span>too short</span></h2><span class="study-kicker">Under 30 seconds — not saved</span>' +
+      '<div class="study-modal-actions"><button class="study-btn primary" onclick="studyCloseModal()">OK</button></div>');
+    return;
+  }
+  const goal = studyGoal(), today = studyMinutesOn(studyDateKey());
+  const remain = Math.max(0, Math.ceil(goal - today));
+  window._studyLastSummary = studySummaryText(entry);
+  studyOpenModal(
+    '<h2>Session <span>saved</span></h2><span class="study-kicker">' + studyPrettyDate(entry.date) + '</span>' +
+    '<div class="study-big">' + studyFmtMin(entry.seconds / 60) + '</div>' +
+    '<div class="study-rows">' + studyAreaRows(entry.areas) +
+    '<div class="study-row"><span>Cards answered</span><b>' + entry.cards + '</b></div>' +
+    '<div class="study-row"><span>Today so far</span><b>' + Math.floor(today) + ' / ' + goal + ' min</b></div></div>' +
+    '<div class="study-kicker" style="margin-bottom:0">' + (remain ? remain + ' min to go today' : 'Daily goal reached ✓') + '</div>' +
+    '<div class="study-modal-actions"><span class="study-toast" id="study-toast"></span>' +
+    '<button class="study-btn" onclick="studyCopySummary()">Copy summary</button>' +
+    '<button class="study-btn primary" onclick="studyCloseModal()">Done</button></div>');
+}
+
+function studyCopySummary() {
+  const t = window._studyLastSummary || '';
+  const done = () => { const el = document.getElementById('study-toast'); if (el) el.textContent = 'COPIED'; };
+  if (navigator.clipboard) navigator.clipboard.writeText(t).then(done, () => prompt('Copy this:', t));
+  else prompt('Copy this:', t);
+}
+
+function studyOpenManual() {
+  studyOpenModal(
+    '<h2>Log <span>study time</span></h2><span class="study-kicker">Tutor lessons, class, podcasts — anything off the app</span>' +
+    '<div class="study-field"><label>Type</label><select id="sm-kind">' +
+      '<option>Tutor lesson</option><option>Thai class</option><option>Self study</option><option>Listening / video</option><option>Other</option></select></div>' +
+    '<div class="study-field"><label>Minutes</label><input id="sm-min" type="number" min="1" max="600" value="60"></div>' +
+    '<div class="study-field"><label>Date</label><input id="sm-date" type="date" value="' + studyDateKey() + '"></div>' +
+    '<div class="study-field"><label>Note (optional)</label><input id="sm-note" type="text" placeholder="e.g. went over classifiers"></div>' +
+    '<div class="study-modal-actions"><button class="study-btn" onclick="studyCloseModal()">Cancel</button>' +
+    '<button class="study-btn primary" onclick="studySaveManual()">Save</button></div>');
+  // Saturday default: tutor lesson; otherwise self study
+  if (new Date().getDay() !== 6) document.getElementById('sm-kind').value = 'Self study';
+  setTimeout(() => document.getElementById('sm-min').select(), 30);
+}
+
+function studySaveManual() {
+  const min = parseInt(document.getElementById('sm-min').value, 10);
+  const date = document.getElementById('sm-date').value || studyDateKey();
+  if (!(min > 0)) { document.getElementById('sm-min').focus(); return; }
+  studyLog.push({ id: Date.now(), date, start: null, seconds: min * 60, areas: {}, cards: 0,
+                  kind: document.getElementById('sm-kind').value, note: document.getElementById('sm-note').value.trim() });
+  studySaveLog();
+  studyCloseModal();
+  studyRenderPanel();
+}
+
+function studyOpenHistory() {
+  const goal = studyGoal();
+  const byDay = {};
+  studyLog.forEach(e => (byDay[e.date] = byDay[e.date] || []).push(e));
+  const days = Object.keys(byDay).sort().reverse().slice(0, 60);
+  let total7 = 0;
+  for (let i = 0; i < 7; i++) total7 += studyMinutesOn(studyDateKey(studyDaysAgo(i)));
+  let html = '<h2>Study <span>history</span></h2><span class="study-kicker">Last 7 days: ' + studyFmtMin(total7) +
+    ' · avg ' + Math.round(total7 / 7) + ' min/day</span>';
+  if (!days.length) html += '<div class="study-empty">No sessions yet. Hit Start session on the home screen.</div>';
+  days.forEach(d => {
+    const m = studyMinutesOn(d);
+    html += '<div class="study-hist-day"><div class="study-hist-head"><span>' + studyPrettyDate(d) + '</span><b class="' +
+      (m >= goal ? 'met' : '') + '">' + studyFmtMin(m) + (m >= goal ? ' ✓' : '') + '</b></div>';
+    byDay[d].forEach(e => {
+      const areas = Object.entries(e.areas || {}).filter(([, s]) => s >= 30).sort((a, b) => b[1] - a[1])
+        .map(([a, s]) => a + ' ' + Math.round(s / 60) + 'm').join(', ');
+      const meta = [areas, e.cards ? e.cards + ' cards' : '', e.note].filter(Boolean).join(' · ');
+      html += '<div class="study-hist-entry"><div>' + studyEsc(e.kind) + ' — ' + studyFmtMin(e.seconds / 60) +
+        (meta ? '<div class="meta">' + studyEsc(meta) + '</div>' : '') + '</div>' +
+        '<button class="study-x" title="Delete this entry" onclick="studyDelete(' + e.id + ')">&times;</button></div>';
+    });
+    html += '</div>';
+  });
+  html += '<div class="study-field" style="margin-top:18px"><label>Daily goal (minutes)</label>' +
+    '<input id="sm-goal" type="number" min="5" max="600" value="' + goal + '" onchange="studySetGoal(this.value)"></div>' +
+    '<div class="study-modal-actions"><button class="study-btn" onclick="studyExportCsv()">Export CSV</button>' +
+    '<button class="study-btn primary" onclick="studyCloseModal()">Close</button></div>';
+  studyOpenModal(html);
+}
+
+function studyDelete(id) {
+  if (!confirm('Delete this entry?')) return;
+  studyLog = studyLog.filter(e => e.id !== id);
+  studySaveLog();
+  studyRenderPanel();
+  studyOpenHistory();
+}
+function studySetGoal(v) {
+  const g = parseInt(v, 10);
+  if (g > 0) { localStorage.setItem(STUDY_GOAL_KEY, String(g)); studyRenderPanel(); }
+}
+
+function studyExportCsv() {
+  const q = s => '"' + String(s == null ? '' : s).replace(/"/g, '""') + '"';
+  const rows = [['date', 'type', 'minutes', 'cards', 'breakdown', 'note']];
+  studyLog.slice().sort((a, b) => a.date < b.date ? -1 : 1).forEach(e => rows.push([
+    e.date, e.kind, Math.round(e.seconds / 60), e.cards || 0,
+    Object.entries(e.areas || {}).map(([a, s]) => a + ' ' + Math.round(s / 60) + 'm').join('; '), e.note || ''
+  ]));
+  const blob = new Blob([rows.map(r => r.map(q).join(',')).join('\n')], { type: 'text/csv' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'thai-study-log-' + studyDateKey() + '.csv';
+  document.body.appendChild(a); a.click(); a.remove();
+}
+
+// --- count answered cards during a session ---
+(function () {
+  const bump = () => { if (studySession && !studySession.paused) studySession.cards++; };
+  const _markCard = markCard;
+  markCard = function (deckId, didKnow) { bump(); return _markCard.apply(this, arguments); };
+  const _laAnswer = laAnswer;
+  laAnswer = function (i) { if (laQ && !laQ.answered) bump(); return _laAnswer.apply(this, arguments); };
+  const _vcAnswer = vcAnswer;
+  vcAnswer = function (i) { if (vcQ && !vcQ.answered) bump(); return _vcAnswer.apply(this, arguments); };
+  const _renderHomeStats = renderHomeStats;
+  renderHomeStats = function () { const r = _renderHomeStats.apply(this, arguments); studyRenderPanel(); return r; };
+})();
+
+// --- activity, keyboard isolation, lifecycle ---
+['pointerdown', 'keydown', 'wheel', 'touchstart', 'mousemove'].forEach(ev =>
+  document.addEventListener(ev, () => { studyLastActivity = Date.now(); }, { passive: true, capture: true }));
+
+// While a modal is open, keep deck shortcuts (Space, Y/N, arrows...) from firing behind it.
+document.addEventListener('keydown', e => {
+  if (!studyModalOpen) return;
+  if (e.key === 'Escape') { studyCloseModal(); }
+  if (e.key === 'Enter' && document.getElementById('sm-min')) { studySaveManual(); }
+  e.stopImmediatePropagation();
+}, true);
+
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') studyLastActivity = Date.now();
+  studySaveActive();
+});
+window.addEventListener('beforeunload', studySaveActive);
+
+function studyInit() {
+  studyLoad();
+  studyLastActivity = Date.now();
+  studyRenderPanel();
+  studyRenderBar();
+  setInterval(studyTick, 1000);
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', studyInit);
+else studyInit();
 </script>
+
+<!-- ============ STUDY SESSION BAR + MODAL (v0.26) ============ -->
+<div class="session-bar" id="session-bar">
+  <div class="session-dot"></div>
+  <div class="session-time" id="session-time">0:00</div>
+  <div class="session-status" id="session-status">today 0 / 60</div>
+  <button class="study-btn" id="session-pause-btn" onclick="studyTogglePause(); this.blur()">Pause</button>
+  <button class="study-btn primary" onclick="studyEnd(); this.blur()">End</button>
+</div>
+<div class="study-modal-bg" id="study-modal-bg" onclick="if (event.target === this) studyCloseModal()">
+  <div class="study-modal" id="study-modal"></div>
+</div>
 </body>
 </html>
