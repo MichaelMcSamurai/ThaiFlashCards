@@ -1714,7 +1714,7 @@
   <div class="home-wrap">
     <div class="home-header">
       <div class="logo-thai">ศึกษาภาษาไทย</div>
-      <h1>Thai <span>Study</span><span class="version-tag">v0.30</span></h1>
+      <h1>Thai <span>Study</span><span class="version-tag">v0.30c</span></h1>
       <p class="subtitle">Choose a deck to begin</p>
     </div>
 
@@ -1825,7 +1825,10 @@
   <div class="select-row">
     <button class="cat-btn select-header-btn" id="sp-sel-all-phrases" onclick="toggleSpeakingAllPhrases()">All Phrases</button>
   </div>
-  <div class="categories" id="sp-grid-categories"></div>
+  <div class="select-level-block">
+    <button class="cat-btn select-header-btn" id="sp-sel-cat-phrases" onclick="toggleSpeakingPhraseCategories()">Phrase Categories</button>
+    <div class="categories" id="sp-grid-categories"></div>
+  </div>
   <div class="select-level-block">
     <button class="cat-btn select-header-btn" id="sp-sel-s1-phrases" onclick="toggleSpeakingPhraseLevel('S1')">Speaking 1 Phrases</button>
     <div class="filter-bar" id="sp-grid-s1-phrases"></div>
@@ -1987,12 +1990,12 @@
           <div class="thai-alt" id="thai-alt-reading"></div>
         </div>
         <div id="rw-front-vowel-reading" style="display:none">
-          <div class="card-type-tag" id="card-type-tag-reading">Short</div>
+          <div class="card-type-tag" id="card-type-tag-reading" style="display:none">Short</div>
           <div class="card-label">Vowel Form</div>
           <svg class="vowel-svg" id="vowel-svg-reading" xmlns="http://www.w3.org/2000/svg"><g id="vowel-svg-g-reading"></g></svg>
           <span class="vowel-size-probe" id="vowel-size-probe-reading">A</span>
           <div class="thai-alt" id="vowel-alt-reading"></div>
-          <div class="rtgs-text" id="rtgs-text-reading">"a"</div>
+          <div class="rtgs-text" id="rtgs-text-reading" style="display:none">"a"</div>
         </div>
         <div id="rw-front-word-reading" style="display:none">
           <div class="card-label" id="word-card-label-reading">Quick Brown Fox</div>
@@ -6347,6 +6350,10 @@ function renderSpeakingSelectionScreen() {
     ).join('');
   }
 
+  const catOn = phraseCategoryNames.every(c => af.phraseCategories.has(c));
+  const catSome = !catOn && phraseCategoryNames.some(c => af.phraseCategories.has(c));
+  setBtnState('sp-sel-cat-phrases', catOn, catSome);
+
   const s1PhraseOn = speakingPhraseClassesS1.length > 0 && speakingPhraseClassesS1.every(c => af.phraseClasses.has(classKey('S1', c)));
   const s1PhraseSome = !s1PhraseOn && speakingPhraseClassesS1.some(c => af.phraseClasses.has(classKey('S1', c)));
   setBtnState('sp-sel-s1-phrases', s1PhraseOn, s1PhraseSome);
@@ -6421,6 +6428,13 @@ function toggleSpeakingAllPhrases() {
   const turnOn = !speakingAllPhraseKeysSelected();
   af.phraseCategories = turnOn ? new Set(phraseCategoryNames) : new Set();
   af.phraseClasses = turnOn ? new Set(allPhraseClassKeys) : new Set();
+  renderSpeakingSelectionScreen();
+}
+
+function toggleSpeakingPhraseCategories() {
+  const af = decks.speaking.activeFilter;
+  const allOn = phraseCategoryNames.every(c => af.phraseCategories.has(c));
+  af.phraseCategories = allOn ? new Set() : new Set(phraseCategoryNames);
   renderSpeakingSelectionScreen();
 }
 
