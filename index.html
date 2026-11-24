@@ -1537,7 +1537,8 @@
   .la-choices.answered .la-choice.wrong:hover { opacity: 0.7; }
   .la-reveal-letter { cursor: pointer; }
   .la-reveal { margin-top: 20px; min-height: 150px; }
-  .la-reveal-pair { display: flex; justify-content: center; gap: 28px; }
+  .la-reveal-pair { display: flex; justify-content: center; gap: 28px; flex-wrap: wrap; }
+  .la-choices.four { grid-template-columns: repeat(4, 1fr); max-width: 640px; }
   .la-reveal-letter { display: flex; flex-direction: column; align-items: center; }
   .la-reveal-row { display: flex; align-items: baseline; gap: 12px; }
   .la-reveal-looped { font-family: 'Niramit', serif; font-weight: 300; font-size: 48px; line-height: 1.2; color: var(--text); }
@@ -1735,7 +1736,7 @@
       <div class="deck-card" onclick="enterDeck('lookalikes')">
         <div class="deck-card-top">
           <div class="deck-thai-label">ตัวคล้าย</div>
-          <div class="deck-count-tag" id="home-count-lookalikes">12 pairs</div>
+          <div class="deck-count-tag" id="home-count-lookalikes">13 sets</div>
         </div>
         <div class="deck-title">Look<span>alikes</span></div>
         <div class="deck-desc">Confusable letter pairs &mdash; read the loopless shape, pick the letter</div>
@@ -6741,7 +6742,10 @@ const lookalikePairs = [
   { a: 'ม', b: 'น', cue: '' },
   { a: 'ร', b: 'ว', cue: '' },
   { a: 'อ', b: 'ฮ', cue: 'ฮ has a flick on top' },
+  // a set of four: all start from the same U shape in loopless fonts
+  { letters: ['บ', 'ป', 'ม', 'น'], cue: 'บ plain U · ป tall right stroke · ม mark on the left · น tail on the right' },
 ];
+const laLetters = pr => pr.letters || [pr.a, pr.b];
 // Loopless fonts you'd meet on real signs, menus and packaging. Each question
 // picks one at random (never the same twice in a row), like the street does.
 const laFonts = [
@@ -6764,7 +6768,7 @@ function laPreloadFonts() {
 }
 const LA_STATS_KEY = 'thai-lookalikes-stats';
 const LA_FILTER_KEY = 'thai-lookalikes-filter';
-const laPairId = pr => pr.a + pr.b;
+const laPairId = pr => laLetters(pr).join('');
 const laLetter = t => consonantsData.find(c => c.thai === t) || { thai: t, name: '', letterName: t };
 let laStats = {};       // { letter: { right, wrong } } across sessions
 let laActive = new Set(lookalikePairs.map(laPairId));
@@ -6784,7 +6788,7 @@ function laSave() {
     localStorage.setItem(LA_FILTER_KEY, JSON.stringify([...laActive]));
   } catch (e) {}
 }
-function laAllLetters() { return [...new Set(lookalikePairs.flatMap(pr => [pr.a, pr.b]))]; }
+function laAllLetters() { return [...new Set(lookalikePairs.flatMap(laLetters))]; }
 function laIsMastered(t) { const s = laStats[t]; return !!s && s.right >= 3 && s.right >= 3 * s.wrong; }
 
 function laRenderHome() {
@@ -6795,7 +6799,7 @@ function laRenderHome() {
   const lbl = document.getElementById('home-progress-label-lookalikes');
   if (lbl) lbl.innerHTML = '<b>' + m + '</b> / ' + letters.length + ' letters mastered';
   const cnt = document.getElementById('home-count-lookalikes');
-  if (cnt) cnt.textContent = lookalikePairs.length + ' pairs';
+  if (cnt) cnt.textContent = lookalikePairs.length + ' sets';
 }
 
 function laRenderFilters() {
@@ -6804,7 +6808,7 @@ function laRenderFilters() {
   wrap.innerHTML = '<button class="cat-btn la-all' + (all ? ' active' : '') + '" onclick="laToggleAll()">All</button>' +
     lookalikePairs.map(pr => {
       const id = laPairId(pr);
-      return '<button class="cat-btn' + (laActive.has(id) && !all ? ' active' : '') + '" onclick="laTogglePair(\'' + id + '\')">' + pr.a + ' ' + pr.b + '</button>';
+      return '<button class="cat-btn' + (laActive.has(id) && !all ? ' active' : '') + '" onclick="laTogglePair(\'' + id + '\')">' + laLetters(pr).join(' ') + '</button>';
     }).join('');
 }
 // Clicking a pair while "All" is on narrows to just that pair; further clicks add/remove pairs.
@@ -6825,7 +6829,7 @@ function laWeight(t) { const s = laStats[t] || { right: 0, wrong: 0 }; return 1 
 function laNext() {
   const pool = [];
   lookalikePairs.filter(pr => laActive.has(laPairId(pr))).forEach(pr => {
-    [pr.a, pr.b].forEach(t => pool.push({ pair: pr, answer: t, w: laWeight(t) }));
+    laLetters(pr).forEach(t => pool.push({ pair: pr, answer: t, w: laWeight(t) }));
   });
   let cands = pool.filter(c => laPairId(c.pair) + c.answer !== laLastKey);
   if (!cands.length) cands = pool;
@@ -6833,7 +6837,8 @@ function laNext() {
   let r = Math.random() * total, pick = cands[0];
   for (const c of cands) { r -= c.w; if (r <= 0) { pick = c; break; } }
   laLastKey = laPairId(pick.pair) + pick.answer;
-  const order = Math.random() < 0.5 ? [pick.pair.a, pick.pair.b] : [pick.pair.b, pick.pair.a];
+  const order = laLetters(pick.pair).slice();
+  for (let i = order.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [order[i], order[j]] = [order[j], order[i]]; }
   const fonts = laFonts.filter(f => f.name !== laLastFont);
   const font = fonts[Math.floor(Math.random() * fonts.length)];
   laLastFont = font.name;
@@ -6848,6 +6853,7 @@ function laRenderQuestion() {
   gl.style.fontWeight = laQ.font.weight;
   const ch = document.getElementById('la-choices');
   ch.classList.remove('answered');
+  ch.classList.toggle('four', laQ.order.length > 2);
   ch.innerHTML = laQ.order.map((t, i) => {
     const L = laLetter(t);
     return '<button class="la-choice" data-letter="' + t + '" onclick="laAnswer(' + i + ')">' +
@@ -6882,7 +6888,7 @@ function laAnswer(i) {
   const rv = document.getElementById('la-reveal');
   rv.innerHTML =
     '<div class="la-verdict ' + (ok ? 'ok' : 'no') + '">' + (ok ? 'Correct' : 'Not quite, it’s ' + laLetter(laQ.answer).letterName) + '</div>' +
-    '<div class="la-reveal-pair">' + [pr.a, pr.b].map(t =>
+    '<div class="la-reveal-pair">' + laLetters(pr).map(t =>
       '<div class="la-reveal-letter' + (t === laQ.answer ? ' is-answer' : '') + '" onclick="laSpeak(\'' + t + '\')" title="Click to hear it"><div class="la-reveal-row">' +
       '<span class="la-reveal-looped">' + t + '</span><span class="la-reveal-loopless" style="' + laFontCss(laQ.font) + '">' + t + '</span></div>' +
       '<div class="la-reveal-name">' + laLetter(t).letterName + '</div></div>').join('') + '</div>' +
@@ -6932,6 +6938,7 @@ function laEnter() {
 
 document.addEventListener('keydown', e => {
   if (currentDeck !== 'lookalikes') return;
+  if (laQ && ['1','2','3','4'].includes(e.key) && Number(e.key) <= laQ.order.length) { laAnswer(Number(e.key) - 1); return; }
   if (e.key === 'Escape') { goHome(); return; }
   if (e.key === '1' || e.key === '2') { laAnswer(Number(e.key) - 1); return; }
   if (e.key === 'p' || e.key === 'P') { laSpeak(); return; }
