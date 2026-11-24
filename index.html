@@ -1570,6 +1570,31 @@
   .vc-word-line b { font-family: 'Niramit', serif; font-weight: 400; font-size: 20px; color: var(--text); margin-right: 6px; }
 
 
+  /* ---------- CARD SEARCH (v0.27) ---------- */
+  .card-search { display: flex; align-items: center; gap: 10px; margin: 0 0 18px; }
+  .card-search-box { position: relative; flex: 1; }
+  .card-search input {
+    width: 100%; box-sizing: border-box;
+    font-family: 'IBM Plex Mono', 'IBM Plex Sans Thai', monospace; font-size: 15px;
+    background: var(--surface); color: var(--text);
+    border: 1px solid var(--border); border-radius: 3px;
+    padding: 10px 36px 10px 14px; outline: none; transition: border-color 0.15s;
+  }
+  .card-search input::-webkit-search-cancel-button { display: none; }
+  .card-search input::placeholder { color: var(--muted); }
+  .card-search input:focus { border-color: var(--accent); }
+  .card-search.active input { border-color: var(--accent); }
+  .card-search-clear {
+    position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
+    background: none; border: none; color: var(--muted); font-size: 18px; line-height: 1;
+    cursor: pointer; padding: 4px 6px; display: none;
+  }
+  .card-search.active .card-search-clear { display: block; }
+  .card-search-clear:hover { color: var(--accent); }
+  .card-search-count { font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 1px; color: var(--muted); white-space: nowrap; min-width: 90px; text-align: right; }
+  .card-search.active .card-search-count { color: var(--accent); }
+  .card-search-note { font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 1px; color: var(--muted); margin: -12px 0 18px; }
+
   /* ---------- STUDY SESSION (v0.26) ---------- */
   .study-panel {
     position: relative;
@@ -1662,7 +1687,7 @@
   <div class="home-wrap">
     <div class="home-header">
       <div class="logo-thai">ศึกษาภาษาไทย</div>
-      <h1>Thai <span>Study</span><span class="version-tag">v0.26</span></h1>
+      <h1>Thai <span>Study</span><span class="version-tag">v0.27</span></h1>
       <p class="subtitle">Choose a deck to begin</p>
     </div>
 
@@ -1811,6 +1836,15 @@
     <h1>Thai <span>Speaking</span></h1>
   </header>
 
+  <div class="card-search" id="card-search-speaking">
+    <div class="card-search-box">
+      <input type="search" id="search-input-speaking" placeholder="Search Thai, English or romanization…  ( / )" autocomplete="off" spellcheck="false" oninput="onCardSearchInput('speaking')">
+      <button class="card-search-clear" onclick="clearCardSearch('speaking', true)" title="Clear search (Esc)">&times;</button>
+    </div>
+    <div class="card-search-count" id="search-count-speaking"></div>
+  </div>
+  <div class="card-search-note">Search resets current card set</div>
+
   <div class="stats">
     <div class="stat"><div class="stat-num" id="stat-known-speaking">0</div><div class="stat-label">Known</div></div>
     <div class="stat"><div class="stat-num" id="stat-learning-speaking">0</div><div class="stat-label">Learning</div></div>
@@ -1865,6 +1899,7 @@
     <div class="kbd-hint"><kbd>Y</kbd> Got it</div>
     <div class="kbd-hint"><kbd>N</kbd> Learning</div>
     <div class="kbd-hint"><kbd>P</kbd> Pronounce</div>
+    <div class="kbd-hint"><kbd>/</kbd> Search</div>
   </div>
 </div>
 
@@ -6359,7 +6394,106 @@ function toggleSpeakingPhraseClass(level, cls) {
   renderSpeakingSelectionScreen();
 }
 
+// ============================================================
+// CARD SEARCH: typing in the box swaps the current card set for every card
+// in the deck that matches (all classes and categories, known cards too).
+// Clearing it puts back the set you were studying.
+// ============================================================
+const cardSearch = {};   // deckId -> { query, saved, savedIndex, pool, timer }
+
+function searchFold(str) {
+  // lowercase, drop tone marks and other accents, plain-letter the special vowels,
+  // and ignore spaces/hyphens/punctuation, so "khrap" and "khráp" match
+  return (str || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+    .replace(/ŋ/g, 'ng').replace(/[ɛə]/g, 'e').replace(/ɔ/g, 'o').replace(/ʉ/g, 'u')
+    .replace(/[\s\-–—_'’".,!?()\/…:;]+/g, '');
+}
+
+function cardSearchMatches(item, q, words) {
+  // every word you typed has to appear somewhere on the card (any order, any field);
+  // ranked: 0 exact, 1 starts with, 2 contains, -1 no match
+  const fields = [item.thai, item.phonetic, item.english, item.usage].map(searchFold).filter(Boolean);
+  if (!words.every(w => fields.some(f => f.includes(w)))) return -1;
+  if (fields.some(f => f === q)) return 0;
+  if (item.english && item.english.split(/[\/,;]/).some(part => searchFold(part) === q)) return 0;
+  if (fields.some(f => f.startsWith(q))) return 1;
+  return 2;
+}
+
+function onCardSearchInput(deckId) {
+  const st = cardSearch[deckId] || (cardSearch[deckId] = {});
+  clearTimeout(st.timer);
+  st.timer = setTimeout(() => runCardSearch(deckId), 140);
+}
+
+function runCardSearch(deckId) {
+  const deck = decks[deckId];
+  const st = cardSearch[deckId] || (cardSearch[deckId] = {});
+  const input = document.getElementById('search-input-' + deckId);
+  const raw = input ? input.value : '';
+  const q = searchFold(raw);
+  if (!q) { clearCardSearch(deckId, true); return; }
+  const words = raw.trim().split(/\s+/).map(searchFold).filter(Boolean);
+  if (!st.query) { st.saved = deck.filtered.slice(); st.savedIndex = deck.currentIndex; }
+  st.query = q;
+  const hits = [];
+  deck.data.forEach((item, i) => {
+    const rank = cardSearchMatches(item, q, words);
+    if (rank >= 0) hits.push({ item, rank, i });
+  });
+  hits.sort((a, b) => a.rank - b.rank || a.item.thai.length - b.item.thai.length || a.i - b.i);
+  st.pool = hits.map(h => h.item);
+  deck.filtered = st.pool.slice();
+  deck.currentIndex = 0;
+  deck.isFlipped = false;
+  snapToFrontInstantly(deckId);
+  renderCard(deckId);
+  updateStats(deckId);
+  renderCardSearchState(deckId);
+}
+
+// restore: true = go back to the set you were studying; null = just empty the box
+function clearCardSearch(deckId, restore) {
+  const deck = decks[deckId];
+  const st = cardSearch[deckId] || (cardSearch[deckId] = {});
+  clearTimeout(st.timer);
+  const input = document.getElementById('search-input-' + deckId);
+  if (input) input.value = '';
+  const wasActive = !!st.query;
+  st.query = '';
+  st.pool = null;
+  if (wasActive && restore) {
+    // minus anything you marked Got It while searching
+    deck.filtered = (st.saved || []).filter(item => !deck.known.has(deck.idOf(item)));
+    deck.currentIndex = Math.min(st.savedIndex || 0, Math.max(deck.filtered.length - 1, 0));
+    deck.isFlipped = false;
+    snapToFrontInstantly(deckId);
+    renderCard(deckId);
+    updateStats(deckId);
+  }
+  st.saved = null;
+  renderCardSearchState(deckId);
+}
+
+function renderCardSearchState(deckId) {
+  const st = cardSearch[deckId] || {};
+  const wrap = document.getElementById('card-search-' + deckId);
+  const count = document.getElementById('search-count-' + deckId);
+  const active = !!st.query;
+  if (wrap) wrap.classList.toggle('active', active);
+  if (count) {
+    const n = active && st.pool ? st.pool.length : 0;
+    count.textContent = active ? (n === 1 ? '1 match' : n + ' matches') : '';
+  }
+  if (active && st.pool && st.pool.length === 0) {
+    setText('progress-label-' + deckId, 'No matches');
+    const hint = document.getElementById('flip-hint-' + deckId);
+    if (hint) hint.textContent = 'NO CARDS MATCH — TRY ANOTHER WORD, OR PRESS ESC TO CLEAR';
+  }
+}
+
 function startSpeakingSession() {
+  clearCardSearch('speaking', null);
   const deck = decks.speaking;
   const inScope = deck.data.filter(item => deck.matchesFilter(item, deck.activeFilter));
   deck.filtered = inScope.filter(item => !deck.known.has(deck.idOf(item)));
@@ -6375,6 +6509,7 @@ function startSpeakingSession() {
 }
 
 function backToSpeakingSelect() {
+  clearCardSearch('speaking', null);
   currentDeck = 'speaking-select';
   renderSpeakingSelectionScreen();
   showView('view-speaking-select');
@@ -6668,7 +6803,9 @@ function updateStats(deckId) {
   const deck = decks[deckId];
   // scope Known/Learning to whatever filter/classes are currently active, not
   // the whole deck, so the three numbers always add up to what's on screen
-  const inScope = deck.data.filter(item => deck.matchesFilter(item, deck.activeFilter));
+  // (while searching, that's the search results)
+  const st = cardSearch[deckId];
+  const inScope = (st && st.query && st.pool) ? st.pool : deck.data.filter(item => deck.matchesFilter(item, deck.activeFilter));
   let knownCount = 0, learningCount = 0;
   inScope.forEach(item => {
     const id = deck.idOf(item);
@@ -6679,7 +6816,9 @@ function updateStats(deckId) {
   setText('stat-learning-' + deckId, learningCount);
   // known cards are already excluded from deck.filtered, so remaining is just
   // whatever's left in the rotation that isn't currently marked Learning
-  setText('stat-remaining-' + deckId, Math.max(deck.filtered.length - learningCount, 0));
+  // (search results can include known cards, so count only the unknown ones)
+  const unknownInRotation = deck.filtered.filter(item => !deck.known.has(deck.idOf(item))).length;
+  setText('stat-remaining-' + deckId, Math.max(unknownInRotation - learningCount, 0));
 }
 
 function shuffle(deckId) {
@@ -6693,6 +6832,7 @@ function shuffle(deckId) {
 
 function resetAll(deckId) {
   const deck = decks[deckId];
+  if (cardSearch[deckId] && cardSearch[deckId].query) clearCardSearch(deckId, null);
   deck.known.clear();
   deck.learning.clear();
   deck.currentIndex = 0;
@@ -6790,6 +6930,19 @@ document.addEventListener('keydown', e => {
     if (e.key === 'Escape') goHome();
     return;
   }
+  // don't fire card shortcuts while typing in a box
+  const typing = e.target && e.target.closest && e.target.closest('input, textarea, select');
+  if (typing) {
+    if (e.target.id === 'search-input-' + currentDeck) {
+      if (e.key === 'Escape') { e.preventDefault(); clearCardSearch(currentDeck, true); e.target.blur(); }
+      if (e.key === 'Enter') { e.preventDefault(); clearTimeout((cardSearch[currentDeck] || {}).timer); runCardSearch(currentDeck); e.target.blur(); }
+    }
+    return;
+  }
+  if (e.key === '/' && document.getElementById('search-input-' + currentDeck)) {
+    e.preventDefault(); document.getElementById('search-input-' + currentDeck).focus(); return;
+  }
+  if (e.key === 'Escape' && cardSearch[currentDeck] && cardSearch[currentDeck].query) { clearCardSearch(currentDeck, true); return; }
   const deck = decks[currentDeck];
   if (e.key === ' ') { e.preventDefault(); flipCard(currentDeck); }
   if (e.key === 'ArrowRight') nextCard(currentDeck);
