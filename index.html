@@ -1556,6 +1556,30 @@
 
   /* Thai inside English explanation text: always the looped (textbook) font */
   .th-loop { font-family: 'Niramit', serif; font-weight: 400; font-size: 1.2em; letter-spacing: 0; }
+  /* ============ HOME: TONES SECTION + CLASS SORTER (v0.28) ============ */
+  .home-section-title { font-family: 'Libre Baskerville', serif; font-style: italic; font-weight: 700; font-size: clamp(22px, 5vw, 28px); color: var(--accent); margin: 36px 0 14px; display: flex; align-items: baseline; gap: 12px; }
+  .home-section-title .thai { font-family: 'Niramit', serif; font-style: normal; font-weight: 400; font-size: 0.7em; color: var(--thai-gold); }
+  .cs-glyph { font-family: 'Niramit', serif; font-weight: 300; font-size: clamp(110px, 22vw, 160px); line-height: 1.25; color: var(--thai-gold); margin: 4px 0 0; cursor: default; }
+  .cs-glyph-alt { font-family: 'Noto Sans Thai', sans-serif; font-size: 34px; color: var(--thai-gold); opacity: 0.55; margin-bottom: 14px; }
+  .cs-choices { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; max-width: 480px; margin: 0 auto; }
+  .cs-choices .la-c-thai { font-size: 22px; }
+  .cs-choices .la-c-name { font-size: 13px; color: var(--text); letter-spacing: 2px; text-transform: uppercase; }
+  .cs-class { font-family: 'IBM Plex Mono', monospace; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); margin-top: 6px; }
+  .cs-sentence { margin-top: 14px; font-family: 'Niramit', serif; font-size: 26px; line-height: 1.5; color: var(--muted); }
+  .cs-sentence b { color: var(--accent); font-weight: 600; }
+  .cs-sentence-en { font-size: 13px; color: var(--muted); margin-top: 2px; }
+  .cs-why { margin-top: 12px; font-size: 14px; color: var(--thai-gold); line-height: 1.5; }
+  .cs-cheat-toggle { display: block; margin: 22px auto 0; background: none; border: 1px solid var(--border); color: var(--muted); font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; padding: 8px 14px; border-radius: 3px; cursor: pointer; }
+  .cs-cheat-toggle:hover { color: var(--accent); border-color: var(--accent); }
+  .cs-cheat { max-width: 520px; margin: 14px auto 0; border: 1px solid var(--border); border-radius: 4px; padding: 16px 18px; background: var(--card-front); display: none; }
+  .cs-cheat.open { display: block; }
+  .cs-cheat-row { margin-bottom: 14px; }
+  .cs-cheat-row:last-child { margin-bottom: 0; }
+  .cs-cheat-label { font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); }
+  .cs-cheat-thai { font-family: 'Niramit', serif; font-size: 24px; color: var(--text); }
+  .cs-cheat-letters { font-family: 'Niramit', serif; font-size: 20px; color: var(--thai-gold); letter-spacing: 4px; }
+  .cs-cheat-en { font-size: 13px; color: var(--muted); }
+
   /* ============ VOWEL COMBOS (reuses the Lookalikes layout) ============ */
   .vc-word { font-size: clamp(84px, 16vw, 120px); line-height: 1.35; color: var(--thai-gold); margin: 22px 0 14px; }
   .vc-sound { font-family: 'IBM Plex Mono', monospace; font-size: 30px; line-height: 1.3; color: var(--text); padding: 6px 0; }
@@ -1687,7 +1711,7 @@
   <div class="home-wrap">
     <div class="home-header">
       <div class="logo-thai">ศึกษาภาษาไทย</div>
-      <h1>Thai <span>Study</span><span class="version-tag">v0.27</span></h1>
+      <h1>Thai <span>Study</span><span class="version-tag">v0.28</span></h1>
       <p class="subtitle">Choose a deck to begin</p>
     </div>
 
@@ -1755,6 +1779,22 @@
         <div class="deck-progress-row">
           <div class="deck-progress-track"><div class="deck-progress-fill" id="home-progress-combos"></div></div>
           <div class="deck-progress-label" id="home-progress-label-combos"><b>0</b> mastered</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="home-section-title">Tones <span class="thai">วรรณยุกต์</span></div>
+    <div class="deck-list">
+      <div class="deck-card" onclick="enterDeck('classes')">
+        <div class="deck-card-top">
+          <div class="deck-thai-label">อักษรสามหมู่</div>
+          <div class="deck-count-tag" id="home-count-classes">42 letters</div>
+        </div>
+        <div class="deck-title">Class <span>Sorter</span></div>
+        <div class="deck-desc">High, mid or low? Sort every consonant into its class &mdash; step one of reading tones</div>
+        <div class="deck-progress-row">
+          <div class="deck-progress-track"><div class="deck-progress-fill" id="home-progress-classes"></div></div>
+          <div class="deck-progress-label" id="home-progress-label-classes"><b>0</b> mastered</div>
         </div>
       </div>
     </div>
@@ -2152,6 +2192,50 @@
   </div>
 
   <button class="la-reset" onclick="laResetStats()">Reset lookalike progress</button>
+</div>
+
+<!-- ============ CLASS SORTER (consonant classes, first step of the tone rules) ============ -->
+<div class="container view" id="view-classes">
+  <div class="deck-topbar">
+    <button class="btn-back" onclick="goHome()">&larr; Decks</button>
+    <div class="deck-topbar-spacer"></div>
+  </div>
+  <header>
+    <div class="logo-thai">อักษรสามหมู่</div>
+    <h1>Class <span>Sorter</span></h1>
+    <p class="subtitle">HIGH, MID OR LOW?</p>
+  </header>
+
+  <div class="la-card">
+    <div class="la-prompt">Which class is this letter?</div>
+    <div class="cs-glyph" id="cs-glyph" onclick="if (csQ && csQ.answered) csSpeak()">ก</div>
+    <div class="cs-glyph-alt" id="cs-glyph-alt"></div>
+    <div class="la-choices cs-choices" id="cs-choices"></div>
+    <div class="la-reveal hidden" id="cs-reveal"></div>
+  </div>
+
+  <div class="la-next-wrap">
+    <button class="btn primary" onclick="csNext()">NEXT &rarr;</button>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-num" id="cs-stat-right">0</div><div class="stat-label">Correct</div></div>
+    <div class="stat"><div class="stat-num" id="cs-stat-wrong">0</div><div class="stat-label">Wrong</div></div>
+    <div class="stat"><div class="stat-num" id="cs-stat-streak">0</div><div class="stat-label">Streak</div></div>
+  </div>
+
+  <div class="kbd-hints">
+    <div class="kbd-hint"><kbd>1</kbd> High</div>
+    <div class="kbd-hint"><kbd>2</kbd> Mid</div>
+    <div class="kbd-hint"><kbd>3</kbd> Low</div>
+    <div class="kbd-hint"><kbd>Space</kbd> Next</div>
+    <div class="kbd-hint"><kbd>P</kbd> Pronounce</div>
+  </div>
+
+  <button class="cs-cheat-toggle" id="cs-cheat-toggle" onclick="csToggleCheat()">Show the memory sentences</button>
+  <div class="cs-cheat" id="cs-cheat"></div>
+
+  <button class="la-reset" onclick="csResetStats()">Reset class sorter progress</button>
 </div>
 
 <div class="view" id="view-wordgame">
@@ -5935,6 +6019,11 @@ function enterDeck(deckId) {
     return;
   }
 
+  if (deckId === 'classes') {
+    csEnter();
+    return;
+  }
+
   if (deckId === 'combos') {
     vcEnter();
     return;
@@ -5973,6 +6062,7 @@ function renderHomeStats() {
   }
 
   if (typeof laRenderHome === 'function') laRenderHome();
+  if (typeof csRenderHome === 'function') csRenderHome();
   if (typeof vcRenderHome === 'function') vcRenderHome();
 
 }
@@ -6696,7 +6786,7 @@ if (window.speechSynthesis) {
 // ============================================================
 document.addEventListener('keydown', e => {
   if (!currentDeck) return;
-  if (currentDeck === 'lookalikes' || currentDeck === 'combos') return; // own key handlers (LOOKALIKES / VOWEL COMBOS sections)
+  if (currentDeck === 'lookalikes' || currentDeck === 'combos' || currentDeck === 'classes') return; // own key handlers (LOOKALIKES / VOWEL COMBOS sections)
   if (currentDeck === 'speaking-select') {
     if (e.target && e.target.id === 'sp-search-input') {
       if (e.key === 'Escape') { e.preventDefault(); clearSpeakingSearch(); e.target.blur(); }
@@ -7023,6 +7113,154 @@ function vcSave() {
   } catch (e) {}
 }
 function vcIsMastered(w) { const s = vcStats[w]; return !!s && s.right >= 3 && s.right >= 3 * s.wrong; }
+
+// ============================================================
+// CLASS SORTER (Tones section): every consonant is high, mid or low class,
+// and the class is the first thing you need to work out a syllable's tone.
+// Mid and high come from two classic memory sentences; everything else is low.
+// ============================================================
+const CS_STATS_KEY = 'thai-classes-stats';
+const CS_CLASSES = ['High', 'Mid', 'Low'];
+const CS_THAI = { High: 'อักษรสูง', Mid: 'อักษรกลาง', Low: 'อักษรต่ำ' };
+const csSentences = {
+  Mid:  { words: ['ไก่', 'จิก', 'เด็ก', 'ตาย', 'บน', 'ปาก', 'โอ่ง'], en: 'The chicken pecked the child, who died on the mouth of the jar.',
+          letterWord: { 'ก': 0, 'จ': 1, 'ด': 2, 'ฎ': 2, 'ต': 3, 'ฏ': 3, 'บ': 4, 'ป': 5, 'อ': 6 },
+          extra: { 'ฎ': 'ฎ goes with ด (same sound) — it rides along with เด็ก', 'ฏ': 'ฏ goes with ต (same sound) — it rides along with ตาย' } },
+  High: { words: ['ผี', 'ฝาก', 'ถุง', 'ข้าว', 'สาร', 'ให้', 'ฉัน'], en: 'The ghost left a sack of rice with me.',
+          letterWord: { 'ผ': 0, 'ฝ': 1, 'ถ': 2, 'ฐ': 2, 'ข': 3, 'ส': 4, 'ศ': 4, 'ษ': 4, 'ห': 5, 'ฉ': 6 },
+          extra: { 'ฐ': 'ฐ goes with ถ (same sound) — it rides along with ถุง', 'ศ': 'ศ goes with ส (same sound) — it rides along with สาร', 'ษ': 'ษ goes with ส (same sound) — it rides along with สาร' } },
+};
+// low-class letters that have a high-class twin with the same sound
+const csTwins = { 'ค': 'ข', 'ฆ': 'ข', 'ช': 'ฉ', 'ฌ': 'ฉ', 'ซ': 'ส', 'ท': 'ถ', 'ธ': 'ถ', 'ฑ': 'ถ', 'ฒ': 'ถ', 'พ': 'ผ', 'ภ': 'ผ', 'ฟ': 'ฝ', 'ฮ': 'ห' };
+const csLetters = consonantsData.filter(c => c.thai !== 'ฃ' && c.thai !== 'ฅ');
+let csStats = {};
+let csQ = null;
+let csLast = '';
+let csSession = { right: 0, wrong: 0, streak: 0 };
+try { csStats = JSON.parse(localStorage.getItem(CS_STATS_KEY) || '{}') || {}; } catch (e) { csStats = {}; }
+function csSave() { try { localStorage.setItem(CS_STATS_KEY, JSON.stringify(csStats)); } catch (e) {} }
+function csIsMastered(t) { const s = csStats[t]; return !!s && s.right >= 3 && s.right >= 3 * s.wrong; }
+function csRenderHome() {
+  const m = csLetters.filter(c => csIsMastered(c.thai)).length;
+  const fill = document.getElementById('home-progress-classes');
+  if (fill) fill.style.width = (m / csLetters.length * 100) + '%';
+  const lbl = document.getElementById('home-progress-label-classes');
+  if (lbl) lbl.innerHTML = '<b>' + m + '</b> / ' + csLetters.length + ' letters mastered';
+  const cnt = document.getElementById('home-count-classes');
+  if (cnt) cnt.textContent = csLetters.length + ' letters';
+}
+function csWeight(t) { const s = csStats[t] || { right: 0, wrong: 0 }; return 1 + Math.max(0, s.wrong * 2 - s.right * 0.5); }
+function csNext() {
+  let cands = csLetters.filter(c => c.thai !== csLast);
+  const total = cands.reduce((s, c) => s + csWeight(c.thai), 0);
+  let r = Math.random() * total, pick = cands[0];
+  for (const c of cands) { r -= csWeight(c.thai); if (r <= 0) { pick = c; break; } }
+  csLast = pick.thai;
+  csQ = { letter: pick, answered: false };
+  document.getElementById('cs-glyph').textContent = pick.thai;
+  document.getElementById('cs-glyph-alt').textContent = pick.thai;
+  const ch = document.getElementById('cs-choices');
+  ch.classList.remove('answered');
+  ch.innerHTML = CS_CLASSES.map((k, i) =>
+    '<button class="la-choice" data-cls="' + k + '" onclick="csAnswer(' + i + ')">' +
+    '<span class="la-c-name">' + k + '</span><span class="la-c-thai th-loop">' + CS_THAI[k] + '</span><span class="la-c-key">' + (i + 1) + '</span></button>').join('');
+  const rv = document.getElementById('cs-reveal');
+  rv.classList.add('hidden');
+  rv.innerHTML = '';
+}
+function csSentenceHtml(cls, letter) {
+  const sn = csSentences[cls];
+  const hit = sn.letterWord[letter];
+  return '<div class="cs-sentence">' + sn.words.map((w, i) => i === hit ? '<b>' + w + '</b>' : w).join(' ') + '</div>' +
+    '<div class="cs-sentence-en">' + sn.en + '</div>';
+}
+function csWhyHtml(c) {
+  const t = c.thai;
+  if (c.cls === 'Mid' || c.cls === 'High') {
+    const sn = csSentences[c.cls];
+    return csSentenceHtml(c.cls, t) + (sn.extra[t] ? '<div class="cs-why">' + thLoop(sn.extra[t]) + '</div>' : '');
+  }
+  if (csTwins[t]) return '<div class="cs-why">' + thLoop('Low class: it isn’t in either sentence. Its high-class twin is ' + csTwins[t] + ' (same sound, different class — so a different tone).') + '</div>';
+  return '<div class="cs-why">' + thLoop('Low class: it isn’t in either sentence. It has no high-class twin, which is why Thai writes a silent ห in front of it to get high-class tones (หมา, หนา, ไหน).') + '</div>';
+}
+function csAnswer(i) {
+  if (!csQ) return;
+  if (csQ.answered) { csSpeak(); return; }
+  csQ.answered = true;
+  const c = csQ.letter;
+  const picked = CS_CLASSES[i];
+  const ok = picked === c.cls;
+  const s = csStats[c.thai] || (csStats[c.thai] = { right: 0, wrong: 0 });
+  if (ok) { s.right++; csSession.right++; csSession.streak++; } else { s.wrong++; csSession.wrong++; csSession.streak = 0; }
+  csSave();
+  const ch = document.getElementById('cs-choices');
+  ch.classList.add('answered');
+  ch.querySelectorAll('.la-choice').forEach(b => {
+    if (b.dataset.cls === c.cls) b.classList.add('correct');
+    else if (b.dataset.cls === picked) b.classList.add('wrong');
+  });
+  const rv = document.getElementById('cs-reveal');
+  rv.innerHTML =
+    '<div class="la-verdict ' + (ok ? 'ok' : 'no') + '">' + (ok ? 'Correct' : 'Not quite, it’s ' + c.cls.toLowerCase() + ' class') + '</div>' +
+    '<div class="la-reveal-name" style="font-size:14px">' + c.letterName + ' · ' + c.exEng + '</div>' +
+    '<div class="cs-class">' + c.cls + ' class · <span class="th-loop">' + CS_THAI[c.cls] + '</span></div>' +
+    csWhyHtml(c);
+  rv.classList.remove('hidden');
+  csRenderSession();
+  csSpeak();
+}
+function csSpeak() {
+  if (!csQ || !window.speechSynthesis) return;
+  const L = csQ.letter;
+  window.speechSynthesis.cancel();
+  setTimeout(() => {
+    const utt = new SpeechSynthesisUtterance(L.thai + ' ' + (L.name || ''));
+    utt.lang = 'th-TH';
+    utt.rate = 0.8;
+    const v = window.speechSynthesis.getVoices().find(v => v.lang === 'th-TH' || v.lang.startsWith('th'));
+    if (v) utt.voice = v;
+    window.speechSynthesis.speak(utt);
+  }, 60);
+}
+function csRenderSession() {
+  document.getElementById('cs-stat-right').textContent = csSession.right;
+  document.getElementById('cs-stat-wrong').textContent = csSession.wrong;
+  document.getElementById('cs-stat-streak').textContent = csSession.streak;
+}
+function csRenderCheat() {
+  const byCls = k => csLetters.filter(c => c.cls === k).map(c => c.thai).join(' ');
+  document.getElementById('cs-cheat').innerHTML =
+    '<div class="cs-cheat-row"><div class="cs-cheat-label">Mid class · 9 letters</div><div class="cs-cheat-thai">ไก่ จิก เด็ก ตาย บน ปาก โอ่ง</div><div class="cs-cheat-en">' + csSentences.Mid.en + '</div><div class="cs-cheat-letters">' + byCls('Mid') + '</div></div>' +
+    '<div class="cs-cheat-row"><div class="cs-cheat-label">High class · 10 letters</div><div class="cs-cheat-thai">ผี ฝาก ถุง ข้าว สาร ให้ ฉัน</div><div class="cs-cheat-en">' + csSentences.High.en + '</div><div class="cs-cheat-letters">' + byCls('High') + '</div></div>' +
+    '<div class="cs-cheat-row"><div class="cs-cheat-label">Low class · everything else</div><div class="cs-cheat-letters">' + byCls('Low') + '</div></div>';
+}
+function csToggleCheat() {
+  const el = document.getElementById('cs-cheat');
+  const open = !el.classList.contains('open');
+  if (open) csRenderCheat();
+  el.classList.toggle('open', open);
+  document.getElementById('cs-cheat-toggle').textContent = open ? 'Hide the memory sentences' : 'Show the memory sentences';
+}
+function csResetStats() {
+  if (!window.confirm('Reset all Class Sorter progress?')) return;
+  csStats = {};
+  csSession = { right: 0, wrong: 0, streak: 0 };
+  csSave(); csRenderSession(); csRenderHome();
+}
+function csEnter() {
+  csRenderSession();
+  csNext();
+  showView('view-classes');
+  window.scrollTo(0, 0);
+}
+document.addEventListener('keydown', e => {
+  if (currentDeck !== 'classes') return;
+  if (e.target && e.target.closest && e.target.closest('input, textarea, select')) return;
+  if (e.key === '1' || e.key === '2' || e.key === '3') { csAnswer(Number(e.key) - 1); return; }
+  if (e.key === 'Escape') { goHome(); return; }
+  if (e.key === 'p' || e.key === 'P') { csSpeak(); return; }
+  if (e.key === ' ' || e.key === 'Enter' || e.key === 'ArrowRight') { e.preventDefault(); csNext(); return; }
+});
 
 function vcRenderHome() {
   const m = vcItems.filter(it => vcIsMastered(it.w)).length;
@@ -8283,7 +8521,7 @@ const STUDY_IDLE_MS = 3 * 60 * 1000;
 const STUDY_AREAS = {
   'view-speaking': 'Speaking', 'view-speaking-select': 'Speaking',
   'view-reading': 'Reading & Writing', 'view-reading-select': 'Reading & Writing',
-  'view-lookalikes': 'Lookalikes', 'view-combos': 'Vowel Combos',
+  'view-lookalikes': 'Lookalikes', 'view-combos': 'Vowel Combos', 'view-classes': 'Tones: Class Sorter',
   'view-wordgame': 'Word Catch', 'view-home': 'Home screen'
 };
 
