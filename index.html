@@ -3590,7 +3590,6 @@ const phrasesData = [
   { thai: "เมื่อวานไม่ได้ไป", clusters: ["เมื่อ", "วาน", "ไม่", "ได้", "ไป"], phonetic: "mʉ̂a-waan mâi dâai bpai", english: "I didn't go yesterday", category: "Conversation" },
   { thai: "ได้ครับ ไม่มีปัญหา", clusters: ["ได้", "ครับ ", "ไม่", "มี", "ปัญ", "หา"], phonetic: "dâai khráp, mâi mii bpan-hăa", english: "Sure, no problem", category: "Conversation" },
   { thai: "ได้ๆ เดี๋ยวทำ", clusters: ["ได้ๆ ", "เดี๋ยว", "ทำ"], phonetic: "dâai dâai, dĭaw tham", english: "Okay okay, I'll do it", category: "Conversation" },
-  { thai: "อะไรก็ได้", clusters: ["อะ", "ไร", "ก็", "ได้"], phonetic: "à-rai gɔ̂ɔ dâai", english: "Anything's fine", category: "Conversation" },
   { thai: "ช่วยหน่อยได้ไหม", clusters: ["ช่วย", "หน่อย", "ได้", "ไหม"], phonetic: "chûay nɔ̀y dâai măi", english: "Can you help me out?", category: "Conversation" },
   { thai: "ไม่ได้นะ", clusters: ["ไม่", "ได้", "นะ"], phonetic: "mâi dâai ná", english: "No, you can't!", category: "Conversation" },
   { thai: "ได้ไง", clusters: ["ได้", "ไง"], phonetic: "dâai ŋai", english: "How could you?! / No way! (spoken form of ได้ยังไง)", category: "Conversation" },
@@ -5522,7 +5521,7 @@ const languageClassData = [
   { thai: "กางเกงขาสั้น", clusters: ["กาง", "เกง", "ขา", "สั้น"], phonetic: "gaaŋ-geeŋ-khăa-sân", english: "Shorts", usage: "Used in the dialogues; not in the book's vocab list", cls: "Class 4", level: "S2" },
   { thai: "รองเท้า", clusters: ["รอง", "เท้า"], phonetic: "rɔɔŋ-tháao", english: "Shoes", usage: "Used in the dialogues; not in the book's vocab list", cls: "Class 4", level: "S2" },
   { thai: "ทาน", clusters: ["ทาน"], phonetic: "thaan", english: "To eat (polite)", usage: "Used in the dialogues; not in the book's vocab list", cls: "Class 4", level: "S2" },
-  { thai: "...อะไรก็ได้", clusters: ["...อะ", "ไร", "ก็", "ได้"], phonetic: "à-rai gɔ̂ɔ dâai", english: "Anything (is fine)", usage: "Used in the dialogues; not in the book's vocab list", cls: "Class 4", level: "S2" },
+  { thai: "อะไรก็ได้", clusters: ["อะ", "ไร", "ก็", "ได้"], phonetic: "à-rai gɔ̂ɔ dâai", english: "Anything's fine / anything (is fine)", usage: "Used in the dialogues; not in the book's vocab list", cls: "Class 4", level: "S2", alsoCategory: "Conversation" },
   { thai: "อีเมล", clusters: ["อี", "เมล"], phonetic: "ii-meel", english: "Email", usage: "Used in the dialogues; not in the book's vocab list", cls: "Class 5", level: "S2" },
   { thai: "สาย", clusters: ["สาย"], phonetic: "săai", english: "Line (phone); late", usage: "Used in the dialogues; not in the book's vocab list", cls: "Class 5", level: "S2" },
   { thai: "ถาม", clusters: ["ถาม"], phonetic: "thăam", english: "To ask", usage: "Used in the dialogues; not in the book's vocab list", cls: "Class 5", level: "S2" },
@@ -5863,7 +5862,7 @@ const decks = {
     data: speakingData,
     idOf: p => p._kind + '::' + (p.level || 'S1') + '::' + (p.cls || '') + '::' + p.thai,
     matchesFilter: (p, af) => {
-      if (p._kind === 'vocab') return af.vocabClasses.has(classKey(p.level, p.cls));
+      if (p._kind === 'vocab') return af.vocabClasses.has(classKey(p.level, p.cls)) || (!!p.alsoCategory && af.phraseCategories.has(p.alsoCategory));
       return af.phraseCategories.has(p.category) || af.phraseClasses.has(classKey(p.level, p.cls || 'General'));
     },
     activeFilter: {
@@ -5879,7 +5878,7 @@ const decks = {
     learning: new Set(savedProgress.speaking ? savedProgress.speaking.learning : []),
     pronounceWord: p => p.tts || p.thai,
     renderCard(p) {
-      const tag = p._kind === 'phrase' ? p.category : (p.level === 'S2' ? 'Speaking 2 Vocab' : 'Vocabulary');
+      const tag = p._kind === 'phrase' ? p.category : (p.level === 'S2' ? 'Speaking 2 Vocab' : 'Vocabulary') + (p.alsoCategory ? ' · ' + p.alsoCategory : '');
       setText('front-category-speaking', tag);
       setText('back-category-speaking', tag);
       { const thaiEl = document.getElementById('thai-text-speaking'); if (thaiEl) thaiEl.innerHTML = clusterHtml(p.thai, p.clusters); }
@@ -6314,7 +6313,7 @@ function runSpeakingSearch() {
   af.phraseCategories = new Set();
   af.phraseClasses = new Set();
   spSearch.hits.forEach(p => {
-    if (p._kind === 'vocab') af.vocabClasses.add(classKey(p.level, p.cls));
+    if (p._kind === 'vocab') { af.vocabClasses.add(classKey(p.level, p.cls)); if (p.alsoCategory) af.phraseCategories.add(p.alsoCategory); }
     else {
       if (p.category) af.phraseCategories.add(p.category);
       if (p.cls) af.phraseClasses.add(classKey(p.level, p.cls));
