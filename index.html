@@ -142,6 +142,8 @@
     overflow: hidden;
   }
   .deck-card:hover, .deck-card:active { border-color: var(--accent); }
+  .deck-card.soon { cursor: default; opacity: 0.45; }
+  .deck-card.soon:hover, .deck-card.soon:active { border-color: var(--border); }
 
   .deck-card::before, .deck-card::after {
     content: '';
@@ -1568,6 +1570,7 @@
   .cs-sentence { margin-top: 14px; font-family: 'Niramit', serif; font-size: 26px; line-height: 1.5; color: var(--muted); }
   .cs-sentence b { color: var(--accent); font-weight: 600; }
   .cs-sentence-en { font-size: 13px; color: var(--muted); margin-top: 2px; }
+  .cs-sentence-en b { color: var(--accent); font-weight: 600; }
   .cs-why { margin-top: 12px; font-size: 14px; color: var(--thai-gold); line-height: 1.5; }
   .cs-cheat-toggle { display: block; margin: 22px auto 0; background: none; border: 1px solid var(--border); color: var(--muted); font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; padding: 8px 14px; border-radius: 3px; cursor: pointer; }
   .cs-cheat-toggle:hover { color: var(--accent); border-color: var(--accent); }
@@ -1711,7 +1714,7 @@
   <div class="home-wrap">
     <div class="home-header">
       <div class="logo-thai">ศึกษาภาษาไทย</div>
-      <h1>Thai <span>Study</span><span class="version-tag">v0.28</span></h1>
+      <h1>Thai <span>Study</span><span class="version-tag">v0.30</span></h1>
       <p class="subtitle">Choose a deck to begin</p>
     </div>
 
@@ -1745,56 +1748,28 @@
         </div>
       </div>
 
-      <div class="deck-card" onclick="enterDeck('reading')">
+      <div class="deck-card" onclick="enterDeck('readinghub')">
         <div class="deck-card-top">
-          <div class="deck-thai-label">อ่านเขียน</div>
-          <div class="deck-count-tag" id="home-count-reading">73 cards</div>
+          <div class="deck-thai-label">การอ่าน</div>
+          <div class="deck-count-tag">3 tools</div>
         </div>
-        <div class="deck-title">Reading <span>&amp; Writing</span></div>
-        <div class="deck-desc">Consonants &amp; vowels, pick your own mix</div>
+        <div class="deck-title">Thai <span>Reading</span></div>
+        <div class="deck-desc">Consonants &amp; vowels, Lookalikes &amp; Vowel Combos</div>
         <div class="deck-progress-row">
-          <div class="deck-progress-track"><div class="deck-progress-fill" id="home-progress-reading"></div></div>
-          <div class="deck-progress-label" id="home-progress-label-reading"><b>0</b> known</div>
+          <div class="deck-progress-track"><div class="deck-progress-fill" id="home-progress-readinghub"></div></div>
+          <div class="deck-progress-label" id="home-progress-label-readinghub"><b>0</b> known</div>
         </div>
       </div>
-      <div class="deck-card" onclick="enterDeck('lookalikes')">
+      <div class="deck-card" onclick="enterDeck('tones')">
         <div class="deck-card-top">
-          <div class="deck-thai-label">ตัวคล้าย</div>
-          <div class="deck-count-tag" id="home-count-lookalikes">13 sets</div>
+          <div class="deck-thai-label">วรรณยุกต์</div>
+          <div class="deck-count-tag">4 tools</div>
         </div>
-        <div class="deck-title">Look<span>alikes</span></div>
-        <div class="deck-desc">Confusable letter pairs &mdash; read the loopless shape, pick the letter</div>
+        <div class="deck-title">Thai <span>Tones</span></div>
+        <div class="deck-desc">Class Sorter, Class Mnemonics, Tone Detective &amp; Tone Clusters &mdash; crack the tone rules</div>
         <div class="deck-progress-row">
-          <div class="deck-progress-track"><div class="deck-progress-fill" id="home-progress-lookalikes"></div></div>
-          <div class="deck-progress-label" id="home-progress-label-lookalikes"><b>0</b> mastered</div>
-        </div>
-      </div>
-      <div class="deck-card" onclick="enterDeck('combos')">
-        <div class="deck-card-top">
-          <div class="deck-thai-label">สระผสม</div>
-          <div class="deck-count-tag" id="home-count-combos">30 words</div>
-        </div>
-        <div class="deck-title">Vowel <span>Combos</span></div>
-        <div class="deck-desc">Spot the vowel combo inside a real word &mdash; and the pattern behind it</div>
-        <div class="deck-progress-row">
-          <div class="deck-progress-track"><div class="deck-progress-fill" id="home-progress-combos"></div></div>
-          <div class="deck-progress-label" id="home-progress-label-combos"><b>0</b> mastered</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="home-section-title">Tones <span class="thai">วรรณยุกต์</span></div>
-    <div class="deck-list">
-      <div class="deck-card" onclick="enterDeck('classes')">
-        <div class="deck-card-top">
-          <div class="deck-thai-label">อักษรสามหมู่</div>
-          <div class="deck-count-tag" id="home-count-classes">42 letters</div>
-        </div>
-        <div class="deck-title">Class <span>Sorter</span></div>
-        <div class="deck-desc">High, mid or low? Sort every consonant into its class &mdash; step one of reading tones</div>
-        <div class="deck-progress-row">
-          <div class="deck-progress-track"><div class="deck-progress-fill" id="home-progress-classes"></div></div>
-          <div class="deck-progress-label" id="home-progress-label-classes"><b>0</b> mastered</div>
+          <div class="deck-progress-track"><div class="deck-progress-fill" id="home-progress-tones"></div></div>
+          <div class="deck-progress-label" id="home-progress-label-tones"><b>0</b> letters sorted</div>
         </div>
       </div>
     </div>
@@ -1945,13 +1920,13 @@
 <!-- ============ READING & WRITING SELECTION SCREEN ============ -->
 <div class="container view" id="view-reading-select">
   <div class="deck-topbar">
-    <button class="btn-back" onclick="goHome()">&larr; Decks</button>
+    <button class="btn-back" onclick="enterDeck('readinghub')">&larr; Reading</button>
     <div class="deck-topbar-spacer"></div>
   </div>
   <header>
     <div class="logo-thai">อ่านและเขียน</div>
-    <h1>Reading <span>&amp; Writing</span></h1>
-    <p class="subtitle">CONSONANTS, VOWELS &amp; WORDS</p>
+    <h1>Consonants <span>&amp; Vowels</span></h1>
+    <p class="subtitle">PICK YOUR MIX</p>
   </header>
 
   <div class="select-top-row">
@@ -1975,13 +1950,6 @@
   <div class="select-sub">Where it sits</div>
   <div class="filter-bar" id="rw-grid-vowel-positions"></div>
 
-  <div class="select-divider"></div>
-
-  <h2 class="select-section-title">Words</h2>
-  <div class="select-row">
-    <button class="cat-btn select-header-btn" id="rw-sel-all-words" onclick="toggleReadingAllWords()">All Words</button>
-  </div>
-  <div class="filter-bar" id="rw-grid-words"></div>
 
   <div class="stats">
     <div class="stat"><div class="stat-num" id="rw-sel-stat-known">0</div><div class="stat-label">Known</div></div>
@@ -1996,12 +1964,12 @@
 <!-- ============ READING & WRITING FLASHCARDS ============ -->
 <div class="container view" id="view-reading">
   <div class="deck-topbar">
-    <button class="btn-back" onclick="backToReadingSelect()">&larr; Selection</button>
+    <button class="btn-back" id="rw-back-btn" onclick="backToReadingSelect()">&larr; Selection</button>
     <button class="btn-back btn-alt-font" onclick="toggleLoopless()" title="Show the loopless letter shapes as a smaller second line">Loopless</button>
   </div>
   <header>
-    <div class="logo-thai">อ่านและเขียน</div>
-    <h1>Reading <span>&amp; Writing</span></h1>
+    <div class="logo-thai" id="rw-card-logo">พยัญชนะ สระ</div>
+    <h1 id="rw-card-title">Consonants <span>&amp; Vowels</span></h1>
   </header>
 
   <div class="progress-bar-wrap">
@@ -2117,7 +2085,7 @@
 <!-- ============ VOWEL COMBOS ============ -->
 <div class="container view" id="view-combos">
   <div class="deck-topbar">
-    <button class="btn-back" onclick="goHome()">&larr; Decks</button>
+    <button class="btn-back" onclick="enterDeck('readinghub')">&larr; Reading</button>
     <div class="deck-topbar-spacer"></div>
   </div>
   <header>
@@ -2157,7 +2125,7 @@
 <!-- ============ LOOKALIKES (confusable pairs, loopless) ============ -->
 <div class="container view" id="view-lookalikes">
   <div class="deck-topbar">
-    <button class="btn-back" onclick="goHome()">&larr; Decks</button>
+    <button class="btn-back" onclick="enterDeck('readinghub')">&larr; Reading</button>
     <div class="deck-topbar-spacer"></div>
   </div>
   <header>
@@ -2195,9 +2163,109 @@
 </div>
 
 <!-- ============ CLASS SORTER (consonant classes, first step of the tone rules) ============ -->
-<div class="container view" id="view-classes">
+<div class="container view" id="view-readinghub">
   <div class="deck-topbar">
     <button class="btn-back" onclick="goHome()">&larr; Decks</button>
+    <div class="deck-topbar-spacer"></div>
+  </div>
+  <header>
+    <div class="logo-thai">การอ่าน</div>
+    <h1>Thai <span>Reading</span></h1>
+    <p class="subtitle">LETTERS, SHAPES &amp; VOWEL COMBOS</p>
+  </header>
+  <div class="deck-list">
+      <div class="deck-card" onclick="enterDeck('reading')">
+        <div class="deck-card-top">
+          <div class="deck-thai-label">พยัญชนะ สระ</div>
+          <div class="deck-count-tag" id="home-count-reading">73 cards</div>
+        </div>
+        <div class="deck-title">Consonants <span>&amp; Vowels</span></div>
+        <div class="deck-desc">Every letter and vowel form &mdash; pick your own mix by class, length and position</div>
+        <div class="deck-progress-row">
+          <div class="deck-progress-track"><div class="deck-progress-fill" id="home-progress-reading"></div></div>
+          <div class="deck-progress-label" id="home-progress-label-reading"><b>0</b> known</div>
+        </div>
+      </div>
+      <div class="deck-card" onclick="enterDeck('lookalikes')">
+        <div class="deck-card-top">
+          <div class="deck-thai-label">ตัวคล้าย</div>
+          <div class="deck-count-tag" id="home-count-lookalikes">13 sets</div>
+        </div>
+        <div class="deck-title">Look<span>alikes</span></div>
+        <div class="deck-desc">Confusable letter pairs &mdash; read the loopless shape, pick the letter</div>
+        <div class="deck-progress-row">
+          <div class="deck-progress-track"><div class="deck-progress-fill" id="home-progress-lookalikes"></div></div>
+          <div class="deck-progress-label" id="home-progress-label-lookalikes"><b>0</b> mastered</div>
+        </div>
+      </div>
+      <div class="deck-card" onclick="enterDeck('combos')">
+        <div class="deck-card-top">
+          <div class="deck-thai-label">สระผสม</div>
+          <div class="deck-count-tag" id="home-count-combos">30 words</div>
+        </div>
+        <div class="deck-title">Vowel <span>Combos</span></div>
+        <div class="deck-desc">Spot the vowel combo inside a real word &mdash; and the pattern behind it</div>
+        <div class="deck-progress-row">
+          <div class="deck-progress-track"><div class="deck-progress-fill" id="home-progress-combos"></div></div>
+          <div class="deck-progress-label" id="home-progress-label-combos"><b>0</b> mastered</div>
+        </div>
+      </div>
+  </div>
+</div>
+
+<div class="container view" id="view-tones">
+  <div class="deck-topbar">
+    <button class="btn-back" onclick="goHome()">&larr; Decks</button>
+    <div class="deck-topbar-spacer"></div>
+  </div>
+  <header>
+    <div class="logo-thai">วรรณยุกต์</div>
+    <h1>Thai <span>Tones</span></h1>
+    <p class="subtitle">CLASS &rarr; SYLLABLE &rarr; MARK &rarr; TONE</p>
+  </header>
+  <div class="deck-list">
+      <div class="deck-card" onclick="enterDeck('classes')">
+        <div class="deck-card-top">
+          <div class="deck-thai-label">อักษรสามหมู่</div>
+          <div class="deck-count-tag" id="home-count-classes">42 letters</div>
+        </div>
+        <div class="deck-title">Class <span>Sorter</span></div>
+        <div class="deck-desc">High, mid or low? Sort every consonant into its class &mdash; step one of reading tones</div>
+        <div class="deck-progress-row">
+          <div class="deck-progress-track"><div class="deck-progress-fill" id="home-progress-classes"></div></div>
+          <div class="deck-progress-label" id="home-progress-label-classes"><b>0</b> mastered</div>
+        </div>
+      </div>
+      <div class="deck-card" onclick="enterDeck('mnemonics')">
+        <div class="deck-card-top">
+          <div class="deck-thai-label">ประโยคช่วยจำ</div>
+          <div class="deck-count-tag">2 cards</div>
+        </div>
+        <div class="deck-title">Class <span>Mnemonics</span></div>
+        <div class="deck-desc">The two memory sentences for mid- and high-class letters, as flashcards you can tap through</div>
+      </div>
+      <div class="deck-card soon">
+        <div class="deck-card-top">
+          <div class="deck-thai-label">นักสืบเสียง</div>
+          <div class="deck-count-tag">coming soon</div>
+        </div>
+        <div class="deck-title">Tone <span>Detective</span></div>
+        <div class="deck-desc">Real words from your deck &mdash; walk the rule step by step: class, live or dead, tone mark, tone</div>
+      </div>
+      <div class="deck-card soon">
+        <div class="deck-card-top">
+          <div class="deck-thai-label">กลุ่มเสียง</div>
+          <div class="deck-count-tag">coming soon</div>
+        </div>
+        <div class="deck-title">Tone <span>Clusters</span></div>
+        <div class="deck-desc">Same sounds, different tones &mdash; มา / ม้า / หมา, เขา / เข่า / เข้า</div>
+      </div>
+  </div>
+</div>
+
+<div class="container view" id="view-classes">
+  <div class="deck-topbar">
+    <button class="btn-back" onclick="enterDeck('tones')">&larr; Tones</button>
     <div class="deck-topbar-spacer"></div>
   </div>
   <header>
@@ -5651,7 +5719,8 @@ const classMnemonicsData = [
   { thai: "ไก่จิกเด็กตายบนปากโอ่ง", phonetic: "gài jìk dèk dtaai bon bpàak òoŋ", english: "Mnemonic for the 9 mid-class consonants (ก จ ฎ ฏ ด ต บ ป อ). Literally: \"a chicken pecked a child to death at the mouth of a jar.\"", clusters: ["ไก่", "จิก", "เด็ก", "ตาย", "บน", "ปาก", "โอ่ง"] },
   { thai: "ผีฝากถุงข้าวสารให้ฉันศึกษา", phonetic: "phǐi fàak thǔng khâao sǎan hâi chǎn sʉ̀k-sǎa", english: "Mnemonic for 8 of the 11 high-class consonants (ผ ฝ ถ ข ส ห ฉ ศ). Literally: \"a ghost entrusted a sack of rice for me to study.\"", clusters: ["ผี", "ฝาก", "ถุง", "ข้าว", "สาร", "ให้", "ฉัน", "ศึก", "ษา"] },
 ];
-const readingWordGroups = ['Quick Brown Fox', 'Class Mnemonics'];
+const readingWordGroups = [];  // v0.30: word sets left the Reading setup screen
+const mnemonicCards = classMnemonicsData.map(w => ({ ...w, _kind: 'word', group: 'Class Mnemonics' }));
 
 // ============================================================
 // READING & WRITING: merged consonants + vowels + words
@@ -5666,8 +5735,6 @@ function vowelPositionsOf(v) {
 const readingData = [
   ...consonantsData.map(c => ({ ...c, _kind: 'consonant' })),
   ...vowelsData.map(v => ({ ...v, _kind: 'vowel', positions: vowelPositionsOf(v) })),
-  ...quickFoxData.map(w => ({ ...w, _kind: 'word', group: 'Quick Brown Fox' })),
-  ...classMnemonicsData.map(w => ({ ...w, _kind: 'word', group: 'Class Mnemonics' })),
 ];
 const readingConsonantClasses = ['High', 'Mid', 'Low'];
 const readingVowelTypes = ['Short', 'Long', 'Special'];
@@ -5785,7 +5852,7 @@ const decks = {
       if (vowBack) vowBack.style.display = isVow ? '' : 'none';
       if (wordBack) wordBack.style.display = isWord ? '' : 'none';
 
-      const num = String((isCon ? consonantsData.indexOf(p) : isVow ? vowelsData.indexOf(p) : quickFoxData.indexOf(p)) + 1).padStart(2, '0');
+      const num = String((isCon ? consonantsData.indexOf(p) : isVow ? vowelsData.indexOf(p) : mnemonicCards.indexOf(p)) + 1).padStart(2, '0');
       setText('card-number-reading', num);
       setText('card-number-back-reading', num);
 
@@ -5988,7 +6055,13 @@ function showView(viewId) {
   document.getElementById(viewId).classList.add('active');
 }
 
+// A keypress that changes screen must not also be handled by the new screen's key handler.
+let curKeyEvt = null, navEvt = null;
+document.addEventListener('keydown', e => { curKeyEvt = e; }, true);
+function markNav() { navEvt = curKeyEvt; }
+
 function goHome() {
+  markNav();
   currentDeck = null;
   renderHomeStats();
   showView('view-home');
@@ -5996,6 +6069,7 @@ function goHome() {
 }
 
 function enterDeck(deckId) {
+  markNav();
   currentDeck = deckId;
 
   if (deckId === 'wordgame') {
@@ -6019,6 +6093,25 @@ function enterDeck(deckId) {
     return;
   }
 
+  if (deckId === 'readinghub') {
+    renderHomeStats();
+    showView('view-readinghub');
+    window.scrollTo(0, 0);
+    return;
+  }
+
+  if (deckId === 'mnemonics') {
+    startMnemonicsSession();
+    return;
+  }
+
+  if (deckId === 'tones') {
+    if (typeof csRenderHome === 'function') csRenderHome();
+    showView('view-tones');
+    window.scrollTo(0, 0);
+    return;
+  }
+
   if (deckId === 'classes') {
     csEnter();
     return;
@@ -6037,8 +6130,14 @@ function renderHomeStats() {
   for (const id of Object.keys(decks)) {
     const deck = decks[id];
     const total = deck.data.length;
-    const knownCount = deck.known.size;
+    const knownCount = deck.data.filter(p => deck.known.has(deck.idOf(p))).length;
     const pct = total > 0 ? (knownCount / total * 100) : 0;
+    if (id === 'reading') {
+      const hf = document.getElementById('home-progress-readinghub');
+      if (hf) hf.style.width = pct + '%';
+      const hl = document.getElementById('home-progress-label-readinghub');
+      if (hl) hl.innerHTML = '<b>' + knownCount + '</b> / ' + total + ' letters known';
+    }
 
     const fillEl = document.getElementById('home-progress-' + id);
     if (fillEl) fillEl.style.width = pct + '%';
@@ -6526,6 +6625,11 @@ function startReadingSession() {
   const inScope = deck.data.filter(item => deck.matchesFilter(item, deck.activeFilter));
   deck.filtered = inScope.filter(item => !deck.known.has(deck.idOf(item)));
   shuffleArray(deck.filtered);
+  deck.mnemonicMode = false;
+  deck.searchScope = null;
+  document.getElementById('rw-back-btn').innerHTML = '&larr; Selection';
+  document.getElementById('rw-card-logo').textContent = 'พยัญชนะ สระ';
+  document.getElementById('rw-card-title').innerHTML = 'Consonants <span>&amp; Vowels</span>';
   deck.currentIndex = 0;
   deck.isFlipped = false;
   currentDeck = 'reading';
@@ -6536,7 +6640,27 @@ function startReadingSession() {
   window.scrollTo(0, 0);
 }
 
+function startMnemonicsSession() {
+  const deck = decks.reading;
+  deck.mnemonicMode = true;
+  deck.searchScope = mnemonicCards.slice();
+  deck.filtered = mnemonicCards.slice();
+  document.getElementById('rw-back-btn').innerHTML = '&larr; Tones';
+  deck.currentIndex = 0;
+  deck.isFlipped = false;
+  currentDeck = 'reading';
+  document.getElementById('rw-card-logo').textContent = 'ประโยคช่วยจำ';
+  document.getElementById('rw-card-title').innerHTML = 'Class <span>Mnemonics</span>';
+  showView('view-reading');
+  snapToFrontInstantly('reading');
+  renderCard('reading');
+  updateStats('reading');
+  window.scrollTo(0, 0);
+}
+
 function backToReadingSelect() {
+  markNav();
+  if (decks.reading.mnemonicMode) { decks.reading.mnemonicMode = false; decks.reading.searchScope = null; document.getElementById('rw-back-btn').innerHTML = '&larr; Selection'; enterDeck('tones'); return; }
   currentDeck = 'reading-select';
   renderReadingSelectionScreen();
   showView('view-reading-select');
@@ -6693,8 +6817,12 @@ function shuffle(deckId) {
 
 function resetAll(deckId) {
   const deck = decks[deckId];
-  deck.known.clear();
-  deck.learning.clear();
+  if (deck.mnemonicMode) {  // only reset the mnemonic cards, never the letters
+    deck.searchScope.forEach(p => { deck.known.delete(deck.idOf(p)); deck.learning.delete(deck.idOf(p)); });
+  } else {
+    deck.known.clear();
+    deck.learning.clear();
+  }
   deck.currentIndex = 0;
   deck.isFlipped = false;
   // known is now empty, so every card in the category matches back into rotation
@@ -6785,8 +6913,9 @@ if (window.speechSynthesis) {
 // KEYBOARD SHORTCUTS (only act on the currently open deck)
 // ============================================================
 document.addEventListener('keydown', e => {
+  if (e === navEvt) return;  // this keypress already moved to another screen
   if (!currentDeck) return;
-  if (currentDeck === 'lookalikes' || currentDeck === 'combos' || currentDeck === 'classes') return; // own key handlers (LOOKALIKES / VOWEL COMBOS sections)
+  if (['lookalikes', 'combos', 'classes', 'tones', 'readinghub'].includes(currentDeck)) return; // own key handlers (LOOKALIKES / VOWEL COMBOS sections)
   if (currentDeck === 'speaking-select') {
     if (e.target && e.target.id === 'sp-search-input') {
       if (e.key === 'Escape') { e.preventDefault(); clearSpeakingSearch(); e.target.blur(); }
@@ -6798,8 +6927,12 @@ document.addEventListener('keydown', e => {
     if (e.key === 'Escape') { if (spSearch.query) clearSpeakingSearch(); else goHome(); }
     return;
   }
-  if (currentDeck === 'wordgame' || currentDeck === 'reading-select') {
+  if (currentDeck === 'wordgame') {
     if (e.key === 'Escape') goHome();
+    return;
+  }
+  if (currentDeck === 'reading-select') {
+    if (e.key === 'Escape') enterDeck('readinghub');
     return;
   }
   const deck = decks[currentDeck];
@@ -6809,7 +6942,7 @@ document.addEventListener('keydown', e => {
   if ((e.key === 'y' || e.key === 'Y') && deck.isFlipped) markCard(currentDeck, true);
   if ((e.key === 'n' || e.key === 'N') && deck.isFlipped) markCard(currentDeck, false);
   if (e.key === 'p' || e.key === 'P') pronounce(currentDeck);
-  if (e.key === 'Escape') goHome();
+  if (e.key === 'Escape') { if (currentDeck === 'reading') backToReadingSelect(); else goHome(); }
 });
 
 
@@ -7027,9 +7160,10 @@ function laEnter() {
 }
 
 document.addEventListener('keydown', e => {
+  if (e === navEvt) return;  // this keypress already moved to another screen
   if (currentDeck !== 'lookalikes') return;
   if (laQ && ['1','2','3','4'].includes(e.key) && Number(e.key) <= laQ.order.length) { laAnswer(Number(e.key) - 1); return; }
-  if (e.key === 'Escape') { goHome(); return; }
+  if (e.key === 'Escape') { enterDeck('readinghub'); return; }
   if (e.key === '1' || e.key === '2') { laAnswer(Number(e.key) - 1); return; }
   if (e.key === 'p' || e.key === 'P') { laSpeak(); return; }
   if (e.key === ' ' || e.key === 'Enter' || e.key === 'ArrowRight') {
@@ -7124,9 +7258,11 @@ const CS_CLASSES = ['High', 'Mid', 'Low'];
 const CS_THAI = { High: 'อักษรสูง', Mid: 'อักษรกลาง', Low: 'อักษรต่ำ' };
 const csSentences = {
   Mid:  { words: ['ไก่', 'จิก', 'เด็ก', 'ตาย', 'บน', 'ปาก', 'โอ่ง'], en: 'The chicken pecked the child, who died on the mouth of the jar.',
+          enParts: [['The ',-1],['chicken',0],[' ',-1],['pecked',1],[' the ',-1],['child',2],[', who ',-1],['died',3],[' ',-1],['on',4],[' the ',-1],['mouth',5],[' of the ',-1],['jar',6],['.',-1]],
           letterWord: { 'ก': 0, 'จ': 1, 'ด': 2, 'ฎ': 2, 'ต': 3, 'ฏ': 3, 'บ': 4, 'ป': 5, 'อ': 6 },
           extra: { 'ฎ': 'ฎ goes with ด (same sound) — it rides along with เด็ก', 'ฏ': 'ฏ goes with ต (same sound) — it rides along with ตาย' } },
   High: { words: ['ผี', 'ฝาก', 'ถุง', 'ข้าว', 'สาร', 'ให้', 'ฉัน'], en: 'The ghost left a sack of rice with me.',
+          enParts: [['The ',-1],['ghost',0],[' ',-1],['left',1],[' a ',-1],['sack',2],[' of ',-1],['rice',[3,4]],[' ',-1],['with',5],[' ',-1],['me',6],['.',-1]],
           letterWord: { 'ผ': 0, 'ฝ': 1, 'ถ': 2, 'ฐ': 2, 'ข': 3, 'ส': 4, 'ศ': 4, 'ษ': 4, 'ห': 5, 'ฉ': 6 },
           extra: { 'ฐ': 'ฐ goes with ถ (same sound) — it rides along with ถุง', 'ศ': 'ศ goes with ส (same sound) — it rides along with สาร', 'ษ': 'ษ goes with ส (same sound) — it rides along with สาร' } },
 };
@@ -7148,6 +7284,10 @@ function csRenderHome() {
   if (lbl) lbl.innerHTML = '<b>' + m + '</b> / ' + csLetters.length + ' letters mastered';
   const cnt = document.getElementById('home-count-classes');
   if (cnt) cnt.textContent = csLetters.length + ' letters';
+  const tf = document.getElementById('home-progress-tones');
+  if (tf) tf.style.width = (m / csLetters.length * 100) + '%';
+  const tl = document.getElementById('home-progress-label-tones');
+  if (tl) tl.innerHTML = '<b>' + m + '</b> / ' + csLetters.length + ' letters sorted';
 }
 function csWeight(t) { const s = csStats[t] || { right: 0, wrong: 0 }; return 1 + Math.max(0, s.wrong * 2 - s.right * 0.5); }
 function csNext() {
@@ -7172,7 +7312,7 @@ function csSentenceHtml(cls, letter) {
   const sn = csSentences[cls];
   const hit = sn.letterWord[letter];
   return '<div class="cs-sentence">' + sn.words.map((w, i) => i === hit ? '<b>' + w + '</b>' : w).join(' ') + '</div>' +
-    '<div class="cs-sentence-en">' + sn.en + '</div>';
+    '<div class="cs-sentence-en">' + sn.enParts.map(([t, k]) => [].concat(k).includes(hit) ? '<b>' + t + '</b>' : t).join('') + '</div>';
 }
 function csWhyHtml(c) {
   const t = c.thai;
@@ -7254,10 +7394,26 @@ function csEnter() {
   window.scrollTo(0, 0);
 }
 document.addEventListener('keydown', e => {
+  if (e === navEvt) return;  // this keypress already moved to another screen
+  if (currentDeck !== 'tones') return;
+  if (e.key === 'Escape') { goHome(); return; }
+  if (e.key === '1') { enterDeck('classes'); return; }
+  if (e.key === '2') { enterDeck('mnemonics'); return; }
+});
+document.addEventListener('keydown', e => {
+  if (e === navEvt) return;  // this keypress already moved to another screen
+  if (currentDeck !== 'readinghub') return;
+  if (e.key === 'Escape') { goHome(); return; }
+  if (e.key === '1') { enterDeck('reading'); return; }
+  if (e.key === '2') { enterDeck('lookalikes'); return; }
+  if (e.key === '3') { enterDeck('combos'); return; }
+});
+document.addEventListener('keydown', e => {
+  if (e === navEvt) return;  // this keypress already moved to another screen
   if (currentDeck !== 'classes') return;
   if (e.target && e.target.closest && e.target.closest('input, textarea, select')) return;
   if (e.key === '1' || e.key === '2' || e.key === '3') { csAnswer(Number(e.key) - 1); return; }
-  if (e.key === 'Escape') { goHome(); return; }
+  if (e.key === 'Escape') { enterDeck('tones'); return; }
   if (e.key === 'p' || e.key === 'P') { csSpeak(); return; }
   if (e.key === ' ' || e.key === 'Enter' || e.key === 'ArrowRight') { e.preventDefault(); csNext(); return; }
 });
@@ -7393,8 +7549,9 @@ function vcEnter() {
 }
 
 document.addEventListener('keydown', e => {
+  if (e === navEvt) return;  // this keypress already moved to another screen
   if (currentDeck !== 'combos') return;
-  if (e.key === 'Escape') { goHome(); return; }
+  if (e.key === 'Escape') { enterDeck('readinghub'); return; }
   if (e.key === '1' || e.key === '2') { vcAnswer(Number(e.key) - 1); return; }
   if (e.key === 'p' || e.key === 'P') { if (vcQ) vcSpeak(vcQ.item.w); return; }
   if (e.key === ' ' || e.key === 'Enter' || e.key === 'ArrowRight') {
@@ -8521,7 +8678,7 @@ const STUDY_IDLE_MS = 3 * 60 * 1000;
 const STUDY_AREAS = {
   'view-speaking': 'Speaking', 'view-speaking-select': 'Speaking',
   'view-reading': 'Reading & Writing', 'view-reading-select': 'Reading & Writing',
-  'view-lookalikes': 'Lookalikes', 'view-combos': 'Vowel Combos', 'view-classes': 'Tones: Class Sorter',
+  'view-lookalikes': 'Lookalikes', 'view-combos': 'Vowel Combos', 'view-classes': 'Tones: Class Sorter', 'view-tones': 'Tones', 'view-readinghub': 'Reading',
   'view-wordgame': 'Word Catch', 'view-home': 'Home screen'
 };
 
