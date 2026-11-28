@@ -1714,7 +1714,7 @@
   <div class="home-wrap">
     <div class="home-header">
       <div class="logo-thai">ศึกษาภาษาไทย</div>
-      <h1>Thai <span>Study</span><span class="version-tag">v0.30d</span></h1>
+      <h1>Thai <span>Study</span><span class="version-tag">v0.31</span></h1>
       <p class="subtitle">Choose a deck to begin</p>
     </div>
 
@@ -1931,6 +1931,15 @@
     <h1>Consonants <span>&amp; Vowels</span></h1>
     <p class="subtitle">PICK YOUR MIX</p>
   </header>
+
+  <div class="card-search" id="rw-search">
+    <div class="card-search-box">
+      <input type="search" id="rw-search-input" placeholder="Search letter, name, sound or example…" autocomplete="off" spellcheck="false" oninput="onReadingSearchInput()">
+      <button class="card-search-clear" onclick="clearReadingSearch()" title="Clear search (Esc)">&times;</button>
+    </div>
+    <div class="card-search-count" id="rw-search-count"></div>
+  </div>
+  <div class="card-search-note">Search resets current card set</div>
 
   <div class="select-top-row">
     <button class="cat-btn select-header-btn" id="rw-sel-all" onclick="toggleReadingAll()">All</button>
@@ -6137,12 +6146,16 @@ function searchFold(str) {
 }
 
 function cardSearchRank(item, q, words) {
+  return searchRankFields([item.thai, item.phonetic, item.english, item.usage], item.english, q, words);
+}
+
+function searchRankFields(rawFields, english, q, words) {
   // every word typed has to appear somewhere on the card (any order, any field);
   // 0 exact, 1 starts with, 2 contains, -1 no match
-  const fields = [item.thai, item.phonetic, item.english, item.usage].map(searchFold).filter(Boolean);
+  const fields = rawFields.map(searchFold).filter(Boolean);
   if (!words.every(w => fields.some(f => f.includes(w)))) return -1;
   if (fields.some(f => f === q)) return 0;
-  if (item.english && item.english.split(/[\/,;]/).some(part => searchFold(part) === q)) return 0;
+  if (english && english.split(/[\/,;]/).some(part => searchFold(part) === q)) return 0;
   if (fields.some(f => f.startsWith(q))) return 1;
   return 2;
 }
@@ -6417,7 +6430,93 @@ var wcReturnView = 'view-home';
 // ============================================================
 // READING & WRITING SELECTION SCREEN
 // ============================================================
+// ============================================================
+// CONSONANTS & VOWELS SEARCH (v0.31) - same behaviour as the Speaking search:
+// matches light up the groups they belong to, the card set is just the
+// matches, and clearing the search puts your previous selection back.
+// ============================================================
+const rwSearch = { query: '', hits: null, savedFilter: null, timer: null };
+
+function readingSearchRank(p, q, words) {
+  if (p._kind === 'consonant') {
+    return searchRankFields([p.thai, p.name, p.nameRom, p.letterName, p.initial, p.final, p.rtgs, p.example, p.exRom, p.exEng], p.exEng, q, words);
+  }
+  if (p._kind === 'vowel') {
+    return searchRankFields([p.display, (p.pre || '') + (p.post || ''), p.saraName, p.saraRom, p.rtgs, p.sound, p.exThai, p.exRtgs, p.exEng], p.exEng, q, words);
+  }
+  return searchRankFields([p.thai, p.phonetic, p.english], p.english, q, words);
+}
+
+function onReadingSearchInput() {
+  clearTimeout(rwSearch.timer);
+  rwSearch.timer = setTimeout(runReadingSearch, 140);
+}
+
+function runReadingSearch() {
+  clearTimeout(rwSearch.timer);
+  const deck = decks.reading;
+  const input = document.getElementById('rw-search-input');
+  const raw = input ? input.value : '';
+  const q = searchFold(raw);
+  if (!q) { clearReadingSearch(); return; }
+  const words = raw.trim().split(/\s+/).map(searchFold).filter(Boolean);
+  const af = deck.activeFilter;
+  if (!rwSearch.query) rwSearch.savedFilter = {
+    consonantClasses: new Set(af.consonantClasses), vowelTypes: new Set(af.vowelTypes),
+    vowelPositions: new Set(af.vowelPositions), wordGroups: new Set(af.wordGroups),
+  };
+  rwSearch.query = q;
+  const hits = [];
+  deck.data.forEach((item, i) => {
+    const rank = readingSearchRank(item, q, words);
+    if (rank >= 0) hits.push({ item, rank, i });
+  });
+  hits.sort((a, b) => a.rank - b.rank || a.i - b.i);
+  rwSearch.hits = hits.map(h => h.item);
+  // turn on exactly the groups the matches belong to
+  af.consonantClasses = new Set();
+  af.vowelTypes = new Set();
+  af.vowelPositions = new Set();
+  af.wordGroups = new Set();
+  rwSearch.hits.forEach(p => {
+    if (p._kind === 'consonant') af.consonantClasses.add(p.cls);
+    else if (p._kind === 'vowel') { af.vowelTypes.add(p.type); p.positions.forEach(x => af.vowelPositions.add(x)); }
+    else if (p.group) af.wordGroups.add(p.group);
+  });
+  renderReadingSelectionScreen();
+}
+
+function clearReadingSearch() {
+  clearTimeout(rwSearch.timer);
+  const input = document.getElementById('rw-search-input');
+  if (input) input.value = '';
+  if (rwSearch.query && rwSearch.savedFilter) decks.reading.activeFilter = rwSearch.savedFilter;
+  rwSearch.query = '';
+  rwSearch.hits = null;
+  rwSearch.savedFilter = null;
+  renderReadingSelectionScreen();
+}
+
+// the cards the current selection adds up to (search matches only, while searching)
+function readingSelectionScope() {
+  const deck = decks.reading;
+  const pool = rwSearch.query && rwSearch.hits ? rwSearch.hits : deck.data;
+  return pool.filter(item => deck.matchesFilter(item, deck.activeFilter));
+}
+
+function renderReadingSearchState() {
+  const wrap = document.getElementById('rw-search');
+  const count = document.getElementById('rw-search-count');
+  const active = !!rwSearch.query;
+  if (wrap) wrap.classList.toggle('active', active);
+  if (count) {
+    const n = active && rwSearch.hits ? rwSearch.hits.length : 0;
+    count.textContent = active ? (n === 1 ? '1 match' : n + ' matches') : '';
+  }
+}
+
 function renderReadingSelectionScreen() {
+  renderReadingSearchState();
   const af = decks.reading.activeFilter;
 
   const conAllOn = readingConsonantClasses.every(c => af.consonantClasses.has(c));
@@ -6465,7 +6564,7 @@ function renderReadingSelectionScreen() {
 
 function updateReadingSelectionStats() {
   const deck = decks.reading;
-  const inScope = deck.data.filter(item => deck.matchesFilter(item, deck.activeFilter));
+  const inScope = readingSelectionScope();
   let knownCount = 0, learningCount = 0;
   inScope.forEach(item => {
     const id = deck.idOf(item);
@@ -6476,7 +6575,7 @@ function updateReadingSelectionStats() {
   setText('rw-sel-stat-known', knownCount);
   setText('rw-sel-stat-learning', learningCount);
   setText('rw-sel-stat-remaining', remaining);
-  setText('rw-sel-total', inScope.length + ' card' + (inScope.length === 1 ? '' : 's') + ' selected');
+  setText('rw-sel-total', inScope.length + ' card' + (inScope.length === 1 ? '' : 's') + ' selected' + (rwSearch.query ? ' from search' : ''));
 }
 
 function toggleReadingAll() {
@@ -6540,11 +6639,17 @@ function toggleReadingAllWords() {
 
 function startReadingSession() {
   const deck = decks.reading;
-  const inScope = deck.data.filter(item => deck.matchesFilter(item, deck.activeFilter));
-  deck.filtered = inScope.filter(item => !deck.known.has(deck.idOf(item)));
-  shuffleArray(deck.filtered);
+  const inScope = readingSelectionScope();
   deck.mnemonicMode = false;
-  deck.searchScope = null;
+  if (rwSearch.query) {
+    // search session: show every match, best matches first, known ones included
+    deck.searchScope = inScope.slice();
+    deck.filtered = inScope.slice();
+  } else {
+    deck.searchScope = null;
+    deck.filtered = inScope.filter(item => !deck.known.has(deck.idOf(item)));
+    shuffleArray(deck.filtered);
+  }
   document.getElementById('rw-back-btn').innerHTML = '&larr; Selection';
   document.getElementById('rw-card-logo').textContent = 'พยัญชนะ สระ';
   document.getElementById('rw-card-title').innerHTML = 'Consonants <span>&amp; Vowels</span>';
@@ -6850,7 +6955,14 @@ document.addEventListener('keydown', e => {
     return;
   }
   if (currentDeck === 'reading-select') {
-    if (e.key === 'Escape') enterDeck('readinghub');
+    if (e.target && e.target.id === 'rw-search-input') {
+      if (e.key === 'Escape') { e.preventDefault(); clearReadingSearch(); e.target.blur(); }
+      if (e.key === 'Enter') { e.preventDefault(); runReadingSearch(); e.target.blur(); }
+      return;
+    }
+    if (e.target && e.target.closest && e.target.closest('input, textarea, select')) return;
+    if (e.key === '/') { e.preventDefault(); const box = document.getElementById('rw-search-input'); if (box) box.focus(); return; }
+    if (e.key === 'Escape') { if (rwSearch.query) clearReadingSearch(); else enterDeck('readinghub'); }
     return;
   }
   const deck = decks[currentDeck];
