@@ -668,6 +668,7 @@
   .back-thai-alt:empty, .example-thai-alt:empty { display: none; }
   body.no-loopless .back-thai-alt, body.no-loopless .example-thai-alt { display: none !important; }
   .btn-back.btn-alt-font.on { color: var(--accent); border-color: var(--accent); }
+  .btn-back.btn-direction.on { color: var(--accent); border-color: var(--accent); }
 
   /* Quick Brown Fox: each syllable/cluster chunk gets its own span so it
      can be outlined on hover - a visual reading aid, no click behavior
@@ -1763,7 +1764,7 @@
   <div class="home-wrap">
     <div class="home-header">
       <div class="logo-thai">ศึกษาภาษาไทย</div>
-      <h1>Thai <span>Study</span><span class="version-tag">v0.33</span></h1>
+      <h1>Thai <span>Study</span><span class="version-tag">v0.34</span></h1>
       <p class="subtitle">Choose a deck to begin</p>
     </div>
 
@@ -1931,6 +1932,7 @@
 <div class="container view" id="view-speaking">
   <div class="deck-topbar">
     <button class="btn-back" onclick="backToSpeakingSelect()">&larr; Selection</button>
+    <button class="btn-back btn-direction" id="sp-direction-btn" onclick="toggleSpeakingDirection()" title="Switch which side of the card you see first (D)">Thai &rarr; English</button>
     <button class="btn-back btn-alt-font" onclick="toggleLoopless()" title="Show the loopless letter shapes as a smaller second line">Loopless</button>
   </div>
   <header>
@@ -1953,14 +1955,14 @@
     <div class="card-inner" id="card-inner-speaking">
       <div class="card-face card-front">
         <div class="card-category-tag" id="front-category-speaking">Vocabulary</div>
-        <div class="card-label">Thai</div>
+        <div class="card-label" id="sp-label-thai">Thai</div>
         <div class="thai-text" id="thai-text-speaking">สวัสดี</div>
         <div class="thai-alt" id="thai-alt-speaking"></div>
         <div class="phonetic-text" id="phonetic-text-speaking">sà-wàt-dii</div>
       </div>
       <div class="card-face card-back">
         <div class="card-category-tag" id="back-category-speaking">Vocabulary</div>
-        <div class="card-label">English</div>
+        <div class="card-label" id="sp-label-english">English</div>
         <div class="english-text" id="english-text-speaking">Hello</div>
         <div class="usage-text" id="usage-text-speaking"></div>
       </div>
@@ -1992,6 +1994,7 @@
     <div class="kbd-hint"><kbd>Y</kbd> Got it</div>
     <div class="kbd-hint"><kbd>N</kbd> Learning</div>
     <div class="kbd-hint"><kbd>P</kbd> Pronounce</div>
+    <div class="kbd-hint"><kbd>D</kbd> Direction</div>
   </div>
 </div>
 
@@ -5970,6 +5973,43 @@ function applyLooplessSetting() {
   document.body.classList.toggle('no-loopless', !showLoopless);
   document.querySelectorAll('.btn-alt-font').forEach(b => b.classList.toggle('on', showLoopless));
 }
+// ============================================================
+// CARD DIRECTION (v0.34): Thai -> English (default) or English -> Thai for
+// the Speaking deck. English -> Thai moves the English onto the front and the
+// Thai, romanization and usage note onto the back. Saved on this device.
+// ============================================================
+const SP_DIRECTION_KEY = 'thai-study-speaking-direction';
+let speakingEnFirst = false;
+try { speakingEnFirst = localStorage.getItem(SP_DIRECTION_KEY) === 'en'; } catch (e) {}
+
+function applySpeakingDirection() {
+  const scene = document.getElementById('card-scene-speaking');
+  if (!scene) return;
+  const front = scene.querySelector('.card-front');
+  const back = scene.querySelector('.card-back');
+  const thaiParts = ['sp-label-thai', 'thai-text-speaking', 'thai-alt-speaking', 'phonetic-text-speaking'].map(id => document.getElementById(id));
+  const enParts = ['sp-label-english', 'english-text-speaking'].map(id => document.getElementById(id));
+  const usage = document.getElementById('usage-text-speaking');
+  const [first, second] = speakingEnFirst ? [enParts, thaiParts] : [thaiParts, enParts];
+  first.forEach(el => el && front.appendChild(el));
+  second.forEach(el => el && back.appendChild(el));
+  if (usage) back.appendChild(usage);  // the usage note can give the answer away, so it always stays on the back
+  const btn = document.getElementById('sp-direction-btn');
+  if (btn) { btn.innerHTML = speakingEnFirst ? 'English &rarr; Thai' : 'Thai &rarr; English'; btn.classList.toggle('on', speakingEnFirst); }
+}
+
+function toggleSpeakingDirection() {
+  speakingEnFirst = !speakingEnFirst;
+  try { localStorage.setItem(SP_DIRECTION_KEY, speakingEnFirst ? 'en' : 'th'); } catch (e) {}
+  applySpeakingDirection();
+  const deck = decks.speaking;
+  deck.isFlipped = false;
+  snapToFrontInstantly('speaking');
+  if (deck.filtered && deck.filtered.length) renderCard('speaking');
+}
+
+applySpeakingDirection();
+
 function toggleLoopless() {
   showLoopless = !showLoopless;
   try { localStorage.setItem(LOOPLESS_KEY, showLoopless ? 'on' : 'off'); } catch (e) {}
@@ -7260,6 +7300,7 @@ document.addEventListener('keydown', e => {
   if ((e.key === 'y' || e.key === 'Y') && deck.isFlipped) markCard(currentDeck, true);
   if ((e.key === 'n' || e.key === 'N') && deck.isFlipped) markCard(currentDeck, false);
   if (e.key === 'p' || e.key === 'P') pronounce(currentDeck);
+  if ((e.key === 'd' || e.key === 'D') && currentDeck === 'speaking') toggleSpeakingDirection();
   if (e.key === 'Escape') { if (currentDeck === 'reading') backToReadingSelect(); else goHome(); }
 });
 
