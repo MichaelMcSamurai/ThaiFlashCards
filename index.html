@@ -1657,6 +1657,20 @@
   .sp-pile-chip button { background: none; border: none; color: var(--muted); font-size: 15px; cursor: pointer; padding: 2px 6px; line-height: 1; }
   .sp-pile-chip button:hover { color: var(--special-color); }
 
+  .sp-save-row { display: none; gap: 8px; align-items: center; margin-top: 12px; }
+  .sp-save-row.show { display: flex; }
+  .sp-save-row input { flex: 1; font-family: 'IBM Plex Mono', monospace; font-size: 13px; background: var(--surface); color: var(--text);
+    border: 1px solid var(--border); border-radius: 3px; padding: 6px 10px; outline: none; }
+  .sp-save-row input:focus { border-color: var(--accent); }
+  .sp-save-note { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--muted); margin-top: 6px; min-height: 14px; }
+  .sp-sets { display: none; margin: 0 0 26px; }
+  .sp-sets.show { display: block; }
+  .sp-sets-title { font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-bottom: 8px; }
+  .sp-set { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border: 1px solid var(--border); border-radius: 3px; margin-bottom: 6px; background: var(--surface); }
+  .sp-set.loaded { border-color: var(--accent); }
+  .sp-set-name { color: var(--text); font-size: 15px; margin-right: auto; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .sp-set-count { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 1px; margin-left: 8px; }
+
   /* ---------- STUDY SESSION (v0.26) ---------- */
   .study-panel {
     position: relative;
@@ -1749,7 +1763,7 @@
   <div class="home-wrap">
     <div class="home-header">
       <div class="logo-thai">ศึกษาภาษาไทย</div>
-      <h1>Thai <span>Study</span><span class="version-tag">v0.32</span></h1>
+      <h1>Thai <span>Study</span><span class="version-tag">v0.33</span></h1>
       <p class="subtitle">Choose a deck to begin</p>
     </div>
 
@@ -1846,9 +1860,21 @@
     <div class="sp-pile-head">
       <div class="sp-pile-title" id="sp-pile-title">Study pile</div>
       <button class="sp-mini-btn" id="sp-pile-clear" onclick="clearPile()">Clear</button>
+      <button class="sp-mini-btn" onclick="openSaveSet()">Save as set</button>
       <button class="sp-mini-btn primary" onclick="startPileSession()">&#9654; Study pile</button>
     </div>
     <div class="sp-pile-chips" id="sp-pile-chips"></div>
+    <div class="sp-save-row" id="sp-save-row">
+      <input type="text" id="sp-save-name" maxlength="40" placeholder="Set name, e.g. Tutor Nov 28" onkeydown="if(event.key==='Enter'){event.preventDefault();saveSet();} if(event.key==='Escape'){event.preventDefault();closeSaveSet();}">
+      <button class="sp-mini-btn" onclick="closeSaveSet()">Cancel</button>
+      <button class="sp-mini-btn primary" onclick="saveSet()">Save</button>
+    </div>
+    <div class="sp-save-note" id="sp-save-note"></div>
+  </div>
+
+  <div class="sp-sets" id="sp-sets">
+    <div class="sp-sets-title">My sets</div>
+    <div id="sp-sets-list"></div>
   </div>
 
   <div class="select-top-row">
@@ -3580,6 +3606,7 @@ const phrasesData = [
   { thai: "อ้วนขึ้นหรือเปล่า", clusters: ["อ้วน", "ขึ้น", "หรือ", "เปล่า"], phonetic: "ûan khʉ̂n rʉ̆ʉ bplàao", english: "Have you gained weight?", usage: "From a video about things you should never ask. Recognize it; do not say it.", category: "Conversation" },
   { thai: "รอใครอยู่", clusters: ["รอ", "ใคร", "อยู่"], phonetic: "rɔɔ khrai yùu", english: "Who are you waiting for?", category: "Conversation" },
   { thai: "เสื้อ", clusters: ["เสื้อ"], phonetic: "sʉ̂a", english: "Shirt", category: "Everyday Nouns" },
+  { thai: "รองเท้าแตะ", clusters: ["รอง", "เท้า", "แตะ"], phonetic: "rɔɔŋ-tháao-dtɛ̀", english: "Flip-flops, sandals", usage: "แตะ = to touch lightly, so they're shoes that just touch your feet", category: "Everyday Nouns" },
   { thai: "น้ำบาดาล", clusters: ["น้ำ", "บา", "ดาล"], phonetic: "nám baa-daan", english: "Groundwater / well water", category: "Everyday Nouns" },
   { thai: "หมอน", clusters: ["หมอน"], phonetic: "mɔ̆ɔn", english: "Pillow", category: "Everyday Nouns" },
   { thai: "ทราย", clusters: ["ทราย"], phonetic: "saai", english: "Sand (ทร sounds like ซ)", category: "Everyday Nouns" },
@@ -4683,8 +4710,8 @@ const languageClassData = [
   { thai: "เสื้อ (ตัว, ชุด)", clusters: ["เสื้อ", " ", "(", "ตัว", ",", " ", "ชุด", ")"], phonetic: "sʉ̂a (dtua, chút)", english: "Shirt, blouse (unit)", cls: "Class 7" },
   { thai: "กางเกง (ตัว)", clusters: ["กาง", "เกง", " ", "(", "ตัว", ")"], phonetic: "gaaŋ-geeŋ (dtua)", english: "Trousers (unit)", cls: "Class 7" },
   { thai: "กระโปรง (ตัว)", clusters: ["กระ", "โปรง", " ", "(", "ตัว", ")"], phonetic: "grà-bprooŋ (dtua)", english: "Skirt (unit)", cls: "Class 7" },
-  { thai: "ถุงเท้า (คู่)", clusters: ["ถุง", "เท้า", " ", "(", "คู่", ")"], phonetic: "thŭŋ-thâao (khûu)", english: "Socks (pair)", cls: "Class 7" },
-  { thai: "รองเท้า (คู่)", clusters: ["รอง", "เท้า", " ", "(", "คู่", ")"], phonetic: "rɔɔŋ-thâao (khûu)", english: "Shoes (pair)", cls: "Class 7" },
+  { thai: "ถุงเท้า (คู่)", clusters: ["ถุง", "เท้า", " ", "(", "คู่", ")"], phonetic: "thŭŋ-tháao (khûu)", english: "Socks (pair)", cls: "Class 7" },
+  { thai: "รองเท้า (คู่)", clusters: ["รอง", "เท้า", " ", "(", "คู่", ")"], phonetic: "rɔɔŋ-tháao (khûu)", english: "Shoes (pair)", cls: "Class 7" },
   { thai: "นาฬิกา (เรือน)", clusters: ["นา", "ฬิ", "กา", " ", "(", "เรือน", ")"], phonetic: "naa-lí-gaa (rʉan)", english: "Clock, watch (unit)", cls: "Class 7" },
   { thai: "แว่นตา (อัน)", clusters: ["แว่น", "ตา", " ", "(", "อัน", ")"], phonetic: "wɛ̂n-dtaa (an)", english: "Glasses (unit)", cls: "Class 7" },
   { thai: "สร้อย (เส้น)", clusters: ["สร้อย", " ", "(", "เส้น", ")"], phonetic: "sɔ̂ɔy (sen)", english: "Necklace (unit)", cls: "Class 7" },
@@ -5026,7 +5053,7 @@ const languageClassData = [
   { thai: "ได้รับ", clusters: ["ได้", "รับ"], phonetic: "dâi-ráp", english: "To receive (ได้รับ + thing + จาก = from)", cls: "Class 19", alsoIn: ["S2::Class 5"] },
   { thai: "เท่านั้น", clusters: ["เท่า", "นั้น"], phonetic: "thâo-nán", english: "Only, just, that much", cls: "Class 19" },
   { thai: "อยาก...ให้...", clusters: ["อยาก", "...", "ให้", "..."], phonetic: "yàak hây s.+v./adj.", english: "To want someone to do/be something", cls: "Class 19" },
-  { thai: "รองเท้า 3 คู่", clusters: ["รอง", "เท้า", " ", "3", " ", "คู่"], phonetic: "rɔɔŋ-thâao săam khûu", english: "3 pairs of shoes", cls: "Classifiers" },
+  { thai: "รองเท้า 3 คู่", clusters: ["รอง", "เท้า", " ", "3", " ", "คู่"], phonetic: "rɔɔŋ-tháao săam khûu", english: "3 pairs of shoes", cls: "Classifiers" },
   { thai: "แตงโม 1 ชิ้น", clusters: ["แตง", "โม", " ", "1", " ", "ชิ้น"], phonetic: "tɛɛŋmōo nʉ̀ŋ chín", english: "1 slice of watermelon", cls: "Classifiers" },
   { thai: "หนังสือ 5 เล่ม", clusters: ["หนัง", "สือ", " ", "5", " ", "เล่ม"], phonetic: "năŋ-sʉ̆ʉ hâa lêm", english: "5 books", cls: "Classifiers" },
   { thai: "ทุเรียน 2 ชิ้น", clusters: ["ทุ", "เรียน", " ", "2", " ", "ชิ้น"], phonetic: "thú-rian sɔ̆ŋ chín", english: "2 pieces of durian", cls: "Classifiers" },
@@ -6471,7 +6498,9 @@ function clearPile() {
   clearTimeout(pileClearArmed); pileClearArmed = null;
   if (btn) { btn.textContent = 'Clear'; btn.classList.remove('warn'); }
   pileIds = [];
+  loadedSetName = null;
   savePile();
+  closeSaveSet();
   renderPileUI();
 }
 
@@ -6515,15 +6544,120 @@ function renderPileUI() {
     return '<span class="sp-pile-chip" title="' + escHtml(p.phonetic + ' · ' + p.english) + '">' + escHtml(p.thai) +
       '<button data-id="' + escHtml(id) + '" onclick="togglePileCard(this.dataset.id)" title="Remove">&times;</button></span>';
   }).join('');
+  renderSetsUI();
+}
+
+// ---------- SAVED SETS (v0.33): name a pile and come back to it later ----------
+const SETS_KEY = 'thai-study-sets-v1';
+let savedSets = [];
+try { savedSets = JSON.parse(localStorage.getItem(SETS_KEY) || '[]'); } catch (e) { savedSets = []; }
+if (!Array.isArray(savedSets)) savedSets = [];
+let loadedSetName = null;   // the set the pile was last loaded from / saved as
+let setDeleteArmed = null;  // { name, timer }
+
+function saveSets() { try { localStorage.setItem(SETS_KEY, JSON.stringify(savedSets)); } catch (e) {} }
+function setCards(set) { return set.ids.map(id => speakingById.get(id)).filter(Boolean); }
+function findSet(name) { return savedSets.find(x => x.name.toLowerCase() === String(name).toLowerCase()); }
+
+function defaultSetName() {
+  const d = new Date();
+  return 'Pile ' + d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+}
+
+function openSaveSet() {
+  const row = document.getElementById('sp-save-row');
+  const input = document.getElementById('sp-save-name');
+  if (!row || !input) return;
+  row.classList.add('show');
+  input.value = loadedSetName || defaultSetName();
+  setText('sp-save-note', loadedSetName ? 'Saving under the same name updates that set' : '');
+  input.focus(); input.select();
+}
+
+function closeSaveSet() {
+  const row = document.getElementById('sp-save-row');
+  if (row) row.classList.remove('show');
+  setText('sp-save-note', '');
+}
+
+function saveSet() {
+  const input = document.getElementById('sp-save-name');
+  const name = (input ? input.value : '').trim();
+  if (!name) { setText('sp-save-note', 'Give the set a name first'); return; }
+  if (!pileIds.length) return;
+  const existing = findSet(name);
+  if (existing) { existing.ids = pileIds.slice(); existing.updated = Date.now(); }
+  else savedSets.unshift({ name, ids: pileIds.slice(), created: Date.now() });
+  saveSets();
+  loadedSetName = existing ? existing.name : name;
+  closeSaveSet();
+  setText('sp-save-note', (existing ? 'Updated' : 'Saved') + ' “' + loadedSetName + '”');
+  renderPileUI();
+}
+
+function loadSetIntoPile(i) {
+  const set = savedSets[i];
+  if (!set) return;
+  pileIds = set.ids.filter(id => speakingById.has(id));
+  loadedSetName = set.name;
+  savePile();
+  closeSaveSet();
+  setText('sp-save-note', 'Loaded “' + set.name + '” into the pile. Add or remove cards, then Save as set to update it');
+  renderPileUI();
+}
+
+function studySet(i) {
+  const set = savedSets[i];
+  if (!set) return;
+  const cards = setCards(set);
+  if (!cards.length) return;
+  startCardListSession(cards);
+}
+
+function deleteSet(i) {
+  const set = savedSets[i];
+  if (!set) return;
+  if (!setDeleteArmed || setDeleteArmed.name !== set.name) {  // first click arms, second click (within 3s) deletes
+    if (setDeleteArmed) clearTimeout(setDeleteArmed.timer);
+    setDeleteArmed = { name: set.name, timer: setTimeout(() => { setDeleteArmed = null; renderPileUI(); }, 3000) };
+    renderPileUI();
+    return;
+  }
+  clearTimeout(setDeleteArmed.timer); setDeleteArmed = null;
+  savedSets.splice(i, 1);
+  if (loadedSetName === set.name) loadedSetName = null;
+  saveSets();
+  renderPileUI();
+}
+
+function renderSetsUI() {
+  const wrap = document.getElementById('sp-sets');
+  const list = document.getElementById('sp-sets-list');
+  if (wrap) wrap.classList.toggle('show', savedSets.length > 0);
+  if (!list) return;
+  list.innerHTML = savedSets.map((set, i) => {
+    const n = setCards(set).length;
+    const arming = setDeleteArmed && setDeleteArmed.name === set.name;
+    return '<div class="sp-set' + (loadedSetName === set.name ? ' loaded' : '') + '">' +
+      '<span class="sp-set-name">' + escHtml(set.name) + '<span class="sp-set-count">' + n + (n === 1 ? ' card' : ' cards') + '</span></span>' +
+      '<button class="sp-mini-btn' + (arming ? ' warn' : '') + '" onclick="deleteSet(' + i + ')">' + (arming ? 'Delete?' : 'Delete') + '</button>' +
+      '<button class="sp-mini-btn" onclick="loadSetIntoPile(' + i + ')" title="Put these cards in the pile to add or remove some">Edit in pile</button>' +
+      '<button class="sp-mini-btn primary" onclick="studySet(' + i + ')">&#9654; Study</button>' +
+      '</div>';
+  }).join('');
 }
 
 function startPileSession() {
-  const deck = decks.speaking;
   const pile = pileCards();
   if (!pile.length) return;
-  // pile session: every card in the pile, shuffled, known ones included
-  deck.searchScope = pile.slice();
-  deck.filtered = shuffleArray(pile.slice());
+  startCardListSession(pile);
+}
+
+function startCardListSession(cards) {
+  const deck = decks.speaking;
+  // pile / set session: every card in the list, shuffled, known ones included
+  deck.searchScope = cards.slice();
+  deck.filtered = shuffleArray(cards.slice());
   deck.currentIndex = 0;
   deck.isFlipped = false;
   currentDeck = 'speaking';
