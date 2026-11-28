@@ -1622,6 +1622,41 @@
   .card-search.active .card-search-count { color: var(--accent); }
   .card-search-note { font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 1px; color: var(--muted); margin: 0 0 26px; }
 
+  /* ---------- STUDY PILE (v0.32) ---------- */
+  .sp-results { display: none; margin: -14px 0 22px; border: 1px solid var(--border); border-radius: 3px; background: var(--surface); }
+  .sp-results.show { display: block; }
+  .sp-results-head { display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; border-bottom: 1px solid var(--border);
+    font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 1px; color: var(--muted); text-transform: uppercase; }
+  .sp-results-list { max-height: 320px; overflow-y: auto; }
+  .sp-result { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.4fr) 150px 34px; gap: 12px; align-items: center;
+    padding: 7px 12px; border-bottom: 1px solid var(--border); cursor: pointer; }
+  .sp-result:last-child { border-bottom: none; }
+  .sp-result:hover { background: #1d1d1d; }
+  .sp-result.in-pile { background: rgba(217, 218, 74, 0.07); }
+  .sp-result-thai { color: var(--thai-gold); font-family: 'Niramit', serif; font-size: 19px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .sp-result-ph { color: var(--muted); font-style: italic; font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .sp-result-en { color: var(--text); font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .sp-result-tag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; color: var(--muted); white-space: nowrap; text-transform: uppercase; overflow: hidden; text-overflow: ellipsis; text-align: right; }
+  .sp-pile-add { width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--accent); background: none; color: var(--accent);
+    font-size: 18px; line-height: 1; cursor: pointer; padding: 0; }
+  .sp-result.in-pile .sp-pile-add { background: var(--accent); color: #000; }
+  .sp-results-more { padding: 8px 12px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 1px; color: var(--muted); }
+  .sp-mini-btn { font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; background: none;
+    border: 1px solid var(--border); color: var(--text); border-radius: 3px; padding: 5px 10px; cursor: pointer; }
+  .sp-mini-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .sp-mini-btn.primary { background: var(--accent); border-color: var(--accent); color: #000; font-weight: 600; }
+  .sp-mini-btn.primary:hover { background: var(--accent-bright); color: #000; }
+  .sp-mini-btn.warn { border-color: var(--special-color); color: var(--special-color); }
+  .sp-pile { display: none; margin: 0 0 26px; padding: 12px 14px; border: 1px dashed var(--accent); border-radius: 3px; }
+  .sp-pile.show { display: block; }
+  .sp-pile-head { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .sp-pile-title { font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 2px; color: var(--accent); text-transform: uppercase; margin-right: auto; }
+  .sp-pile-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .sp-pile-chip { display: inline-flex; align-items: center; gap: 6px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+    padding: 2px 4px 2px 12px; color: var(--thai-gold); font-family: 'Niramit', serif; font-size: 16px; }
+  .sp-pile-chip button { background: none; border: none; color: var(--muted); font-size: 15px; cursor: pointer; padding: 2px 6px; line-height: 1; }
+  .sp-pile-chip button:hover { color: var(--special-color); }
+
   /* ---------- STUDY SESSION (v0.26) ---------- */
   .study-panel {
     position: relative;
@@ -1714,7 +1749,7 @@
   <div class="home-wrap">
     <div class="home-header">
       <div class="logo-thai">ศึกษาภาษาไทย</div>
-      <h1>Thai <span>Study</span><span class="version-tag">v0.31</span></h1>
+      <h1>Thai <span>Study</span><span class="version-tag">v0.32</span></h1>
       <p class="subtitle">Choose a deck to begin</p>
     </div>
 
@@ -1800,7 +1835,21 @@
     </div>
     <div class="card-search-count" id="sp-search-count"></div>
   </div>
-  <div class="card-search-note">Search resets current card set</div>
+  <div class="card-search-note">Search resets current card set &middot; click + to add a card to your study pile</div>
+
+  <div class="sp-results" id="sp-results">
+    <div class="sp-results-head"><span id="sp-results-label">Matches</span><button class="sp-mini-btn" id="sp-results-addall" onclick="addAllMatchesToPile()">+ Add all</button></div>
+    <div class="sp-results-list" id="sp-results-list"></div>
+  </div>
+
+  <div class="sp-pile" id="sp-pile">
+    <div class="sp-pile-head">
+      <div class="sp-pile-title" id="sp-pile-title">Study pile</div>
+      <button class="sp-mini-btn" id="sp-pile-clear" onclick="clearPile()">Clear</button>
+      <button class="sp-mini-btn primary" onclick="startPileSession()">&#9654; Study pile</button>
+    </div>
+    <div class="sp-pile-chips" id="sp-pile-chips"></div>
+  </div>
 
   <div class="select-top-row">
     <button class="cat-btn select-header-btn" id="sp-sel-all" onclick="toggleSpeakingAll()">All</button>
@@ -6232,6 +6281,7 @@ function renderSpeakingSearchState() {
 
 function renderSpeakingSelectionScreen() {
   renderSpeakingSearchState();
+  renderPileUI();
   const af = decks.speaking.activeFilter;
 
   // top-level ALL
@@ -6378,6 +6428,110 @@ function toggleSpeakingPhraseClass(level, cls) {
   const key = classKey(level, cls);
   if (af.phraseClasses.has(key)) af.phraseClasses.delete(key); else af.phraseClasses.add(key);
   renderSpeakingSelectionScreen();
+}
+
+// ============================================================
+// STUDY PILE (v0.32) - hand-picked cards gathered across several searches.
+// Each search shows its matches as a list with a + button per card; the pile
+// survives new searches and reloads (saved on this device) until cleared.
+// ============================================================
+const PILE_KEY = 'thai-study-pile-v1';
+const PILE_LIST_MAX = 60;
+let pileIds = [];
+try { pileIds = JSON.parse(localStorage.getItem(PILE_KEY) || '[]'); } catch (e) { pileIds = []; }
+const speakingById = new Map(decks.speaking.data.map(p => [decks.speaking.idOf(p), p]));
+pileIds = pileIds.filter(id => speakingById.has(id));
+let pileClearArmed = null;
+
+function savePile() { try { localStorage.setItem(PILE_KEY, JSON.stringify(pileIds)); } catch (e) {} }
+function pileCards() { return pileIds.map(id => speakingById.get(id)).filter(Boolean); }
+function escHtml(t) { return String(t == null ? '' : t).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+
+function togglePileCard(id) {
+  const i = pileIds.indexOf(id);
+  if (i >= 0) pileIds.splice(i, 1); else pileIds.push(id);
+  savePile();
+  renderPileUI();
+}
+
+function addAllMatchesToPile() {
+  if (!spSearch.hits) return;
+  spSearch.hits.forEach(p => { const id = decks.speaking.idOf(p); if (!pileIds.includes(id)) pileIds.push(id); });
+  savePile();
+  renderPileUI();
+}
+
+function clearPile() {
+  const btn = document.getElementById('sp-pile-clear');
+  if (!pileClearArmed) {  // first click arms, second click (within 3s) clears
+    if (btn) { btn.textContent = 'Clear all?'; btn.classList.add('warn'); }
+    pileClearArmed = setTimeout(() => { pileClearArmed = null; if (btn) { btn.textContent = 'Clear'; btn.classList.remove('warn'); } }, 3000);
+    return;
+  }
+  clearTimeout(pileClearArmed); pileClearArmed = null;
+  if (btn) { btn.textContent = 'Clear'; btn.classList.remove('warn'); }
+  pileIds = [];
+  savePile();
+  renderPileUI();
+}
+
+function speakingResultTag(p) {
+  if (p._kind === 'phrase') return p.cls ? (p.level === 'S2' ? 'S2 ' : 'S1 ') + p.cls : (p.category || 'Phrase');
+  return vocabClassKeys(p).map(k => k.replace('::', ' ')).join(' · ');
+}
+
+function renderPileUI() {
+  const deck = decks.speaking;
+  // results list (only while searching)
+  const res = document.getElementById('sp-results');
+  const list = document.getElementById('sp-results-list');
+  const hits = spSearch.query && spSearch.hits ? spSearch.hits : null;
+  if (res) res.classList.toggle('show', !!(hits && hits.length));
+  if (hits && list) {
+    const shown = hits.slice(0, PILE_LIST_MAX);
+    list.innerHTML = shown.map(p => {
+      const id = deck.idOf(p);
+      const on = pileIds.includes(id);
+      return '<div class="sp-result' + (on ? ' in-pile' : '') + '" data-id="' + escHtml(id) + '" onclick="togglePileCard(this.dataset.id)" title="' + (on ? 'Remove from pile' : 'Add to pile') + '">' +
+        '<span class="sp-result-thai">' + escHtml(p.thai) + '</span>' +
+        '<span class="sp-result-ph">' + escHtml(p.phonetic) + '</span>' +
+        '<span class="sp-result-en">' + escHtml(p.english) + '</span>' +
+        '<span class="sp-result-tag">' + escHtml(speakingResultTag(p)) + '</span>' +
+        '<button class="sp-pile-add" tabindex="-1">' + (on ? '&#10003;' : '+') + '</button></div>';
+    }).join('') + (hits.length > PILE_LIST_MAX ? '<div class="sp-results-more">Showing first ' + PILE_LIST_MAX + ' of ' + hits.length + ', narrow the search to see the rest</div>' : '');
+    const inPile = hits.filter(p => pileIds.includes(deck.idOf(p))).length;
+    setText('sp-results-label', hits.length + (hits.length === 1 ? ' match' : ' matches') + (inPile ? ' · ' + inPile + ' in pile' : ''));
+    const addAll = document.getElementById('sp-results-addall');
+    if (addAll) { addAll.style.display = inPile === hits.length ? 'none' : ''; addAll.textContent = '+ Add all ' + hits.length; }
+  }
+  // pile tray (whenever it has cards)
+  const pile = pileCards();
+  const tray = document.getElementById('sp-pile');
+  if (tray) tray.classList.toggle('show', pile.length > 0);
+  setText('sp-pile-title', 'Study pile · ' + pile.length + (pile.length === 1 ? ' card' : ' cards'));
+  const chips = document.getElementById('sp-pile-chips');
+  if (chips) chips.innerHTML = pile.map(p => {
+    const id = deck.idOf(p);
+    return '<span class="sp-pile-chip" title="' + escHtml(p.phonetic + ' · ' + p.english) + '">' + escHtml(p.thai) +
+      '<button data-id="' + escHtml(id) + '" onclick="togglePileCard(this.dataset.id)" title="Remove">&times;</button></span>';
+  }).join('');
+}
+
+function startPileSession() {
+  const deck = decks.speaking;
+  const pile = pileCards();
+  if (!pile.length) return;
+  // pile session: every card in the pile, shuffled, known ones included
+  deck.searchScope = pile.slice();
+  deck.filtered = shuffleArray(pile.slice());
+  deck.currentIndex = 0;
+  deck.isFlipped = false;
+  currentDeck = 'speaking';
+  showView('view-speaking');
+  snapToFrontInstantly('speaking');
+  renderCard('speaking');
+  updateStats('speaking');
+  window.scrollTo(0, 0);
 }
 
 function startSpeakingSession() {
